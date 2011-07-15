@@ -56,20 +56,18 @@ class Client {
             return true;
         }
 
-        if (count(array_udiff($reqs, $response, array('self', '_checkId'))) > 0) {
+        $diff_function = function ($a, $b) {
+            if ($a->id === $b->id) {
+                return 1;
+            }
+            return 0;
+        };
+
+        if (count(array_udiff($reqs, $response, $diff_function)) > 0) {
             throw new \Exception("Mismatched request id(s)");
         }
 
         return $response;
-    }
-
-    // helper function to check sent vs. received ids in a batch
-    public static function _checkId($a, $b)
-    {
-        if ($a->id === $b->id) {
-            return 1;
-        }
-        return 0;
     }
 
     // send raw json to the server
