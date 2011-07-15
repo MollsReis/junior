@@ -9,9 +9,7 @@ class Request {
     public function __construct($method, $params = null, $notify = false)
     {
         $this->method = $method;
-        if ($params) {
-            $this->params = $params;
-        }
+        $this->params = $params;
         if ($notify == false) {
             $this->id = uniqid();
         }
