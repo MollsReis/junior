@@ -1,8 +1,6 @@
 <?php
 namespace Junior\Client;
 
-const ERROR_INVALID_INTERNAL = -32603;
-
 class Client {
 
     // create new client connection
@@ -24,7 +22,7 @@ class Client {
         $response = $this->send($req->getJSON());
 
         if ($response->id != $req->id) {
-            throw new \Exception("Mismatched request id", ERROR_INVALID_INTERNAL);
+            throw new \Exception("Mismatched request id");
         }
 
         return $response;
@@ -34,7 +32,7 @@ class Client {
     public function sendNotify($req)
     {
         if ($req->id) {
-            throw new \Exception("Notify requests must not have ID set", ERROR_INVALID_INTERNAL);
+            throw new \Exception("Notify requests must not have ID set");
         }
 
         $this->send($req->getJSON(), true);
@@ -59,7 +57,7 @@ class Client {
         }
 
         if (count(array_udiff($reqs, $response, array('self', '_checkId'))) > 0) {
-            throw new \Exception("Mismatched request id(s)", ERROR_INVALID_INTERNAL);
+            throw new \Exception("Mismatched request id(s)");
         }
 
         return $response;
@@ -86,7 +84,7 @@ class Client {
         $response = file_get_contents($this->uri, false, $context);
 
         if ($response === false) {
-            throw new \Exception("Unable to connect to {$this->uri}", ERROR_INVALID_INTERNAL);
+            throw new \Exception("Unable to connect to {$this->uri}");
         }
 
         if ($notify) {
@@ -95,7 +93,7 @@ class Client {
 
         $response = json_decode($response);
         if ($response === null) {
-            throw new \Exception("Unable to decode JSON response", ERROR_INVALID_INTERNAL);
+            throw new \Exception("Unable to decode JSON response");
         }
 
         return $this->handleResponse($response);
