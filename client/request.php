@@ -6,7 +6,7 @@ const JSON_RPC_VERSION = "2.0";
 class Request {
 
     // create a new json rpc request object
-    public function __construct($method, $params = null, $notify = false)
+    public function __construct($method, array $params = null, $notify = false)
     {
         $this->method = $method;
         $this->params = $params;
