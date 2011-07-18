@@ -117,25 +117,19 @@ class Request {
     // return raw JSON response
     public function toResponseJSON()
     {
-        return json_encode($this->toArray());
-    }
-
-    // return assoc array for JSON response
-    public function toArray()
-    {
         // successful response
         $arr = array('jsonrpc' => JSON_RPC_VERSION);
         if ($this->result) {
             $arr['result'] = $this->result;
             $arr['id'] = $this->id;
-            return $arr;
+            return json_encode($arr);
         // error response
         } else {
             $arr['error'] = array('code' => $this->error_code, 'message' => $this->error_message);
             if ($this->id) {
                 $arr['id'] = $this->id;
             }
-            return $arr;
+            return json_encode($arr);
         }
     }
 
