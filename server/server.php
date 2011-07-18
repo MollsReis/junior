@@ -22,9 +22,17 @@ class Server {
     // attempt to invoke the method with params
     public function invokeMethod($method, $params)
     {
-        // ensure params is an array
-        if (!is_array($params)) {
-            $params = array($params);
+        // for named parameters, convert from object to assoc array
+        if (is_object($params)) {
+            $array = array();
+            foreach ($params as $key => $val) {
+                $array[$key] = $val;
+            }
+            $params = array($array);
+        }
+        // for no params, pass in empty array
+        if ($params === null) {
+            $params = array();
         }
         $reflection = new \ReflectionMethod($this->exposed_instance, $method);
         return $reflection->invokeArgs($this->exposed_instance, $params);
@@ -69,7 +77,9 @@ class Server {
         if ($request->checkValid()) {
             // check for method existence
             if (!$this->methodExists($request->method)) {
-                return $request->toErrorResponse(ERROR_METHOD_NOT_FOUND, "Method not found.");
+                $request->error_code = ERROR_METHOD_NOT_FOUND;
+                $request->error_message = "Method not found.";
+                return $request->toResponseJSON();
             }
 
             // try to call method with params
