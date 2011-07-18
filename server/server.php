@@ -1,6 +1,7 @@
 <?php
 namespace Junior\Server;
 
+const ERROR_INVALID_REQUEST = -32600;
 const ERROR_METHOD_NOT_FOUND = -32601;
 const ERROR_INVALID_PARAMS = -32602;
 
@@ -70,7 +71,7 @@ class Server {
             foreach ($request->requests as $req) {
                 $batch[] = $this->handleRequest($req);
             }
-            return json_encode(array_filter($batch, function($a){return $a === null;}));
+            return '[' . implode(',',array_filter($batch, function($a){return $a !== null;})) . ']';
         }
 
         // check validity of request
@@ -92,8 +93,8 @@ class Server {
                 }
             // handle exceptions
             } catch (\Exception $e) {
-                $request->error_code = $e->getCode();
-                $request->error_message = $e->getMessage();
+                $request->error_code = ERROR_INVALID_REQUEST;
+                $request->error_message = "Invalid request.";
             }
         }
 

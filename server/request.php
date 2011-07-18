@@ -11,19 +11,23 @@ class Request {
     // create new server request object from raw json
     public function __construct($json)
     {
+        $this->batch = false;
         $this->raw = $json;
 
         // handle empty request
         if ($this->raw === "") {
+            $this->json_rpc = $obj->jsonrpc;
             $this->error_code = ERROR_INVALID_REQUEST;
             $this->error_message = "Invalid request.";
             return;
         }
 
+        // parse json into object
         $obj = json_decode($json);
 
         // handle json parse error
         if ($obj === null) {
+            $this->json_rpc = $obj->jsonrpc;
             $this->error_code = ERROR_PARSE_ERROR;
             $this->error_message = "Parse error.";
             return;
@@ -34,21 +38,27 @@ class Request {
 
             // empty batch
             if (count($obj) == 0) {
+                $this->json_rpc = $obj->jsonrpc;
                 $this->error_code = ERROR_INVALID_REQUEST;
                 $this->error_message = "Invalid request.";
                 return;
             }
 
-            // good batch
+            // non-empty batch
             $this->batch = true;
             $this->requests = array();
             foreach ($obj as $req) {
-                $this->requests[] = new Request(json_encode($req));
+                // recursion for bad requests
+                if (!is_object($req)) {
+                    $this->requests[] = new Request('');
+                // recursion for good requests
+                } else {
+                    $this->requests[] = new Request(json_encode($req));
+                }
             }
 
         // single request
         } else {
-            $this->batch = false;
             $this->json_rpc = $obj->jsonrpc;
             $this->method = $obj->method;
             $this->params = $obj->params;
@@ -59,10 +69,15 @@ class Request {
     // returns true if request is valid or returns false assigns error
     public function checkValid()
     {
-        // mismatched json-rpc version
-        if ($this->json_rpc != "2.0") {
-            $this->error_code = ERROR_MISMATCHED_VERSION;
-            $this->error_version = "Client/Server JSON-RPC version mismatch.";
+        // error code/message already set
+        if ($this->error_code && $this->error_message) {
+            return false;
+        }
+
+        // missing jsonrpc or method
+        if (!$this->json_rpc || !$this->method) {
+            $this->error_code = ERROR_INVALID_REQUEST;
+            $this->error_message = "Invalid request.";
             return false;
         }
 
@@ -70,6 +85,13 @@ class Request {
         if (!is_string($this->method)) {
             $this->error_code = ERROR_INVALID_REQUEST;
             $this->error_message = "Invalid request.";
+            return false;
+        }
+
+        // mismatched json-rpc version
+        if ($this->json_rpc != "2.0") {
+            $this->error_code = ERROR_MISMATCHED_VERSION;
+            $this->error_version = "Client/Server JSON-RPC version mismatch.";
             return false;
         }
 
