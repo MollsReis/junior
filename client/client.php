@@ -73,6 +73,7 @@ class Client {
     // send raw json to the server
     public function send($json, $notify = false)
     {
+        // physically send data to destination
         $opts = array(
             'http' => array(
                 'method'  => 'POST',
@@ -81,25 +82,30 @@ class Client {
         $context = stream_context_create($opts);
         $response = file_get_contents($this->uri, false, $context);
 
+        // handle communication error
         if ($response === false) {
             throw new \Exception("Unable to connect to {$this->uri}");
         }
 
+        // notify has no response
         if ($notify) {
             return true;
         }
 
+        // try to decode json
         $response = json_decode($response);
         if ($response === null) {
             throw new \Exception("Unable to decode JSON response");
         }
 
+        // handle response, create response object and return it
         return $this->handleResponse($response);
     }
 
     // handle the response and return a result or an error
     private function handleResponse($response)
     {
+        // recursion for batch
         if (is_array($response)) {
             $response_arr = array();
             foreach ($response as $res) {
@@ -108,10 +114,12 @@ class Client {
             return $response_arr;
         }
 
+        // return error response
         if ($response->error) {
             return new Response(null, $response->id, $response->error->code, $response->error->message);
         }
 
+        // return successful response
         return new Response($response->result, $response->id);
     }
 

@@ -8,11 +8,15 @@ class Request {
     // create a new json rpc request object
     public function __construct($method, $params = null, $notify = false)
     {
+        // ensure params are array
         if ($params !== null && !is_array($params)) {
             $params = array($params);
         }
+
         $this->method = $method;
         $this->params = $params;
+
+        // do not create id for notify
         if ($notify == false) {
             $this->id = uniqid();
         }
