@@ -15,14 +15,14 @@ class Server {
     // check for method existence
     public function methodExists($method_name)
     {
-        $reflection = new ReflectionClass($this->exposed_instace);
+        $reflection = new \ReflectionClass($this->exposed_instace);
         return $reflection->hasMethod($method_name);
     }
 
     // attempt to invoke the method with params
     public function invokeMethod($method, $params)
     {
-        $reflection = new ReflectionMethod($this->exposed_instance, $method);
+        $reflection = new \ReflectionMethod($this->exposed_instance, $method);
         return $reflection->invokeArgs($this->exposed_instance, $params);
     }
 
@@ -36,9 +36,13 @@ class Server {
         }
         $request = new Request($json);
 
+        // set content type to json
+        header('Content-type: application/json');
+
         // handle json parse error
         if ($request->error_code && $request->error_message) {
             echo $request->toResponseJSON();
+            return;
         }
 
         // respond with json
