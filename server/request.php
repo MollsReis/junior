@@ -12,6 +12,14 @@ class Request {
     public function __construct($json)
     {
         $this->raw = $json;
+
+        // handle empty request
+        if ($this->raw === "") {
+            $this->error_code = ERROR_INVALID_REQUEST;
+            $this->error_message = "Invalid request.";
+            return;
+        }
+
         $obj = json_decode($json);
 
         // handle json parse error
