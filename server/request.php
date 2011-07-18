@@ -31,11 +31,21 @@ class Request {
 
         // array of objects for batch
         if (is_array($obj)) {
+
+            // empty batch
+            if (count($obj) == 0) {
+                $this->error_code = ERROR_INVALID_REQUEST;
+                $this->error_message = "Invalid request.";
+                return;
+            }
+
+            // good batch
             $this->batch = true;
             $this->requests = array();
             foreach ($obj as $req) {
                 $this->requests[] = new Request(json_encode($req));
             }
+
         // single request
         } else {
             $this->batch = false;

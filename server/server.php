@@ -51,7 +51,7 @@ class Server {
         // set content type to json
         header('Content-type: application/json');
 
-        // handle json parse error
+        // handle json parse error and empty batch
         if ($request->error_code && $request->error_message) {
             echo $request->toResponseJSON();
             return;
