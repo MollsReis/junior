@@ -74,7 +74,7 @@ class Request {
     }
 
     // returns true if request is a notification
-    public function isNotification()
+    public function isNotify()
     {
         if ($this->id) {
             return false;
