@@ -22,6 +22,10 @@ class Server {
     // attempt to invoke the method with params
     public function invokeMethod($method, $params)
     {
+        // ensure params is an array
+        if (!is_array($params)) {
+            $params = array($params);
+        }
         $reflection = new \ReflectionMethod($this->exposed_instance, $method);
         return $reflection->invokeArgs($this->exposed_instance, $params);
     }
@@ -77,7 +81,7 @@ class Server {
                     return null;
                 }
             // handle exceptions
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $request->error_code = $e->getCode();
                 $request->error_message = $e->getMessage();
             }
