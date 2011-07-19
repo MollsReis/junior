@@ -16,8 +16,7 @@ class Server {
     // check for method existence
     public function methodExists($method_name)
     {
-        $reflection = new \ReflectionClass($this->exposed_instance);
-        return $reflection->hasMethod($method_name);
+        return method_exists($this->exposed_instance, $method_name);
     }
 
     // attempt to invoke the method with params
