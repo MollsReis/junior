@@ -5,6 +5,7 @@ const JSON_RPC_VERSION = "2.0";
 const ERROR_PARSE_ERROR = -32700;
 const ERROR_INVALID_REQUEST = -32600;
 const ERROR_MISMATCHED_VERSION = -32000;
+const ERROR_RESERVED_PREFIX = -32001;
 
 class Request {
 
@@ -88,10 +89,17 @@ class Request {
             return false;
         }
 
+        // reserved method prefix
+        if (substr($this->method,0,4) == 'rpc.') {
+            $this->error_code = ERROR_RESERVED_PREFIX;
+            $this->error_message = "Illegal method name; Method cannot start with 'rpc.'";
+            return false;
+        }
+
         // mismatched json-rpc version
         if ($this->json_rpc != "2.0") {
             $this->error_code = ERROR_MISMATCHED_VERSION;
-            $this->error_version = "Client/Server JSON-RPC version mismatch.";
+            $this->error_version = "Client/Server JSON-RPC version mismatch; Expected '2.0'";
             return false;
         }
 

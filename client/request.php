@@ -13,6 +13,10 @@ class Request {
             $params = array($params);
         }
 
+        if (substr($method,0,4) == 'rpc.') {
+            throw new \Exception("Illegal method name; Method cannot start with 'rpc.'");
+        }
+
         $this->method = $method;
         $this->params = $params;
 
