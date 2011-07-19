@@ -13,8 +13,16 @@ class Request {
             $params = array($params);
         }
 
+        // check for illegal method prefix
         if (substr($method,0,4) == 'rpc.') {
             throw new \Exception("Illegal method name; Method cannot start with 'rpc.'");
+        }
+
+        // ensure params are utf8
+        if ($params !== null) {
+            foreach ($params as &$param) {
+                $param = utf8_encode($param);
+            }
         }
 
         $this->method = $method;
