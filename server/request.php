@@ -126,9 +126,7 @@ class Request {
         // error response
         } else {
             $arr['error'] = array('code' => $this->error_code, 'message' => $this->error_message);
-            if ($this->id) {
-                $arr['id'] = $this->id;
-            }
+            $arr['id'] = $this->id;
             return json_encode($arr);
         }
     }
