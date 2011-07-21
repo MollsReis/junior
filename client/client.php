@@ -43,31 +43,39 @@ class Client {
     public function sendBatch($reqs)
     {
         $arr = array();
+        $ids = array();
         $all_notify = true;
         foreach ($reqs as $req) {
             if ($req->id) {
                 $all_notify = false;
+                $ids[] = $req->id;
             }
             $arr[] = $req->getArray();
         }
         $response = $this->send(json_encode($arr), $all_notify);
 
+        // no response if batch is all notifications
         if ($all_notify) {
             return true;
         }
 
-        $diff_function = function ($a, $b) {
-            if ($a->id === $b->id) {
-                return 1;
+        // check for missing ids and return responses in order of requests
+        $ordered_response = array();
+        foreach ($ids as $id) {
+            if (array_key_exists($id, $response)) {
+                $ordered_response[] = $response[$id];
+                unset($response[$id]);
+            } else {
+                throw new \Exception("Missing id in response");
             }
-            return 0;
-        };
-
-        if (count(array_udiff($reqs, $response, $diff_function)) > 0) {
-            throw new \Exception("Mismatched request id(s)");
         }
 
-        return $response;
+        // check for extra ids in response
+        if (count($response) > 0) {
+            throw new \Exception("Extra id(s) in response");
+        }
+
+        return $ordered_response;
     }
 
     // send raw json to the server
@@ -109,7 +117,7 @@ class Client {
         if (is_array($response)) {
             $response_arr = array();
             foreach ($response as $res) {
-                $response_arr[] = $this->handleResponse($res);
+                $response_arr[$res->id] = $this->handleResponse($res);
             }
             return $response_arr;
         }
