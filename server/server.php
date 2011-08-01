@@ -4,6 +4,7 @@ namespace Junior\Server;
 const ERROR_INVALID_REQUEST = -32600;
 const ERROR_METHOD_NOT_FOUND = -32601;
 const ERROR_INVALID_PARAMS = -32602;
+const ERROR_EXCEPTION = -32099;
 
 class Server {
 
@@ -92,8 +93,8 @@ class Server {
                 }
             // handle exceptions
             } catch (\Exception $e) {
-                $request->error_code = ERROR_INVALID_REQUEST;
-                $request->error_message = "Invalid request.";
+                $request->error_code = ERROR_EXCEPTION;
+                $request->error_message = $e->getMessage();
             }
         }
 
