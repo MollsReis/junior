@@ -45,7 +45,7 @@ class Server {
         // read input and create request object
         $json = file_get_contents('php://input');
         if ($json === false) {
-            throw new \Exception("Server unable to read request body.");
+            throw new Exception("Server unable to read request body.");
         }
         $request = new Request($json);
 

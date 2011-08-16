@@ -22,7 +22,7 @@ class Client {
         $response = $this->send($req->getJSON());
 
         if ($response->id != $req->id) {
-            throw new \Exception("Mismatched request id");
+            throw new Exception("Mismatched request id");
         }
 
         return $response;
@@ -32,7 +32,7 @@ class Client {
     public function sendNotify($req)
     {
         if ($req->id) {
-            throw new \Exception("Notify requests must not have ID set");
+            throw new Exception("Notify requests must not have ID set");
         }
 
         $this->send($req->getJSON(), true);
@@ -66,13 +66,13 @@ class Client {
                 $ordered_response[] = $response[$id];
                 unset($response[$id]);
             } else {
-                throw new \Exception("Missing id in response");
+                throw new Exception("Missing id in response");
             }
         }
 
         // check for extra ids in response
         if (count($response) > 0) {
-            throw new \Exception("Extra id(s) in response");
+            throw new Exception("Extra id(s) in response");
         }
 
         return $ordered_response;
@@ -92,7 +92,7 @@ class Client {
 
         // handle communication error
         if ($response === false) {
-            throw new \Exception("Unable to connect to {$this->uri}");
+            throw new Exception("Unable to connect to {$this->uri}");
         }
 
         // notify has no response
@@ -103,7 +103,7 @@ class Client {
         // try to decode json
         $response = json_decode($response);
         if ($response === null) {
-            throw new \Exception("Unable to decode JSON response");
+            throw new Exception("Unable to decode JSON response");
         }
 
         // handle response, create response object and return it

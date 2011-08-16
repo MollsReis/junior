@@ -15,7 +15,7 @@ class Request {
 
         // check for illegal method prefix
         if (substr($method,0,4) == 'rpc.') {
-            throw new \Exception("Illegal method name; Method cannot start with 'rpc.'");
+            throw new Exception("Illegal method name; Method cannot start with 'rpc.'");
         }
 
         // ensure params are utf8
