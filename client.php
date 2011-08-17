@@ -1,6 +1,6 @@
 <?php
-require_once("client/client.php");
-require_once("client/request.php");
-require_once("client/response.php");
-require_once("client/exception.php");
+require_once('client'.DIRECTORY_SEPARATOR.'client.php');
+require_once('client'.DIRECTORY_SEPARATOR.'request.php');
+require_once('client'.DIRECTORY_SEPARATOR.'response.php');
+require_once('client'.DIRECTORY_SEPARATOR.'exception.php');
 ?>
