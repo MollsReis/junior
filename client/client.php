@@ -81,16 +81,22 @@ class Client {
     // send raw json to the server
     public function send($json, $notify = false)
     {
-        // physically send data to destination
+        // prepare data to be sent
         $opts = array(
             'http' => array(
                 'method'  => 'POST',
                 'header'  => 'Content-Type: application/json\r\n',
                 'content' => $json));
         $context = stream_context_create($opts);
-        $response = file_get_contents($this->uri, false, $context);
 
-        // handle communication error
+        // try to physically send data to destination 
+        try {
+            $response = file_get_contents($this->uri, false, $context);
+        } catch (\Exception $e) {
+            throw new Exception("Unable to connect to {$this->uri}");
+        }
+
+        // handle communication errors
         if ($response === false) {
             throw new Exception("Unable to connect to {$this->uri}");
         }
@@ -111,7 +117,7 @@ class Client {
     }
 
     // handle the response and return a result or an error
-    private function handleResponse($response)
+    public function handleResponse($response)
     {
         // recursion for batch
         if (is_array($response)) {
