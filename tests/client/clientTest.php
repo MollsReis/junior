@@ -30,7 +30,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
     public function getMockClient($methods = array(), $returns_once = null)
     {
-        $client = $this->getMock('\Junior\Client\Client',
+        $client = $this->getMock('Junior\Client\Client',
                                  $methods,
                                  array(),
                                  '',
@@ -181,7 +181,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
     public function testSendGood()
     {
         $this->fake_file->setContent('{"good":"json"}');
-        $client = $this->getMock('\Junior\Client\Client',
+        $client = $this->getMock('Junior\Client\Client',
                                  array('handleResponse'),
                                  array($this->fake_uri));
         $client->expects($this->once())
@@ -194,7 +194,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
     public function testSendGoodNotify()
     {
         $this->fake_file->setContent('foo');
-        $client = $this->getMock('\Junior\Client\Client',
+        $client = $this->getMock('Junior\Client\Client',
                                  array('handleResponse'),
                                  array($this->fake_uri));
         $client->expects($this->never())->method('handleResponse');
@@ -204,7 +204,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
     public function testSendBadConnect()
     {
-        $client = $this->getMock('\Junior\Client\Client',
+        $client = $this->getMock('Junior\Client\Client',
                                  array('handleResponse'),
                                  array('not.there'));
         $client->expects($this->never())->method('handleResponse');
@@ -217,7 +217,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
     public function testSendBadResponseJSON()
     {
         $this->fake_file->setContent('{bad:json,}');
-        $client = $this->getMock('\Junior\Client\Client',
+        $client = $this->getMock('Junior\Client\Client',
                                  array('handleResponse'),
                                  array($this->fake_uri));
         $client->expects($this->never())->method('handleResponse');
