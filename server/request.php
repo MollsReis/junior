@@ -6,6 +6,7 @@ const ERROR_PARSE_ERROR = -32700;
 const ERROR_INVALID_REQUEST = -32600;
 const ERROR_MISMATCHED_VERSION = -32000;
 const ERROR_RESERVED_PREFIX = -32001;
+const VALID_FUNCTION_NAME = '/^[a-zA-Z_][a-zA-Z0-9_]*$/';
 
 class Request {
 
@@ -17,7 +18,7 @@ class Request {
 
         // handle empty request
         if ($this->raw === "") {
-            $this->json_rpc = $obj->jsonrpc;
+            $this->json_rpc = JSON_RPC_VERSION;
             $this->error_code = ERROR_INVALID_REQUEST;
             $this->error_message = "Invalid request.";
             return;
@@ -28,7 +29,7 @@ class Request {
 
         // handle json parse error
         if ($obj === null) {
-            $this->json_rpc = $obj->jsonrpc;
+            $this->json_rpc = JSON_RPC_VERSION;
             $this->error_code = ERROR_PARSE_ERROR;
             $this->error_message = "Parse error.";
             return;
@@ -39,7 +40,7 @@ class Request {
 
             // empty batch
             if (count($obj) == 0) {
-                $this->json_rpc = $obj->jsonrpc;
+                $this->json_rpc = JSON_RPC_VERSION;
                 $this->error_code = ERROR_INVALID_REQUEST;
                 $this->error_message = "Invalid request.";
                 return;
@@ -83,7 +84,7 @@ class Request {
         }
 
         // illegal method name
-        if (!is_string($this->method)) {
+        if (!preg_match(VALID_FUNCTION_NAME, $this->method)) {
             $this->error_code = ERROR_INVALID_REQUEST;
             $this->error_message = "Invalid request.";
             return false;
