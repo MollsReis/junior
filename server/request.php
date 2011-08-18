@@ -100,7 +100,7 @@ class Request {
         // mismatched json-rpc version
         if ($this->json_rpc != "2.0") {
             $this->error_code = ERROR_MISMATCHED_VERSION;
-            $this->error_version = "Client/Server JSON-RPC version mismatch; Expected '2.0'";
+            $this->error_message = "Client/Server JSON-RPC version mismatch; Expected '2.0'";
             return false;
         }
 
