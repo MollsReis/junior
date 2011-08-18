@@ -22,7 +22,7 @@ class Client {
         $response = $this->send($req->getJSON());
 
         if ($response->id != $req->id) {
-            throw new \Exception("Mismatched request id");
+            throw new Exception("Mismatched request id");
         }
 
         return $response;
@@ -32,7 +32,7 @@ class Client {
     public function sendNotify($req)
     {
         if ($req->id) {
-            throw new \Exception("Notify requests must not have ID set");
+            throw new Exception("Notify requests must not have ID set");
         }
 
         $this->send($req->getJSON(), true);
@@ -66,13 +66,13 @@ class Client {
                 $ordered_response[] = $response[$id];
                 unset($response[$id]);
             } else {
-                throw new \Exception("Missing id in response");
+                throw new Exception("Missing id in response");
             }
         }
 
         // check for extra ids in response
         if (count($response) > 0) {
-            throw new \Exception("Extra id(s) in response");
+            throw new Exception("Extra id(s) in response");
         }
 
         return $ordered_response;
@@ -81,18 +81,26 @@ class Client {
     // send raw json to the server
     public function send($json, $notify = false)
     {
-        // physically send data to destination
+        // prepare data to be sent
         $opts = array(
             'http' => array(
                 'method'  => 'POST',
                 'header'  => 'Content-Type: application/json\r\n',
                 'content' => $json));
         $context = stream_context_create($opts);
-        $response = file_get_contents($this->uri, false, $context);
 
-        // handle communication error
+        // try to physically send data to destination 
+        try {
+            $response = file_get_contents($this->uri, false, $context);
+        } catch (\Exception $e) {
+            $message = "Unable to connect to {$this->uri}";
+            $message .= PHP_EOL . $e->getMessage();
+            throw new Exception($message);
+        }
+
+        // handle communication errors
         if ($response === false) {
-            throw new \Exception("Unable to connect to {$this->uri}");
+            throw new Exception("Unable to connect to {$this->uri}");
         }
 
         // notify has no response
@@ -103,7 +111,7 @@ class Client {
         // try to decode json
         $response = json_decode($response);
         if ($response === null) {
-            throw new \Exception("Unable to decode JSON response");
+            throw new Exception("Unable to decode JSON response");
         }
 
         // handle response, create response object and return it
@@ -111,7 +119,7 @@ class Client {
     }
 
     // handle the response and return a result or an error
-    private function handleResponse($response)
+    public function handleResponse($response)
     {
         // recursion for batch
         if (is_array($response)) {

@@ -32,3 +32,6 @@ Try out [Jimson](https://github.com/chriskite/jimson), written by Chris Kite for
 
 ## What do I need to run Junior?
 * PHP >= 5.3
+
+## Does it have tests?
+It sure does! As of v0.0.4 Junior will have a full test suite that uses PHPUnit and vfsStream.
