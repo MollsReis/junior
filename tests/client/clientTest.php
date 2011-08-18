@@ -1,5 +1,5 @@
 <?php
-class ClientTest extends \PHPUnit_Framework_TestCase {
+class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function setUp()
     {
@@ -13,7 +13,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
     public function getEmptyRequest()
     {
-        $request = $this->getMock('\Object', array('getJSON','getArray'));
+        $request = $this->getMock('Object', array('getJSON','getArray'));
         $request->expects($this->any())
                 ->method('getJSON')
                 ->will($this->returnValue(null));
@@ -25,7 +25,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
     public function getEmptyResponse()
     {
-        return $this->getMock('\Object');
+        return $this->getMock('Object');
     }
 
     public function getMockClient($methods = array(), $returns_once = null)

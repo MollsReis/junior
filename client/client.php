@@ -93,7 +93,9 @@ class Client {
         try {
             $response = file_get_contents($this->uri, false, $context);
         } catch (\Exception $e) {
-            throw new Exception("Unable to connect to {$this->uri}");
+            $message = "Unable to connect to {$this->uri}";
+            $message .= PHP_EOL . $e->getMessage();
+            throw new Exception($message);
         }
 
         // handle communication errors

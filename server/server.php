@@ -12,6 +12,7 @@ class Server {
     public function __construct($exposed_instance)
     {
         $this->exposed_instance = $exposed_instance;
+        $this->input = 'php://input';
     }
 
     // check for method existence
@@ -42,15 +43,27 @@ class Server {
     // process json-rpc request
     public function process()
     {
-        // read input and create request object
-        $json = file_get_contents('php://input');
+        // try to read input
+        try {
+            $json = file_get_contents($this->input);
+        } catch (\Exception $e) {
+            $message = "Server unable to read request body.";
+            $message .= PHP_EOL . $e->getMessage();
+            throw new Exception($message);
+        }
+
+        // handle communication errors
         if ($json === false) {
             throw new Exception("Server unable to read request body.");
         }
-        $request = new Request($json);
 
-        // set content type to json
-        header('Content-type: application/json');
+        // create request object
+        $request = $this->makeRequest($json);
+
+        // set content type to json if not testing
+        if (ENV != 'TEST') {
+            header('Content-type: application/json');
+        }
 
         // handle json parse error and empty batch
         if ($request->error_code && $request->error_message) {
@@ -60,6 +73,12 @@ class Server {
 
         // respond with json
         echo $this->handleRequest($request);
+    }
+
+    // create new request (used for test mocking purposes)
+    public function makeRequest($json)
+    {
+        return new Request($json);
     }
 
     // handle request object / return response json
