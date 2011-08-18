@@ -83,17 +83,17 @@ class Request {
             return false;
         }
 
-        // illegal method name
-        if (!preg_match(VALID_FUNCTION_NAME, $this->method)) {
-            $this->error_code = ERROR_INVALID_REQUEST;
-            $this->error_message = "Invalid request.";
-            return false;
-        }
-
         // reserved method prefix
         if (substr($this->method,0,4) == 'rpc.') {
             $this->error_code = ERROR_RESERVED_PREFIX;
             $this->error_message = "Illegal method name; Method cannot start with 'rpc.'";
+            return false;
+        }
+
+        // illegal method name
+        if (!preg_match(VALID_FUNCTION_NAME, $this->method)) {
+            $this->error_code = ERROR_INVALID_REQUEST;
+            $this->error_message = "Invalid request.";
             return false;
         }
 
