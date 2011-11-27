@@ -21,7 +21,9 @@ class Request {
         // ensure params are utf8
         if ($params !== null) {
             foreach ($params as &$param) {
-                $param = utf8_encode($param);
+                if(is_string($param)){
+                    $param = utf8_encode($param);
+                }
             }
         }
 
