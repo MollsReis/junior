@@ -131,7 +131,7 @@ class Client {
         }
 
         // return error response
-        if ($response->error) {
+        if (property_exists($response, 'error')) {
             return new Response(null, $response->id, $response->error->code, $response->error->message);
         }
 
