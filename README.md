@@ -1,7 +1,7 @@
 # Junior - A JSON-RPC Client/Server in PHP
 
 ## What is JSON-RPC?
-From the [JSON-RPC Spec @ Google groups](http://groups.google.com/group/json-rpc/web/json-rpc-2-0):
+From the [JSON-RPC Spec](http://www.jsonrpc.org/spec.html):
 
 JSON-RPC is a stateless, light-weight remote procedure call (RPC) protocol. Primarily this specification defines several data structures and the rules around their processing. 
 It is transport agnostic in that the concepts can be used within the same process, over sockets, over http, or in many various message passing environments. It uses JSON (RFC 4627) 
