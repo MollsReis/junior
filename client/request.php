@@ -43,7 +43,7 @@ class Request {
         if ($this->params) {
             $arr['params'] = $this->params;
         }
-        if ($this->id) {
+        if (property_exists($this, 'id')) {
             $arr['id'] = $this->id;
         }
         return $arr;
