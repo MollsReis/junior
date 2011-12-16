@@ -15,10 +15,11 @@ class Response {
     // return result or error if applicable
     public function __toString()
     {
-        if ($this->result) {
-            return $this->result;
+        if ($this->error_message) {
+            return "{$this->error_code}: {$this->error_message}";
         }
-        return "{$this->error_code}: {$this->error_message}";
+    
+        return $this->result;
     }
 }
 

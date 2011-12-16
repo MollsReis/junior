@@ -31,7 +31,7 @@ class Client {
     // send a single notify request object
     public function sendNotify($req)
     {
-        if ($req->id) {
+        if (property_exists($req, 'id')) {
             throw new Exception("Notify requests must not have ID set");
         }
 
