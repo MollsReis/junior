@@ -1,5 +1,5 @@
 <?php
-namespace Junior\Client;
+namespace Junior\Clientside;
 
 class Response {
 

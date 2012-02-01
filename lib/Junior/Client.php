@@ -1,5 +1,12 @@
 <?php
-namespace Junior\Client;
+namespace Junior;
+use Junior\Clientside\Request,
+    Junior\Clientside\Response,
+    Junior\Clientside\Exception;
+
+foreach(array('Request', 'Response', 'Exception') as $file) {
+    require_once('Junior'. DIRECTORY_SEPARATOR . 'Clientside' . DIRECTORY_SEPARATOR . $file . '.php');
+}
 
 class Client {
 
@@ -25,7 +32,11 @@ class Client {
             throw new Exception("Mismatched request id");
         }
 
-        return $response;
+        if($response->error_code) {
+            throw new Exception("{$response->error_code} {$response->error_message}");
+        }
+
+        return $response->result;
     }
 
     // send a single notify request object
@@ -141,4 +152,5 @@ class Client {
 
 }
 
+?>
 ?>
