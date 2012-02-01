@@ -1,5 +1,11 @@
 <?php
-namespace Junior\Client;
+namespace Junior;
+use Junior\Clientside\Request,
+    Junior\Clientside\Response;
+
+foreach(array('Request', 'Response') as $file) {
+    require_once('Junior'. DIRECTORY_SEPARATOR . 'Clientside' . DIRECTORY_SEPARATOR . $file . '.php');
+}
 
 class Client {
 
@@ -141,4 +147,5 @@ class Client {
 
 }
 
+?>
 ?>
