@@ -38,7 +38,7 @@ class MyClass {
 }
 
 // create a new instance of Junior\Server\Server with an instance of your class
-$server = new Junior\Server\Server(new MyClass());
+$server = new Junior\Server(new MyClass());
 
 // call process()
 $server->process();
