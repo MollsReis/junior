@@ -1,6 +1,6 @@
 <?php
-// require the server.php file in the base directory
-require_once("/path/to/junior/server.php");
+// require Junior
+require_once("../lib/Junior.php");
 
 // write or include your own class to expose to communication
 class MyClass {
@@ -37,7 +37,7 @@ class MyClass {
 
 }
 
-// create a new instance of Junior\Server\Server with an instance of your class
+// create a new instance of Junior\Server with an instance of your class
 $server = new Junior\Server(new MyClass());
 
 // call process()

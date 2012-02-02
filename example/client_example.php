@@ -1,8 +1,8 @@
 <?php
-// require the client.php file in the base directory
-require_once("Junior/lib/Junior.php");
+// require Junior
+require_once("../lib/Junior.php");
 
-// create a new instance of Junior\Client\Client with the URI of te 
+// create a new instance of JuniorClient with the URI of te
 $client = new Junior\Client("http://www.example.com");
 
 // you can use the magic method shortcut to make requests...
