@@ -26,5 +26,3 @@ $requests[] = new Junior\Clientside\Request('notify', 10, true);
 $requests[] = new Junior\Clientside\Request('isEven', 11);
 $response = $client->sendBatch($requests);
 print_r($response->results); // array( "Philip J. Fry", false)
-
-?>

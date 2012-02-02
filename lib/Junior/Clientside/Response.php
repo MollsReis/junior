@@ -22,5 +22,3 @@ class Response {
         return $this->result;
     }
 }
-
-?>

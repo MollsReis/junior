@@ -42,4 +42,3 @@ $server = new Junior\Server(new MyClass());
 
 // call process()
 $server->process();
-?>
