@@ -1,5 +1,5 @@
 <?php
-namespace Junior\Server;
+namespace Junior\Serverside;
 
 const JSON_RPC_VERSION = "2.0";
 const ERROR_PARSE_ERROR = -32700;

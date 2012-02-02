@@ -1,5 +1,10 @@
 <?php
-namespace Junior\Server;
+namespace Junior;
+use Junior\Serverside\Request;
+
+foreach(array('Request', 'Exception') as $file) {
+    require_once('Junior'. DIRECTORY_SEPARATOR . 'Clientside' . DIRECTORY_SEPARATOR . $file . '.php');
+}
 
 const ERROR_INVALID_REQUEST = -32600;
 const ERROR_METHOD_NOT_FOUND = -32601;
