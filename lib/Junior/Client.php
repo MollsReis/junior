@@ -120,13 +120,13 @@ class Client {
         }
 
         // try to decode json
-        $response = json_decode($response);
-        if ($response === null) {
-            throw new Exception("Unable to decode JSON response");
+        $json_response = json_decode($response);
+        if ($json_response === null) {
+            throw new Exception("Unable to decode JSON response from: {$response}");
         }
 
         // handle response, create response object and return it
-        return $this->handleResponse($response);
+        return $this->handleResponse($json_response);
     }
 
     // handle the response and return a result or an error
@@ -152,5 +152,4 @@ class Client {
 
 }
 
-?>
 ?>
