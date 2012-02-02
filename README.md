@@ -22,7 +22,7 @@ you wish to communicate with. All communication through this instance. See the e
 Include the server.php in the base directory of Junior, which will include all necessary files. Create a new instance of Junior\Server() and pass it an instance 
 of the class you wish to expose for communication. Then call the process() function on your server instance and you are ready to go! See the example folder for more details. 
 
-## What if I don't like PHP?
+## What if I don't like PHP (or I need to talk to Ruby)?
 Try out [Jimson](https://github.com/chriskite/jimson), written by Chris Kite for Ruby. It was made at the same time as Junior, and supports all the same features.
 
 ## What do I need to run Junior?
