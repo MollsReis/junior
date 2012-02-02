@@ -15,11 +15,11 @@ Junior is JSON-RPC 2.0 viable and follows the JSON-RPC spec as of July 2011. It 
 Junior was previously hosted on Pearhub but I've encountered some pretty serious issues trying to update the version there. If anyone can suggest a better place to host I'd be happy to put the latest version of Junior back on Pear.
 
 ## How do I use the client?
-Include client.php in the base directory of Junior, which will include all necessary files. Create a new instance of Junior\Client\Client() and pass it the URI of the server 
+Include client.php in the base directory of Junior, which will include all necessary files. Create a new instance of Junior\Client() and pass it the URI of the server 
 you wish to communicate with. All communication through this instance. See the example folder for more details.
 
 ## How do I use the server?
-Include the server.php in the base directory of Junior, which will include all necessary files. Create a new instance of Junior\Server\Server() and pass it an instance 
+Include the server.php in the base directory of Junior, which will include all necessary files. Create a new instance of Junior\Server() and pass it an instance 
 of the class you wish to expose for communication. Then call the process() function on your server instance and you are ready to go! See the example folder for more details. 
 
 ## What if I don't like PHP?
