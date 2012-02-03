@@ -10,5 +10,8 @@
             <file>Junior/Server/RequestTest.php</file>
             <file>Junior/Server/ServerTest.php</file>
         </testsuite>
+        <testsuite name="Integration Tests">
+            <file>Junior/IntegrationTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>
