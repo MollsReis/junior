@@ -29,12 +29,12 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
         $request = new Junior\Serverside\Request('');
         $this->assertEquals(constant('Junior\Serverside\JSON_RPC_VERSION'), $request->json_rpc);
         $this->assertEquals(constant('Junior\Serverside\ERROR_INVALID_REQUEST'), $request->error_code);
-        $this->assertEquals("Invalid request.", $request->error_message);
+        $this->assertEquals("Invalid Request.", $request->error_message);
 
         $request = new Junior\Serverside\Request('[]');
         $this->assertEquals(constant('Junior\Serverside\JSON_RPC_VERSION'), $request->json_rpc);
         $this->assertEquals(constant('Junior\Serverside\ERROR_INVALID_REQUEST'), $request->error_code);
-        $this->assertEquals("Invalid request.", $request->error_message);
+        $this->assertEquals("Invalid Request.", $request->error_message);
     }
 
     public function testNewRequestParseError()
@@ -85,7 +85,7 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
     public function testCheckValidInvalidRequest()
     {
         $error_code = constant('Junior\Serverside\ERROR_INVALID_REQUEST');
-        $error_message = 'Invalid request.';
+        $error_message = 'Invalid Request.';
 
         $request = $this->getEmptyRequest();
         $request->json_rpc = null;
