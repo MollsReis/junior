@@ -95,7 +95,12 @@ class Server {
             foreach ($request->requests as $req) {
                 $batch[] = $this->handleRequest($req);
             }
-            return '[' . implode(',',array_filter($batch, function($a){return $a !== null;})) . ']';
+            $responses = implode(',',array_filter($batch, function($a){return $a !== null;}));
+            if ($responses != null) {
+                return "[{$responses}]";
+            } else {
+                return null;
+            }
         }
 
         // check validity of request
