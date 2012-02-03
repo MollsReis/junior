@@ -120,13 +120,20 @@ class Client {
         }
 
         // try to decode json
-        $json_response = json_decode($response);
-        if ($json_response === null) {
-            throw new Clientside\Exception("Unable to decode JSON response from: {$response}");
-        }
+        $json_response = $this->decodeJSON($response);
 
         // handle response, create response object and return it
         return $this->handleResponse($json_response);
+    }
+
+    // decode json throwing exception if unable
+    function decodeJSON($json)
+    {
+        $json_response = json_decode($json);
+        if ($json_response === null) {
+            throw new Clientside\Exception("Unable to decode JSON response from: {$json}");
+        }
+        return $json_response;
     }
 
     // handle the response and return a result or an error
