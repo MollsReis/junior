@@ -29,4 +29,4 @@ Try out [Jimson](https://github.com/chriskite/jimson), written by Chris Kite for
 * PHP >= 5.3
 
 ## Does it have tests?
-Yes and as of February 2012 they are working! The tests were written using [Spray](https://github.com/jimbojsb/spray) to stub stream wrappers and PHPUnit version 3.6.10.
+Yes and as of February 2012 Junior has a robust, working test suite! The tests were written using [Spray](https://github.com/jimbojsb/spray) to stub stream wrappers and PHPUnit version 3.6.10.
