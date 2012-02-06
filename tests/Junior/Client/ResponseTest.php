@@ -3,7 +3,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
 
     public function setUp()
     {
-        $this->result = 'foo';
+        $this->jsonrpc_result = 'foo';
         $this->id = 1;
         $this->error_code = 10;
         $this->error_message = 'ERROR!';
@@ -11,12 +11,12 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
 
     public function testNewResponse()
     {
-        $response = new Junior\Client\Response($this->result,
+        $response = new Junior\Clientside\Response($this->jsonrpc_result,
                                                $this->id,
                                                $this->error_code,
                                                $this->error_message);
 
-        $this->assertEquals($this->result, $response->result);
+        $this->assertEquals($this->jsonrpc_result, $response->result);
         $this->assertEquals($this->id, $response->id);
         $this->assertEquals($this->error_code, $response->error_code);
         $this->assertEquals($this->error_message, $response->error_message);
@@ -24,15 +24,15 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
 
     public function testToStringResult()
     {
-        $response = new Junior\Client\Response($this->result,
+        $response = new Junior\Clientside\Response($this->jsonrpc_result,
                                                $this->id);
         
-        $this->assertEquals($this->result, $response->__toString());
+        $this->assertEquals($this->jsonrpc_result, $response->__toString());
     }
 
     public function testToStringError()
     {
-        $response = new Junior\Client\Response(null,
+        $response = new Junior\Clientside\Response(null,
                                                null,
                                                $this->error_code,
                                                $this->error_message);

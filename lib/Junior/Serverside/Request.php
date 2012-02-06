@@ -20,7 +20,7 @@ class Request {
         if ($this->raw === "") {
             $this->json_rpc = JSON_RPC_VERSION;
             $this->error_code = ERROR_INVALID_REQUEST;
-            $this->error_message = "Invalid request.";
+            $this->error_message = "Invalid Request.";
             return;
         }
 
@@ -42,7 +42,7 @@ class Request {
             if (count($obj) == 0) {
                 $this->json_rpc = JSON_RPC_VERSION;
                 $this->error_code = ERROR_INVALID_REQUEST;
-                $this->error_message = "Invalid request.";
+                $this->error_message = "Invalid Request.";
                 return;
             }
 
@@ -79,7 +79,7 @@ class Request {
         // missing jsonrpc or method
         if (!$this->json_rpc || !$this->method) {
             $this->error_code = ERROR_INVALID_REQUEST;
-            $this->error_message = "Invalid request.";
+            $this->error_message = "Invalid Request.";
             return false;
         }
 
@@ -93,7 +93,7 @@ class Request {
         // illegal method name
         if (!preg_match(VALID_FUNCTION_NAME, $this->method)) {
             $this->error_code = ERROR_INVALID_REQUEST;
-            $this->error_message = "Invalid request.";
+            $this->error_message = "Invalid Request.";
             return false;
         }
 

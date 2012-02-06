@@ -29,11 +29,11 @@ class Client {
         $response = $this->send($req->getJSON());
 
         if ($response->id != $req->id) {
-            throw new Exception("Mismatched request id");
+            throw new Clientside\Exception("Mismatched request id");
         }
 
         if($response->error_code) {
-            throw new Exception("{$response->error_code} {$response->error_message}");
+            throw new Clientside\Exception("{$response->error_code} {$response->error_message}");
         }
 
         return $response->result;
@@ -42,8 +42,8 @@ class Client {
     // send a single notify request object
     public function sendNotify($req)
     {
-        if (property_exists($req, 'id')) {
-            throw new Exception("Notify requests must not have ID set");
+        if (property_exists($req, 'id') && $req->id != null) {
+            throw new Clientside\Exception("Notify requests must not have ID set");
         }
 
         $this->send($req->getJSON(), true);
@@ -77,13 +77,13 @@ class Client {
                 $ordered_response[] = $response[$id];
                 unset($response[$id]);
             } else {
-                throw new Exception("Missing id in response");
+                throw new Clientside\Exception("Missing id in response");
             }
         }
 
         // check for extra ids in response
         if (count($response) > 0) {
-            throw new Exception("Extra id(s) in response");
+            throw new Clientside\Exception("Extra id(s) in response");
         }
 
         return $ordered_response;
@@ -106,12 +106,12 @@ class Client {
         } catch (\Exception $e) {
             $message = "Unable to connect to {$this->uri}";
             $message .= PHP_EOL . $e->getMessage();
-            throw new Exception($message);
+            throw new Clientside\Exception($message);
         }
 
         // handle communication errors
         if ($response === false) {
-            throw new Exception("Unable to connect to {$this->uri}");
+            throw new Clientside\Exception("Unable to connect to {$this->uri}");
         }
 
         // notify has no response
@@ -120,13 +120,20 @@ class Client {
         }
 
         // try to decode json
-        $json_response = json_decode($response);
-        if ($json_response === null) {
-            throw new Exception("Unable to decode JSON response from: {$response}");
-        }
+        $json_response = $this->decodeJSON($response);
 
         // handle response, create response object and return it
         return $this->handleResponse($json_response);
+    }
+
+    // decode json throwing exception if unable
+    function decodeJSON($json)
+    {
+        $json_response = json_decode($json);
+        if ($json_response === null) {
+            throw new Clientside\Exception("Unable to decode JSON response from: {$json}");
+        }
+        return $json_response;
     }
 
     // handle the response and return a result or an error

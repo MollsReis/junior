@@ -2,10 +2,16 @@
 <phpunit bootstrap="bootstrap.php" colors="true" verbose="true">
     <testsuites>
         <testsuite name="Client Tests">
-            <directory>client</directory>
+            <file>Junior/Client/ClientTest.php</file>
+            <file>Junior/Client/RequestTest.php</file>
+            <file>Junior/Client/ResponseTest.php</file>
         </testsuite>
         <testsuite name="Server Tests">
-            <directory>server</directory>
+            <file>Junior/Server/RequestTest.php</file>
+            <file>Junior/Server/ServerTest.php</file>
+        </testsuite>
+        <testsuite name="Integration Tests">
+            <file>Junior/IntegrationTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

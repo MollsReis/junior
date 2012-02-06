@@ -54,12 +54,12 @@ class Server {
         } catch (\Exception $e) {
             $message = "Server unable to read request body.";
             $message .= PHP_EOL . $e->getMessage();
-            throw new Exception($message);
+            throw new Serverside\Exception($message);
         }
 
         // handle communication errors
         if ($json === false) {
-            throw new Exception("Server unable to read request body.");
+            throw new Serverside\Exception("Server unable to read request body.");
         }
 
         // create request object
@@ -95,7 +95,12 @@ class Server {
             foreach ($request->requests as $req) {
                 $batch[] = $this->handleRequest($req);
             }
-            return '[' . implode(',',array_filter($batch, function($a){return $a !== null;})) . ']';
+            $responses = implode(',',array_filter($batch, function($a){return $a !== null;}));
+            if ($responses != null) {
+                return "[{$responses}]";
+            } else {
+                return null;
+            }
         }
 
         // check validity of request

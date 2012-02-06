@@ -3,12 +3,17 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function setUp()
     {
-        $this->fake_uri = vfsStream::url('test');
-        $this->fake_file = vfsStream::newFile('test');
-        $root = new vfsStreamDirectory('root');
-        $root->addChild($this->fake_file);
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot($root);
+        $this->fake_uri = 'foo://bar';
+    }
+
+    public function tearDown()
+    {
+        Spray::reset();
+    }
+
+    private function stubResponse($body)
+    {
+        Spray::stub($this->fake_uri, array('raw' => $body));
     }
 
     public function getEmptyRequest()
@@ -30,7 +35,7 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function getMockClient($methods = array(), $returns_once = null)
     {
-        $client = $this->getMock('Junior\Client\Client',
+        $client = $this->getMock('Junior\Client',
                                  $methods,
                                  array(),
                                  '',
@@ -52,10 +57,11 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
         $response = $this->getEmptyResponse();
         $response->id = 10;
+        $response->result = 'foo';
 
         $client = $this->getMockClient(array('send'), $response);
 
-        $this->assertEquals($response, $client->sendRequest($request));
+        $this->assertEquals('foo', $client->sendRequest($request));
     }
 
     public function testSendRequestBadId()
@@ -68,7 +74,7 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
         $client = $this->getMockClient(array('send'), $response);
 
-        $this->setExpectedException('Junior\Client\Exception');
+        $this->setExpectedException('Junior\Clientside\Exception');
 
         $client->sendRequest($request);
     }
@@ -91,7 +97,7 @@ class ClientTest extends PHPUnit_Framework_TestCase {
         $client = $this->getMockClient(array('send'));
         $client->expects($this->never())->method('send');
 
-        $this->setExpectedException('Junior\Client\Exception');
+        $this->setExpectedException('Junior\Clientside\Exception');
 
         $client->sendNotify($request);
     }
@@ -135,7 +141,7 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
         $client = $this->getMockClient(array('send'), $responses);
 
-        $this->setExpectedException('Junior\Client\Exception');
+        $this->setExpectedException('Junior\Clientside\Exception');
 
         $client->sendBatch($requests);
     }
@@ -158,7 +164,7 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
         $client = $this->getMockClient(array('send'), $responses);
 
-        $this->setExpectedException('Junior\Client\Exception');
+        $this->setExpectedException('Junior\Clientside\Exception');
 
         $client->sendBatch($requests);
     }
@@ -180,8 +186,8 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testSendGood()
     {
-        $this->fake_file->setContent('{"good":"json"}');
-        $client = $this->getMock('Junior\Client\Client',
+        $this->stubResponse('{"good":"json"}');
+        $client = $this->getMock('Junior\Client',
                                  array('handleResponse'),
                                  array($this->fake_uri));
         $client->expects($this->once())
@@ -193,8 +199,8 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testSendGoodNotify()
     {
-        $this->fake_file->setContent('foo');
-        $client = $this->getMock('Junior\Client\Client',
+        $this->stubResponse('foo');
+        $client = $this->getMock('Junior\Client',
                                  array('handleResponse'),
                                  array($this->fake_uri));
         $client->expects($this->never())->method('handleResponse');
@@ -204,25 +210,25 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testSendBadConnect()
     {
-        $client = $this->getMock('Junior\Client\Client',
+        $client = $this->getMock('Junior\Client',
                                  array('handleResponse'),
                                  array('not.there'));
         $client->expects($this->never())->method('handleResponse');
 
-        $this->setExpectedException('Junior\Client\Exception');
+        $this->setExpectedException('Junior\Clientside\Exception');
 
         $client->send('foo');
     }
 
     public function testSendBadResponseJSON()
     {
-        $this->fake_file->setContent('{bad:json,}');
-        $client = $this->getMock('Junior\Client\Client',
+        $this->stubResponse('{bad:json,}');
+        $client = $this->getMock('Junior\Client',
                                  array('handleResponse'),
                                  array($this->fake_uri));
         $client->expects($this->never())->method('handleResponse');
 
-        $this->setExpectedException('Junior\Client\Exception');
+        $this->setExpectedException('Junior\Clientside\Exception');
 
         $client->send('foo');
     }

@@ -18,21 +18,22 @@ class TestClass {
 
 }
 
-class ServerTest extends PHPUnit_Extensions_OutputTestCase {
+class ServerTest extends PHPUnit_Framework_TestCase {
 
     public function setUp()
     {
-        $this->input_url = vfsStream::url('input');
-        $this->input_file = vfsStream::newFile('input')->setContent('foo');
-        $root = new vfsStreamDirectory('root');
-        $root->addChild($this->input_file);
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot($root);
+        $this->input_url = 'junior://input';
+        Spray::stub($this->input_url, array('body' => 'foo'));
+    }
+
+    public function tearDown()
+    {
+        Spray::reset();
     }
 
     public function getMockServer($mock_request, $handle_request = true, $make_request = true)
     {
-        $server = $this->getMock('Junior\Server\Server',
+        $server = $this->getMock('Junior\Server',
                                  array('handleRequest', 'makeRequest'),
                                  array(new TestClass()));
 
@@ -56,21 +57,21 @@ class ServerTest extends PHPUnit_Extensions_OutputTestCase {
 
     public function testMethodExists()
     {
-        $server = new Junior\Server\Server(new TestClass());
+        $server = new Junior\Server(new TestClass());
         $this->assertTrue($server->methodExists('testAdd'));
         $this->assertFalse($server->methodExists('notReal'));
     }
 
     public function testInvokeMethodUnnamedParams()
     {
-        $server = new Junior\Server\Server(new TestClass());
+        $server = new Junior\Server(new TestClass());
         $params = array(2, 3);
         $this->assertEquals(5, $server->invokeMethod('testAdd', $params));
     }
 
     public function testInvokeMethodNamedParams()
     {
-        $server = new Junior\Server\Server(new TestClass());
+        $server = new Junior\Server(new TestClass());
         $param_obj = $this->getMock('Object', null);
         $param_obj->first = 10;
         $param_obj->second = 5;
@@ -79,7 +80,7 @@ class ServerTest extends PHPUnit_Extensions_OutputTestCase {
 
     public function testInvokeMethodNoParams()
     {
-        $server = new Junior\Server\Server(new TestClass());
+        $server = new Junior\Server(new TestClass());
         $this->assertEquals('foo', $server->invokeMethod('testNotify', null));
     }
 
@@ -116,7 +117,7 @@ class ServerTest extends PHPUnit_Extensions_OutputTestCase {
         $server = $this->getMockServer($mock_request, false, false);
         $server->input = 'not.there';
 
-        $this->setExpectedException('Junior\Server\Exception');
+        $this->setExpectedException('Junior\Serverside\Exception');
 
         $server->process();
     }
@@ -124,7 +125,7 @@ class ServerTest extends PHPUnit_Extensions_OutputTestCase {
     public function testHandleRequest()
     {
         $return_value = 'foo';
-        $server = $this->getMock('Junior\Server\Server',
+        $server = $this->getMock('Junior\Server',
                          array('methodExists', 'invokeMethod'),
                          array(),
                          '',
@@ -159,7 +160,7 @@ class ServerTest extends PHPUnit_Extensions_OutputTestCase {
 
     public function testHandleRequestInvalid()
     {
-        $server = $this->getMock('Junior\Server\Server',
+        $server = $this->getMock('Junior\Server',
                          array('methodExists', 'invokeMethod'),
                          array(),
                          '',
@@ -188,7 +189,7 @@ class ServerTest extends PHPUnit_Extensions_OutputTestCase {
     public function testHandleRequestNotify()
     {
         $return_value = 'foo';
-        $server = $this->getMock('Junior\Server\Server',
+        $server = $this->getMock('Junior\Server',
                          array('methodExists', 'invokeMethod'),
                          array(),
                          '',
@@ -220,7 +221,7 @@ class ServerTest extends PHPUnit_Extensions_OutputTestCase {
 
     public function testHandleRequestMethodNotFound()
     {
-        $server = $this->getMock('Junior\Server\Server',
+        $server = $this->getMock('Junior\Server',
                          array('methodExists', 'invokeMethod'),
                          array(),
                          '',
@@ -246,14 +247,14 @@ class ServerTest extends PHPUnit_Extensions_OutputTestCase {
                 ->will($this->returnValue(null));
         
         $server->handleRequest($request);
-        $this->assertEquals(constant('Junior\Server\ERROR_METHOD_NOT_FOUND'), $request->error_code);
+        $this->assertEquals(constant('Junior\ERROR_METHOD_NOT_FOUND'), $request->error_code);
         $this->assertEquals("Method not found.", $request->error_message);
     }
 
     public function testHandleRequestException()
     {
         $error_message = 'Error!';
-        $server = $this->getMock('Junior\Server\Server',
+        $server = $this->getMock('Junior\Server',
                          array('methodExists', 'invokeMethod'),
                          array(),
                          '',
@@ -281,7 +282,7 @@ class ServerTest extends PHPUnit_Extensions_OutputTestCase {
                 ->will($this->returnValue(null));
         
         $server->handleRequest($request);
-        $this->assertEquals(constant('Junior\Server\ERROR_EXCEPTION'), $request->error_code);
+        $this->assertEquals(constant('Junior\ERROR_EXCEPTION'), $request->error_code);
         $this->assertEquals($error_message, $request->error_message);
     }
 
@@ -289,7 +290,7 @@ class ServerTest extends PHPUnit_Extensions_OutputTestCase {
     {
         $return_value[] = 'foo';
         $return_value[] = 'bar';
-        $server = $this->getMock('Junior\Server\Server',
+        $server = $this->getMock('Junior\Server',
                          array('methodExists', 'invokeMethod'),
                          array(),
                          '',
@@ -335,5 +336,3 @@ class ServerTest extends PHPUnit_Extensions_OutputTestCase {
     }
 
 }
-
-?>

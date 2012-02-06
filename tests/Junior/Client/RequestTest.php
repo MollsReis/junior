@@ -9,18 +9,18 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
     public function testNewRequestGood()
     {
-        $request = new Junior\Client\Request($this->method, $this->params);
+        $request = new Junior\Clientside\Request($this->method, $this->params);
         $this->assertEquals($this->method, $request->method);
         $this->assertEquals(array($this->params), $request->params);
         $this->assertNotNull($request->id);
 
-        $request = new Junior\Client\Request($this->method, array($this->params));
+        $request = new Junior\Clientside\Request($this->method, array($this->params));
         $this->assertEquals(array($this->params), $request->params);
     }
 
     public function testNewRequestNotify()
     {
-        $request = new Junior\Client\Request($this->method, $this->params, true);
+        $request = new Junior\Clientside\Request($this->method, $this->params, true);
         $this->assertEquals($this->method, $request->method);
         $this->assertEquals(array($this->params), $request->params);
         $this->assertNull($request->id);
@@ -28,16 +28,16 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
     public function testNewRequestBad()
     {
-        $this->setExpectedException('Junior\Client\Exception');
+        $this->setExpectedException('Junior\Clientside\Exception');
         
-        $request = new Junior\Client\Request('rpc.' . $this->method, $this->params);
+        $request = new Junior\Clientside\Request('rpc.' . $this->method, $this->params);
     }
 
     public function testGetArray()
     {
-        $request = new Junior\Client\Request($this->method, $this->params);
+        $request = new Junior\Clientside\Request($this->method, $this->params);
         $this->assertEquals(array(
-                              'jsonrpc' => constant('Junior\Client\JSON_RPC_VERSION'),
+                              'jsonrpc' => constant('Junior\Clientside\JSON_RPC_VERSION'),
                               'method' => $this->method,
                               'params' => array($this->params),
                               'id' => $request->id
@@ -47,9 +47,9 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
     public function testGetArrayNoParams()
     {
-        $request = new Junior\Client\Request($this->method);
+        $request = new Junior\Clientside\Request($this->method);
         $this->assertEquals(array(
-                              'jsonrpc' => constant('\Junior\Client\JSON_RPC_VERSION'),
+                              'jsonrpc' => constant('\Junior\Clientside\JSON_RPC_VERSION'),
                               'method' => $this->method,
                               'id' => $request->id
                             ),
@@ -58,9 +58,9 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
     public function testGetArrayNotify()
     {
-        $request = new Junior\Client\Request($this->method, $this->params, true);
+        $request = new Junior\Clientside\Request($this->method, $this->params, true);
         $this->assertEquals(array(
-                              'jsonrpc' => constant('Junior\Client\JSON_RPC_VERSION'),
+                              'jsonrpc' => constant('Junior\Clientside\JSON_RPC_VERSION'),
                               'method' => $this->method,
                               'params' => array($this->params)
                             ),
@@ -69,9 +69,9 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
     public function testGetJSON()
     {
-        $request = new Junior\Client\Request($this->method, $this->params);
+        $request = new Junior\Clientside\Request($this->method, $this->params);
         $this->assertEquals(json_encode(array(
-                              'jsonrpc' => constant('Junior\Client\JSON_RPC_VERSION'),
+                              'jsonrpc' => constant('Junior\Clientside\JSON_RPC_VERSION'),
                               'method' => $this->method,
                               'params' => array($this->params),
                               'id' => $request->id
@@ -81,9 +81,9 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
     public function testGetJSONNoParams()
     {
-        $request = new Junior\Client\Request($this->method);
+        $request = new Junior\Clientside\Request($this->method);
         $this->assertEquals(json_encode(array(
-                              'jsonrpc' => constant('Junior\Client\JSON_RPC_VERSION'),
+                              'jsonrpc' => constant('Junior\Clientside\JSON_RPC_VERSION'),
                               'method' => $this->method,
                               'id' => $request->id
                             )),
@@ -92,9 +92,9 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
     public function testGetJSONNotify()
     {
-        $request = new Junior\Client\Request($this->method, $this->params, true);
+        $request = new Junior\Clientside\Request($this->method, $this->params, true);
         $this->assertEquals(json_encode(array(
-                              'jsonrpc' => constant('Junior\Client\JSON_RPC_VERSION'),
+                              'jsonrpc' => constant('Junior\Clientside\JSON_RPC_VERSION'),
                               'method' => $this->method,
                               'params' => array($this->params)
                             )),
