@@ -9,6 +9,8 @@ const ERROR_RESERVED_PREFIX = -32001;
 const VALID_FUNCTION_NAME = '/^[a-zA-Z_][a-zA-Z0-9_]*$/';
 
 class Request {
+	public $error_code = '';
+	public $result = '';
 
     // create new server request object from raw json
     public function __construct($json)
