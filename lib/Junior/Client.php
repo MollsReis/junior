@@ -33,7 +33,7 @@ class Client {
         }
 
         if($response->error_code) {
-            throw new Clientside\Exception("{$response->error_code} {$response->error_message}");
+            throw new Clientside\Exception("{$response->error_code} {$response->error_message}", $response->error_code);
         }
 
         return $response->result;
