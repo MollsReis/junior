@@ -10,6 +10,8 @@ foreach(array('Request', 'Response', 'Exception') as $file) {
 
 class Client {
 
+    public $uri;
+
     // create new client connection
     public function __construct($uri)
     {
@@ -33,7 +35,7 @@ class Client {
         }
 
         if($response->error_code) {
-            throw new Clientside\Exception("{$response->error_code} {$response->error_message}");
+            throw new Clientside\Exception("{$response->error_code} {$response->error_message}", $response->error_code);
         }
 
         return $response->result;

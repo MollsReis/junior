@@ -3,6 +3,8 @@ namespace Junior\Clientside;
 
 class Response {
 
+    public $result, $id, $error_code, $error_message;
+
     // create a new json rpc response object
     public function __construct($result, $id = null, $error_code = null, $error_message = null)
     {

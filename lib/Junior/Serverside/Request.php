@@ -10,6 +10,8 @@ const VALID_FUNCTION_NAME = '/^[a-zA-Z_][a-zA-Z0-9_]*$/';
 
 class Request {
 
+    public $batch, $raw, $result, $json_rpc, $error_code, $error_message, $method, $params, $id;
+
     // create new server request object from raw json
     public function __construct($json)
     {
@@ -128,7 +130,7 @@ class Request {
     {
         // successful response
         $arr = array('jsonrpc' => JSON_RPC_VERSION);
-        if ($this->result) {
+        if ($this->result !== null) {
             $arr['result'] = $this->result;
             $arr['id'] = $this->id;
             return json_encode($arr);
