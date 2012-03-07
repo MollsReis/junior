@@ -9,7 +9,7 @@ as data format.
 It is designed to be simple!"
 
 ## Why should I use Junior?
-Junior is JSON-RPC 2.0 viable and follows the JSON-RPC spec as of July 2011. It supports batching, named parameters, and notifications.
+Junior is JSON-RPC 2.0 viable and follows the JSON-RPC spec as of March 2012. It supports batching, named parameters, and notifications.
 
 ## Is Junior available via Pear?
 Junior was previously hosted on Pearhub but I've encountered some pretty serious issues trying to update the version there. If anyone can suggest a better place to host I'd be happy to put the latest version of Junior back on Pear.

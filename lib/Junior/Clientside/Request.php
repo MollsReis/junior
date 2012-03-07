@@ -5,6 +5,8 @@ const JSON_RPC_VERSION = "2.0";
 
 class Request {
 
+    public $method, $params, $id;
+
     // create a new json rpc request object
     public function __construct($method, $params = null, $notify = false)
     {
@@ -14,7 +16,7 @@ class Request {
         }
 
         // check for illegal method prefix
-        if (substr($method,0,4) == 'rpc.') {
+        if (substr($method, 0, 4) == 'rpc.') {
             throw new Exception("Illegal method name; Method cannot start with 'rpc.'");
         }
 
@@ -43,7 +45,7 @@ class Request {
         if ($this->params) {
             $arr['params'] = $this->params;
         }
-        if (property_exists($this, 'id')) {
+        if ($this->id !== null) {
             $arr['id'] = $this->id;
         }
         return $arr;

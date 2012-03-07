@@ -13,6 +13,8 @@ const ERROR_EXCEPTION = -32099;
 
 class Server {
 
+    public $exposed_instance, $input;
+
     // create new server
     public function __construct($exposed_instance)
     {
@@ -66,7 +68,7 @@ class Server {
         $request = $this->makeRequest($json);
 
         // set content type to json if not testing
-        if (ENV != 'TEST') {
+        if (!(defined('ENV') && ENV == 'TEST')) {
             header('Content-type: application/json');
         }
 
