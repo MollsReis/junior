@@ -1,4 +1,4 @@
-# Junior - A JSON-RPC Client/Server in PHP
+# Junior - A JSON-RPC Client/Server in PHP [![Build Status](https://secure.travis-ci.org/EvilScott/junior.png)](http://travis-ci.org/EvilScott/junior)
 
 ## What is JSON-RPC?
 From the [JSON-RPC Spec](http://www.jsonrpc.org/spec.html):
@@ -29,4 +29,4 @@ Try out [Jimson](https://github.com/chriskite/jimson), written by Chris Kite for
 * PHP >= 5.3
 
 ## Does it have tests?
-Yes and as of February 2012 Junior has a robust, working test suite! The tests were written using [Spray](https://github.com/jimbojsb/spray) to stub stream wrappers and PHPUnit version 3.6.10.
+Yes and as of February 2012 Junior has a robust, working test suite! The tests were written using [Spray](https://github.com/jimbojsb/spray) to stub stream wrappers and PHPUnit version 3.6.10. UPDATE: Junior is hooked into [Travis CI](http://travis-ci.org/EvilScott/junior) as of March 2012.
