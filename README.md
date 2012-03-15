@@ -12,7 +12,12 @@ It is designed to be simple!"
 Junior is JSON-RPC 2.0 viable and follows the JSON-RPC spec as of March 2012. It supports batching, named parameters, and notifications.
 
 ## Is Junior available via Pear?
-Junior was previously hosted on Pearhub but I've encountered some pretty serious issues trying to update the version there. If anyone can suggest a better place to host I'd be happy to put the latest version of Junior back on Pear.
+As of March 2012, Pearhub.org has been brought back from the dead and Junior is once again hosted there. Download Junior via Pear with the following commands:
+
+```
+$ pear channel-discover pearhub.org
+$ pear install pearhub/junior
+```
 
 ## How do I use the client?
 Include Junior.php in the base directory which will include all necessary files. Create a new instance of Junior\Client() and pass it the URI of the server 
