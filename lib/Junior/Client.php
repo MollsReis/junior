@@ -34,7 +34,7 @@ class Client {
             throw new Clientside\Exception("Mismatched request id");
         }
 
-        if($response->error_code) {
+        if(isset($response->error_code)) {
             throw new Clientside\Exception("{$response->error_code} {$response->error_message}", $response->error_code);
         }
 
