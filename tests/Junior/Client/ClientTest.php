@@ -79,6 +79,22 @@ class ClientTest extends PHPUnit_Framework_TestCase {
         $client->sendRequest($request);
     }
 
+    public function testReceiveErrorCodeZero()
+    {
+        $request = $this->getEmptyRequest();
+        $request->id = 11;
+
+        $response = $this->getEmptyResponse();
+        $response->id = 11;
+        $response->error_code = 0;
+
+        $client = $this->getMockClient(array('send'), $response);
+
+        $this->setExpectedException('Junior\Clientside\Exception');
+
+        $client->sendRequest($request);
+    }
+
     public function testSendNotifyGood()
     {
         $request = $this->getEmptyRequest();
