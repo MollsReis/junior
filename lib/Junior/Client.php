@@ -98,7 +98,7 @@ class Client {
         $opts = array(
             'http' => array(
                 'method'  => 'POST',
-                'header'  => 'Content-Type: application/json\r\n',
+                'header'  => "Content-Type: application/json\r\n",
                 'content' => $json));
         $context = stream_context_create($opts);
 
