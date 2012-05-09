@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Junior by EvilScott</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Junior</h1>
+        <p>PHP client/server library for JSON-RPC 2.0</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/EvilScott/junior" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/EvilScott/junior/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/EvilScott/junior/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>Junior - A JSON-RPC Client/Server in PHP <a href="http://travis-ci.org/EvilScott/junior"><img src="https://secure.travis-ci.org/EvilScott/junior.png" alt="Build Status"></a>
+</h1>
+
+<h2>What is JSON-RPC?</h2>
+
+<p>From the <a href="http://www.jsonrpc.org/spec.html">JSON-RPC Spec</a>:</p>
+
+<p>"JSON-RPC is a stateless, light-weight remote procedure call (RPC) protocol. Primarily this specification defines several data structures and the rules around their processing. 
+It is transport agnostic in that the concepts can be used within the same process, over sockets, over http, or in many various message passing environments. It uses JSON (RFC 4627) 
+as data format.
+It is designed to be simple!"</p>
+
+<h2>Why should I use Junior?</h2>
+
+<p>Junior is JSON-RPC 2.0 viable and follows the JSON-RPC spec as of March 2012. It supports batching, named parameters, and notifications.</p>
+
+<h2>Is Junior available via Pear?</h2>
+
+<p>As of March 2012, Pearhub.org has been brought back from the dead and Junior is once again hosted there. Download Junior via Pear with the following commands:</p>
+
+<pre><code>$ pear channel-discover pearhub.org
+$ pear install pearhub/junior
+</code></pre>
+
+<h2>How do I use the client?</h2>
+
+<p>Include Junior.php in the base directory which will include all necessary files. Create a new instance of Junior\Client() and pass it the URI of the server 
+you wish to communicate with. All communication through this instance. See the example folder for more details.</p>
+
+<h2>How do I use the server?</h2>
+
+<p>Include Junior.php in the base directory which will include all necessary files. Create a new instance of Junior\Server() and pass it an instance 
+of the class you wish to expose for communication. Then call the process() function on your server instance and you are ready to go! See the example folder for more details. </p>
+
+<h2>What if I don't like PHP (or I need to talk to Ruby)?</h2>
+
+<p>Try out <a href="https://github.com/chriskite/jimson">Jimson</a>, written by Chris Kite for Ruby. It was made at the same time as Junior, and supports all the same features.</p>
+
+<h2>What do I need to run Junior?</h2>
+
+<ul>
+<li>PHP &gt;= 5.3</li>
+</ul><h2>Does it have tests?</h2>
+
+<p>Yes and as of February 2012 Junior has a robust, working test suite! The tests were written using <a href="https://github.com/jimbojsb/spray">Spray</a> to stub stream wrappers and PHPUnit version 3.6.10. UPDATE: Junior is hooked into <a href="http://travis-ci.org/EvilScott/junior">Travis CI</a> as of March 2012.</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/EvilScott">EvilScott</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-30767356-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
