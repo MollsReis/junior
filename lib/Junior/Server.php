@@ -44,6 +44,12 @@ class Server {
             $params = array();
         }
         $reflection = new \ReflectionMethod($this->exposed_instance, $method);
+        
+        $num_required_params = $reflection->getNumberOfRequiredParameters();
+        if ($num_required_params > count($params)) {
+            throw new Serverside\Exception("Too less parameters passed.");
+        }
+        
         return $reflection->invokeArgs($this->exposed_instance, $params);
     }
 
