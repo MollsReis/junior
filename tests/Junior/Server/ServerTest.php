@@ -1,5 +1,9 @@
 <?php
-class TestClass {
+abstract class AbstractTestClass {
+    abstract function testAbstract();
+}
+
+class TestClass extends AbstractTestClass {
 
     public function testAdd($arg1, $arg2)
     {
@@ -12,6 +16,16 @@ class TestClass {
     }
 
     public function testNotify()
+    {
+        return 'foo';
+    }
+
+    public function testAbstract()
+    {
+        return 'foo';
+    }
+
+    private function testPrivate()
     {
         return 'foo';
     }
@@ -55,6 +69,12 @@ class ServerTest extends PHPUnit_Framework_TestCase {
         return $server;
     }
 
+    public function testObjectPassed()
+    {
+        $this->setExpectedException('Junior\Serverside\Exception');
+        new Junior\Server('foo');
+    }
+
     public function testMethodExists()
     {
         $server = new Junior\Server(new TestClass());
@@ -82,6 +102,29 @@ class ServerTest extends PHPUnit_Framework_TestCase {
     {
         $server = new Junior\Server(new TestClass());
         $this->assertEquals('foo', $server->invokeMethod('testNotify', null));
+    }
+
+    public function testInvokeMethodAbstract()
+    {
+        $this->markTestIncomplete('may not need this functionality');
+
+        $server = new Junior\Server(new TestClass());
+        $this->setExpectedException('Junior\Serverside\Exception');
+        $server->invokeMethod('testAbstract', null);
+    }
+
+    public function testInvokeMethodPrivate()
+    {
+        $server = new Junior\Server(new TestClass());
+        $this->setExpectedException('Junior\Serverside\Exception');
+        $server->invokeMethod('testPrivate', null);
+    }
+
+    public function testInvokeMethodTooFewParams()
+    {
+        $server = new Junior\Server(new TestClass());
+        $this->setExpectedException('Junior\Serverside\Exception');
+        $server->invokeMethod('testAdd', array(100));
     }
 
     public function testProcessGood()
