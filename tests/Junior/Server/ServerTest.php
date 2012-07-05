@@ -1,8 +1,4 @@
 <?php
-abstract class AbstractTestClass {
-    abstract function testAbstract();
-}
-
 class TestClass extends AbstractTestClass {
 
     public function testAdd($arg1, $arg2)
@@ -16,11 +12,6 @@ class TestClass extends AbstractTestClass {
     }
 
     public function testNotify()
-    {
-        return 'foo';
-    }
-
-    public function testAbstract()
     {
         return 'foo';
     }
@@ -102,15 +93,6 @@ class ServerTest extends PHPUnit_Framework_TestCase {
     {
         $server = new Junior\Server(new TestClass());
         $this->assertEquals('foo', $server->invokeMethod('testNotify', null));
-    }
-
-    public function testInvokeMethodAbstract()
-    {
-        $this->markTestIncomplete('may not need this functionality');
-
-        $server = new Junior\Server(new TestClass());
-        $this->setExpectedException('Junior\Serverside\Exception');
-        $server->invokeMethod('testAbstract', null);
     }
 
     public function testInvokeMethodPrivate()

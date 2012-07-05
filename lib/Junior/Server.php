@@ -49,11 +49,6 @@ class Server {
         }
         $reflection = new \ReflectionMethod($this->exposed_instance, $method);
         
-        // prevent calls to abstract functions
-        if ($reflection->isAbstract()) {
-            throw new Serverside\Exception("Method is abstract and therefore not callable.");
-        }
-        
         // only allow calls to public functions
         if (!$reflection->isPublic()) {
             throw new Serverside\Exception("Called method is not publically accessible.");
