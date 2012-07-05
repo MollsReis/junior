@@ -1,5 +1,5 @@
 <?php
-class TestClass extends AbstractTestClass {
+class TestClass {
 
     public function testAdd($arg1, $arg2)
     {
