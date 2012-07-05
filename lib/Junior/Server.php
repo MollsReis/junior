@@ -18,6 +18,10 @@ class Server {
     // create new server
     public function __construct($exposed_instance)
     {
+        if (!is_object($exposed_instance)) {
+            throw new Serverside\Exception("Server requires an object");
+        }
+
         $this->exposed_instance = $exposed_instance;
         $this->input = 'php://input';
     }
