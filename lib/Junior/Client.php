@@ -11,7 +11,10 @@ foreach(array('Request', 'Response', 'Exception') as $file) {
 class Client {
 
     public $uri;
-
+    private $curlAuthType = null;
+    private $curlUsername = "";
+    private $curlPassword = "";
+    
     // create new client connection
     public function __construct($uri)
     {
@@ -24,6 +27,32 @@ class Client {
         $req = new Request($method, $params);
         return $this->sendRequest($req);
     }
+    
+    /**
+     * Enforces HTTP Digest Authentication to be used when querying the JSON-RPC
+     * service.
+     * 
+     * @param string $username
+     * @param string $password
+     */
+     public function useHttpDigestAuthentication($username, $password) {
+        $this->curlUsername = $username;
+        $this->curlPassword = $password;
+        $this->curlAuthType = 'digest';
+     }
+    
+    /**
+     * Enforces HTTP Basic Authentication to be used when querying the JSON-RPC
+     * service.
+     * 
+     * @param string $username
+     * @param string $password
+     */
+     public function useHttpBasicAuthentication($username, $password) {
+         $this->curlUsername = $username;
+         $this->curlPassword = $password;
+         $this->curlAuthType = 'basic';
+     }
 
     // send a single request object
     public function sendRequest($req)
@@ -94,22 +123,34 @@ class Client {
     // send raw json to the server
     public function send($json, $notify = false)
     {
-        // prepare data to be sent
-        $opts = array(
-            'http' => array(
-                'method'  => 'POST',
-                'header'  => "Content-Type: application/json\r\n",
-                'content' => $json));
-        $context = stream_context_create($opts);
-
-        // try to physically send data to destination 
-        try {
-            $response = file_get_contents($this->uri, false, $context);
-        } catch (\Exception $e) {
-            $message = "Unable to connect to {$this->uri}";
-            $message .= PHP_EOL . $e->getMessage();
-            throw new Clientside\Exception($message);
+        $response = false;
+        
+        // try to physically send data to destination
+         
+        $ch = curl_init($this->uri);
+        // Return result as string instead of printing it
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // HTTP Post
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+        // Follow any "Location: " header
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        // Keep sending the username and password when following locations
+        curl_setopt($ch, CURLOPT_UNRESTRICTED_AUTH, true);
+        // Apply the curl authentication options
+        switch ($this->curlAuthType) {
+            case 'digest':
+                curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
+                curl_setopt($ch, CURLOPT_USERPWD, "{$this->curlUsername}:{$this->curlPassword}");
+                break;
+            case 'basic':
+                curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+                curl_setopt($ch, CURLOPT_USERPWD, "{$this->curlUsername}:{$this->curlPassword}");
+                break;
         }
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        $response = curl_exec($ch);
+        curl_close($ch);
 
         // handle communication errors
         if ($response === false) {
