@@ -18,6 +18,10 @@ class Server {
     // create new server
     public function __construct($exposed_instance)
     {
+        if (!is_object($exposed_instance)) {
+            throw new Serverside\Exception("Server requires an object");
+        }
+
         $this->exposed_instance = $exposed_instance;
         $this->input = 'php://input';
     }
@@ -45,19 +49,15 @@ class Server {
         }
         $reflection = new \ReflectionMethod($this->exposed_instance, $method);
         
-        // Prevent calls to abstract functions
-        if ($reflection->isAbstract()) {
-            throw new Serverside\Exception("Method is abstract and therefore not callable.");
-        }
-        
-        // Only allow calls to public functions
+        // only allow calls to public functions
         if (!$reflection->isPublic()) {
             throw new Serverside\Exception("Called method is not publically accessible.");
         }
-        
+
+        // enforce correct number of arguments
         $num_required_params = $reflection->getNumberOfRequiredParameters();
         if ($num_required_params > count($params)) {
-            throw new Serverside\Exception("Too less parameters passed.");
+            throw new Serverside\Exception("Too few parameters passed.");
         }
         
         return $reflection->invokeArgs($this->exposed_instance, $params);
