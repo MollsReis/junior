@@ -49,7 +49,7 @@ class ClientBasicAuth extends Client {
         curl_setopt($ch, CURLOPT_UNRESTRICTED_AUTH, true);
         // Apply the curl authentication options
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($ch, CURLOPT_USERPWD, "{$this->curlUsername}:{$this->curlPassword}");
+        curl_setopt($ch, CURLOPT_USERPWD, "{$this->username}:{$this->password}");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
         $response = curl_exec($ch);
         curl_close($ch);
