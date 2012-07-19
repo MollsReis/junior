@@ -10,7 +10,7 @@ foreach(array('Request', 'Response', 'Exception') as $file) {
 
 class Client {
 
-    public $uri;
+    public $uri, $authHeader;
 
     // create new client connection
     public function __construct($uri)
@@ -23,6 +23,18 @@ class Client {
     {
         $req = new Request($method, $params);
         return $this->sendRequest($req);
+    }
+
+    // set basic http authentication
+    public function setBasicAuth($username, $password)
+    {
+        $this->authHeader = "Authorization: Basic " . base64_encode("$username:$password") . "\r\n";
+    }
+
+    // clear any existing http authentication
+    public function clearAuth()
+    {
+        $this->authHeader = null;
     }
 
     // send a single request object
@@ -94,11 +106,17 @@ class Client {
     // send raw json to the server
     public function send($json, $notify = false)
     {
+        // use http authentication header if set
+        $header = "Content-Type: application/json\r\n";
+        if ($this->authHeader) {
+            $header .= $this->authHeader;
+        }
+
         // prepare data to be sent
         $opts = array(
             'http' => array(
                 'method'  => 'POST',
-                'header'  => "Content-Type: application/json\r\n",
+                'header'  => $header,
                 'content' => $json));
         $context = stream_context_create($opts);
 
