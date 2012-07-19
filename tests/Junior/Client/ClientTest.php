@@ -50,6 +50,23 @@ class ClientTest extends PHPUnit_Framework_TestCase {
         return $client;
     }
 
+    public function testSetBasicAuth()
+    {
+        $client = new Junior\Client($this->fake_uri);
+        $client->setBasicAuth('foo', 'bar');
+        $expected = "Authorization: Basic Zm9vOmJhcg==\r\n";
+        $this->assertEquals($expected, $client->authHeader);
+    }
+
+    public function testclearAuth()
+    {
+        $client = new Junior\Client($this->fake_uri);
+        $client->clearAuth();
+        $client->setBasicAuth('foo', 'bar');
+        $client->clearAuth();
+        $this->assertNull($client->authHeader);
+    }
+
     public function testSendRequestGoodId()
     {
         $request = $this->getEmptyRequest();
