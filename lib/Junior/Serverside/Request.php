@@ -65,8 +65,12 @@ class Request {
         } else {
             $this->json_rpc = $obj->jsonrpc;
             $this->method = $obj->method;
-            $this->params = $obj->params;
-            $this->id = $obj->id;
+            if (property_exists($obj,'params')) {
+                $this->params = $obj->params;
+            };
+            if (property_exists($obj,'id')) {
+                $this->id = $obj->id;
+            };
         }
     }
 
