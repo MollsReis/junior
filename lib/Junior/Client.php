@@ -4,10 +4,6 @@ use Junior\Clientside\Request,
     Junior\Clientside\Response,
     Junior\Clientside\Exception;
 
-foreach(array('Request', 'Response', 'Exception') as $file) {
-    require_once('Junior'. DIRECTORY_SEPARATOR . 'Clientside' . DIRECTORY_SEPARATOR . $file . '.php');
-}
-
 class Client {
 
     public $uri, $authHeader;
