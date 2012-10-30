@@ -1,16 +1,26 @@
 <?php
 namespace Junior\Serverside;
 
-const JSON_RPC_VERSION = "2.0";
-const ERROR_PARSE_ERROR = -32700;
-const ERROR_INVALID_REQUEST = -32600;
-const ERROR_MISMATCHED_VERSION = -32000;
-const ERROR_RESERVED_PREFIX = -32001;
-const VALID_FUNCTION_NAME = '/^[a-zA-Z_][a-zA-Z0-9_]*$/';
 
-class Request {
 
-    public $batch, $raw, $result, $json_rpc, $error_code, $error_message, $method, $params, $id;
+class Request
+{
+    const JSON_RPC_VERSION = "2.0";
+    const ERROR_PARSE_ERROR = -32700;
+    const ERROR_INVALID_REQUEST = -32600;
+    const ERROR_MISMATCHED_VERSION = -32000;
+    const ERROR_RESERVED_PREFIX = -32001;
+    const VALID_FUNCTION_NAME = '/^[a-zA-Z_][a-zA-Z0-9_]*$/';
+
+    public $batch;
+    public $raw;
+    public $result;
+    public $json_rpc;
+    public $error_code;
+    public $error_message;
+    public $method;
+    public $params;
+    public $id;
 
     // create new server request object from raw json
     public function __construct($json)
@@ -20,8 +30,8 @@ class Request {
 
         // handle empty request
         if ($this->raw === "") {
-            $this->json_rpc = JSON_RPC_VERSION;
-            $this->error_code = ERROR_INVALID_REQUEST;
+            $this->json_rpc = self::JSON_RPC_VERSION;
+            $this->error_code = self::ERROR_INVALID_REQUEST;
             $this->error_message = "Invalid Request.";
             return;
         }
@@ -31,8 +41,8 @@ class Request {
 
         // handle json parse error
         if ($obj === null) {
-            $this->json_rpc = JSON_RPC_VERSION;
-            $this->error_code = ERROR_PARSE_ERROR;
+            $this->json_rpc = self::JSON_RPC_VERSION;
+            $this->error_code = self::ERROR_PARSE_ERROR;
             $this->error_message = "Parse error.";
             return;
         }
@@ -42,8 +52,8 @@ class Request {
 
             // empty batch
             if (count($obj) == 0) {
-                $this->json_rpc = JSON_RPC_VERSION;
-                $this->error_code = ERROR_INVALID_REQUEST;
+                $this->json_rpc = self::JSON_RPC_VERSION;
+                $this->error_code = self::ERROR_INVALID_REQUEST;
                 $this->error_message = "Invalid Request.";
                 return;
             }
@@ -65,8 +75,12 @@ class Request {
         } else {
             $this->json_rpc = $obj->jsonrpc;
             $this->method = $obj->method;
-            $this->params = $obj->params;
-            $this->id = $obj->id;
+            if (property_exists($obj,'params')) {
+                $this->params = $obj->params;
+            };
+            if (property_exists($obj,'id')) {
+                $this->id = $obj->id;
+            };
         }
     }
 
@@ -80,28 +94,28 @@ class Request {
 
         // missing jsonrpc or method
         if (!$this->json_rpc || !$this->method) {
-            $this->error_code = ERROR_INVALID_REQUEST;
+            $this->error_code = self::ERROR_INVALID_REQUEST;
             $this->error_message = "Invalid Request.";
             return false;
         }
 
         // reserved method prefix
         if (substr($this->method,0,4) == 'rpc.') {
-            $this->error_code = ERROR_RESERVED_PREFIX;
+            $this->error_code = self::ERROR_RESERVED_PREFIX;
             $this->error_message = "Illegal method name; Method cannot start with 'rpc.'";
             return false;
         }
 
         // illegal method name
-        if (!preg_match(VALID_FUNCTION_NAME, $this->method)) {
-            $this->error_code = ERROR_INVALID_REQUEST;
+        if (!preg_match(self::VALID_FUNCTION_NAME, $this->method)) {
+            $this->error_code = self::ERROR_INVALID_REQUEST;
             $this->error_message = "Invalid Request.";
             return false;
         }
 
         // mismatched json-rpc version
         if ($this->json_rpc != "2.0") {
-            $this->error_code = ERROR_MISMATCHED_VERSION;
+            $this->error_code = self::ERROR_MISMATCHED_VERSION;
             $this->error_message = "Client/Server JSON-RPC version mismatch; Expected '2.0'";
             return false;
         }
@@ -129,7 +143,7 @@ class Request {
     public function toResponseJSON()
     {
         // successful response
-        $arr = array('jsonrpc' => JSON_RPC_VERSION);
+        $arr = array('jsonrpc' => self::JSON_RPC_VERSION);
         if ($this->result !== null) {
             $arr['result'] = $this->result;
             $arr['id'] = $this->id;
