@@ -1,6 +1,7 @@
 <?php
 namespace Junior\Serverside;
 
-class Exception extends \Exception {
+class Exception extends \Exception
+{
 
 }

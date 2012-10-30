@@ -27,21 +27,21 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
     public function testNewRequestInvalidRequest()
     {
         $request = new Junior\Serverside\Request('');
-        $this->assertEquals(constant('Junior\Serverside\JSON_RPC_VERSION'), $request->json_rpc);
-        $this->assertEquals(constant('Junior\Serverside\ERROR_INVALID_REQUEST'), $request->error_code);
+        $this->assertEquals(Junior\Serverside\Request::JSON_RPC_VERSION, $request->json_rpc);
+        $this->assertEquals(Junior\Serverside\Request::ERROR_INVALID_REQUEST, $request->error_code);
         $this->assertEquals("Invalid Request.", $request->error_message);
 
         $request = new Junior\Serverside\Request('[]');
-        $this->assertEquals(constant('Junior\Serverside\JSON_RPC_VERSION'), $request->json_rpc);
-        $this->assertEquals(constant('Junior\Serverside\ERROR_INVALID_REQUEST'), $request->error_code);
+        $this->assertEquals(Junior\Serverside\Request::JSON_RPC_VERSION, $request->json_rpc);
+        $this->assertEquals(Junior\Serverside\Request::ERROR_INVALID_REQUEST, $request->error_code);
         $this->assertEquals("Invalid Request.", $request->error_message);
     }
 
     public function testNewRequestParseError()
     {
         $request = new Junior\Serverside\Request('[bad:json::]');
-        $this->assertEquals(constant('Junior\Serverside\JSON_RPC_VERSION'), $request->json_rpc);
-        $this->assertEquals(constant('Junior\Serverside\ERROR_PARSE_ERROR'), $request->error_code);
+        $this->assertEquals(Junior\Serverside\Request::JSON_RPC_VERSION, $request->json_rpc);
+        $this->assertEquals(Junior\Serverside\Request::ERROR_PARSE_ERROR, $request->error_code);
         $this->assertEquals("Parse error.", $request->error_message);
     }
 
@@ -84,7 +84,7 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
 
     public function testCheckValidInvalidRequest()
     {
-        $error_code = constant('Junior\Serverside\ERROR_INVALID_REQUEST');
+        $error_code = Junior\Serverside\Request::ERROR_INVALID_REQUEST;
         $error_message = 'Invalid Request.';
 
         $request = $this->getEmptyRequest();
@@ -114,7 +114,7 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
 
     public function testCheckValidReservedPrefix()
     {
-        $error_code = constant('Junior\Serverside\ERROR_RESERVED_PREFIX');
+        $error_code = Junior\Serverside\Request::ERROR_RESERVED_PREFIX;
         $error_message = 'Illegal method name; Method cannot start with \'rpc.\'';
 
         $request = $this->getEmptyRequest();
@@ -128,7 +128,7 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
 
     public function testCheckValidMismatchedVersion()
     {
-        $error_code = constant('Junior\Serverside\ERROR_MISMATCHED_VERSION');
+        $error_code = Junior\Serverside\Request::ERROR_MISMATCHED_VERSION;
         $error_message = 'Client/Server JSON-RPC version mismatch; Expected \'2.0\'';
 
         $request = $this->getEmptyRequest();
@@ -163,7 +163,7 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
     public function testResponseJSON()
     {
         $request = $this->getEmptyRequest();
-        $json_version = constant('Junior\Serverside\JSON_RPC_VERSION');
+        $json_version = Junior\Serverside\Request::JSON_RPC_VERSION;
         $request->error_code = 10;
         $request->error_message = 'Error!';
         $request->id = 1;

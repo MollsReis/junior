@@ -68,7 +68,7 @@ class IntegrationTest extends PHPUnit_Framework_TestCase {
         Spray::reset();
     }
 
-    public function makeMockResponse($json)
+    public static function makeMockResponse($json)
     {
         $response = json_decode($json);
         $response->result = $json;
