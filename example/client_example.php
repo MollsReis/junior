@@ -1,6 +1,6 @@
 <?php
 // require Junior
-require_once("../lib/Junior.php");
+require_once("../lib/autoload.php");
 
 // create a new instance of JuniorClient with the URI of te
 $client = new Junior\Client("http://www.example.com");

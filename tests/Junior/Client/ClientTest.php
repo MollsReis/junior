@@ -282,8 +282,10 @@ class ClientTest extends PHPUnit_Framework_TestCase {
     public function testHandleResponseError()
     {
         $test_response = $this->getEmptyResponse();
-        $test_response->error->code = 1;
-        $test_response->error->message = 'foo';
+        $error = new stdClass();
+        $error->code = 1;
+        $error->message = 'foo';
+        $test_response->error = $error;
         $test_response->id = 1;
 
         $client = $this->getMockClient(null);
@@ -301,8 +303,10 @@ class ClientTest extends PHPUnit_Framework_TestCase {
         $good_response->id = 1;
 
         $error_response = $this->getEmptyResponse();
-        $error_response->error->code = 1;
-        $error_response->error->message = 'foo';
+        $error = new stdClass();
+        $error->code = 1;
+        $error->message = 'foo';
+        $error_response->error = $error;
         $error_response->id = 2;
 
         $responses = array($good_response, $error_response);

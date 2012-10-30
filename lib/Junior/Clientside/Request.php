@@ -1,11 +1,14 @@
 <?php
 namespace Junior\Clientside;
 
-const JSON_RPC_VERSION = "2.0";
 
 class Request {
 
-    public $method, $params, $id;
+    const JSON_RPC_VERSION = "2.0";
+
+    public $method;
+    public $params;
+    public $id;
 
     // create a new json rpc request object
     public function __construct($method, $params = null, $notify = false)
@@ -41,7 +44,7 @@ class Request {
     // return an associated array for this object 
     public function getArray()
     {
-        $arr = array('jsonrpc' => JSON_RPC_VERSION, 'method' => $this->method);
+        $arr = array('jsonrpc' => self::JSON_RPC_VERSION, 'method' => $this->method);
         if ($this->params) {
             $arr['params'] = $this->params;
         }
