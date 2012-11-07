@@ -15,10 +15,10 @@ Junior is JSON-RPC 2.0 viable and follows the JSON-RPC spec as of March 2012. It
 Junior can be downloaded as a PHAR file from the [downloads section](https://github.com/EvilScott/junior/downloads), or you can make your own PHAR file by running createphar.php from the bin directory.
 
 ## How do I use the client?
-Include lib/autoload.php load all necessary files. Create a new instance of Junior\Client() and pass it the URI of the server you wish to communicate with. All communication through this instance. See the example folder for more details.
+Include lib/autoload.php load all necessary files. Alternatively, just include junior.phar if taking advantage of the PHAR format. Create a new instance of Junior\Client() and pass it the URI of the server you wish to communicate with. All communication through this instance. See the example folder for more details.
 
 ## How do I use the server?
-Include lib/autoload.php load all necessary files. Create a new instance of Junior\Server() and pass it an instance of the class you wish to expose for communication. Then call the process() function on your server instance and you are ready to go! See the example folder for more details.
+Include lib/autoload.php load all necessary files. Alternatively, just include junior.phar if taking advantage of the PHAR format.  Create a new instance of Junior\Server() and pass it an instance of the class you wish to expose for communication. Then call the process() function on your server instance and you are ready to go! See the example folder for more details.
 
 ## What if I don't like PHP (or I need to talk to Ruby)?
 Try out [Jimson](https://github.com/chriskite/jimson), written by Chris Kite for Ruby. It was made at the same time as Junior, and supports all the same features.
