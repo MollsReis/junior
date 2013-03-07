@@ -55,23 +55,17 @@ It is designed to be simple!"</p>
 
 <p>Junior is JSON-RPC 2.0 viable and follows the JSON-RPC spec as of March 2012. It supports batching, named parameters, and notifications.</p>
 
-<h2>Is Junior available via Pear?</h2>
+<h2>Is Junior available in a PHAR format?</h2>
 
-<p>As of March 2012, Pearhub.org has been brought back from the dead and Junior is once again hosted there. Download Junior via Pear with the following commands:</p>
-
-<pre><code>$ pear channel-discover pearhub.org
-$ pear install pearhub/junior
-</code></pre>
+<p>Junior can be downloaded as a PHAR file from the <a href="https://github.com/EvilScott/junior/downloads">downloads section</a>, or you can make your own PHAR file by running createphar.php from the bin directory.</p>
 
 <h2>How do I use the client?</h2>
 
-<p>Include Junior.php in the base directory which will include all necessary files. Create a new instance of Junior\Client() and pass it the URI of the server 
-you wish to communicate with. All communication through this instance. See the example folder for more details.</p>
+<p>Include lib/autoload.php load all necessary files. Alternatively, just include junior.phar if taking advantage of the PHAR format. Create a new instance of Junior\Client() and pass it the URI of the server you wish to communicate with. All communication through this instance. See the example folder for more details.</p>
 
 <h2>How do I use the server?</h2>
 
-<p>Include Junior.php in the base directory which will include all necessary files. Create a new instance of Junior\Server() and pass it an instance 
-of the class you wish to expose for communication. Then call the process() function on your server instance and you are ready to go! See the example folder for more details. </p>
+<p>Include lib/autoload.php load all necessary files. Alternatively, just include junior.phar if taking advantage of the PHAR format.  Create a new instance of Junior\Server() and pass it an instance of the class you wish to expose for communication. Then call the process() function on your server instance and you are ready to go! See the example folder for more details.</p>
 
 <h2>What if I don't like PHP (or I need to talk to Ruby)?</h2>
 
@@ -90,7 +84,7 @@ of the class you wish to expose for communication. Then call the process() funct
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
       </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
