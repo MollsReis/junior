@@ -2,6 +2,4 @@ language: php
 php:
   - 5.3
   - 5.4
-before_install:
-  - git submodule update --init --recursive
-before_script: cd tests
+script: composer install --dev && cd tests && ../vendor/bin/phpunit
