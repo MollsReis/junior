@@ -1,0 +1,31 @@
+{
+    "name": "evilscott/junior",
+    "description": "JSONRPC 2.0 Client and Server",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Scott Reis",
+            "email": "josh@joshbutts.com",
+            "role": "developer"
+        },
+        {
+            "name": "Chris Kite",
+            "email": "chris@chriskite.com",
+            "role": "developer"
+        },
+        {
+            "name": "Josh Butts",
+            "email": "josh@joshbutts.com",
+            "role": "developer"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Junior": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*",
+        "jimbojsb/spray": "dev-master"
+    }
+}

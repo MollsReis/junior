@@ -3,4 +3,4 @@
 *.iml
 .idea/
 *.swp
-junior.phar
+vendor
