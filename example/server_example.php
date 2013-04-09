@@ -1,6 +1,6 @@
 <?php
 // require Junior
-require_once("../lib/autoload.php");
+require_once("../src/autoload.php");
 
 // write or include your own class to expose to communication
 class MyClass {
