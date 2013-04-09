@@ -1,3 +1,0 @@
-[submodule "tests/Spray"]
-	path = tests/Spray
-	url = https://github.com/jimbojsb/spray.git

@@ -1,4 +1,7 @@
 <?php
+use Spray\Spray;
+
+
 class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function setUp()

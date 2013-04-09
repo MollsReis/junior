@@ -1,4 +1,7 @@
 <?php
+
+use Spray\Spray;
+
 class TestJSONRPCClass {
 
     public function subtract($a, $b = null)
