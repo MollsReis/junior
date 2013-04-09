@@ -1,4 +1,7 @@
 <?php
+
+use Spray\Spray;
+
 class TestClass {
 
     public function testAdd($arg1, $arg2)

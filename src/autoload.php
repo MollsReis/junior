@@ -5,3 +5,4 @@ spl_autoload_register(function($className) {
         require_once __DIR__ . '/' . $fileName;
     }
 });
+require_once __DIR__ . '/../vendor/autoload.php';
