@@ -12,7 +12,13 @@ class Response
     // create a new json rpc response object
     public function __construct($result, $id = null, $error_code = null, $error_message = null)
     {
-        $this->result = is_string($result) ? utf8_decode($result) : $result;
+        if (is_object($result) || is_array($result)) {
+            $this->result = new \ArrayObject($result);
+        } else if (is_string($result)) {
+            $this->result = utf8_decode($result);
+        } else {
+            $this->result = $result;
+        }
         $this->id = $id;
         $this->error_code = $error_code;
         $this->error_message = $error_message;
