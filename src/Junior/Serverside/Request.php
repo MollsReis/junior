@@ -76,7 +76,14 @@ class Request
             $this->json_rpc = $obj->jsonrpc;
             $this->method = $obj->method;
             if (property_exists($obj,'params')) {
-                $this->params = $obj->params;
+                $this->params = array();
+                foreach ($obj->params as $param) {
+                    if (is_array($param) || is_object($param)) {
+                        array_push($this->params, new \ArrayObject($param));
+                    } else {
+                        array_push($this->params, $param);
+                    }
+                }
             };
             if (property_exists($obj,'id')) {
                 $this->id = $obj->id;
