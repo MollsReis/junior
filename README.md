@@ -11,8 +11,8 @@ It is designed to be simple!"
 ## Why should I use Junior?
 Junior is JSON-RPC 2.0 viable and follows the JSON-RPC spec as of March 2012. It supports batching, named parameters, and notifications.
 
-## Is Junior available in a PHAR format?
-Junior can be downloaded as a PHAR file from the [downloads section](https://github.com/EvilScott/junior/downloads), or you can make your own PHAR file by running createphar.php from the bin directory.
+## Is Junior available for Composer?
+[Yes](https://packagist.org/packages/evilscott/junior), and this is the recommended method to deploy it.
 
 ## How do I use the client?
 Include lib/autoload.php load all necessary files. Alternatively, just include junior.phar if taking advantage of the PHAR format. Create a new instance of Junior\Client() and pass it the URI of the server you wish to communicate with. All communication through this instance. See the example folder for more details.
