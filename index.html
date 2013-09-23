@@ -39,10 +39,12 @@
         <ul></ul>
       </nav>
       <section>
-        <h1>Junior - A JSON-RPC Client/Server in PHP <a href="http://travis-ci.org/EvilScott/junior"><img src="https://secure.travis-ci.org/EvilScott/junior.png" alt="Build Status"></a>
+        <h1>
+<a name="junior---a-json-rpc-clientserver-in-php-" class="anchor" href="#junior---a-json-rpc-clientserver-in-php-"><span class="octicon octicon-link"></span></a>Junior - A JSON-RPC Client/Server in PHP <a href="http://travis-ci.org/EvilScott/junior"><img src="https://secure.travis-ci.org/EvilScott/junior.png" alt="Build Status"></a>
 </h1>
 
-<h2>What is JSON-RPC?</h2>
+<h2>
+<a name="what-is-json-rpc" class="anchor" href="#what-is-json-rpc"><span class="octicon octicon-link"></span></a>What is JSON-RPC?</h2>
 
 <p>From the <a href="http://www.jsonrpc.org/spec.html">JSON-RPC Spec</a>:</p>
 
@@ -51,37 +53,44 @@ It is transport agnostic in that the concepts can be used within the same proces
 as data format.
 It is designed to be simple!"</p>
 
-<h2>Why should I use Junior?</h2>
+<h2>
+<a name="why-should-i-use-junior" class="anchor" href="#why-should-i-use-junior"><span class="octicon octicon-link"></span></a>Why should I use Junior?</h2>
 
 <p>Junior is JSON-RPC 2.0 viable and follows the JSON-RPC spec as of March 2012. It supports batching, named parameters, and notifications.</p>
 
-<h2>Is Junior available in a PHAR format?</h2>
+<h2>
+<a name="is-junior-available-for-composer" class="anchor" href="#is-junior-available-for-composer"><span class="octicon octicon-link"></span></a>Is Junior available for Composer?</h2>
 
-<p>Junior can be downloaded as a PHAR file from the <a href="https://github.com/EvilScott/junior/downloads">downloads section</a>, or you can make your own PHAR file by running createphar.php from the bin directory.</p>
+<p><a href="https://packagist.org/packages/evilscott/junior">Yes</a>, and this is the recommended method to deploy it.</p>
 
-<h2>How do I use the client?</h2>
+<h2>
+<a name="how-do-i-use-the-client" class="anchor" href="#how-do-i-use-the-client"><span class="octicon octicon-link"></span></a>How do I use the client?</h2>
 
 <p>Include lib/autoload.php load all necessary files. Alternatively, just include junior.phar if taking advantage of the PHAR format. Create a new instance of Junior\Client() and pass it the URI of the server you wish to communicate with. All communication through this instance. See the example folder for more details.</p>
 
-<h2>How do I use the server?</h2>
+<h2>
+<a name="how-do-i-use-the-server" class="anchor" href="#how-do-i-use-the-server"><span class="octicon octicon-link"></span></a>How do I use the server?</h2>
 
 <p>Include lib/autoload.php load all necessary files. Alternatively, just include junior.phar if taking advantage of the PHAR format.  Create a new instance of Junior\Server() and pass it an instance of the class you wish to expose for communication. Then call the process() function on your server instance and you are ready to go! See the example folder for more details.</p>
 
-<h2>What if I don't like PHP (or I need to talk to Ruby)?</h2>
+<h2>
+<a name="what-if-i-dont-like-php-or-i-need-to-talk-to-ruby" class="anchor" href="#what-if-i-dont-like-php-or-i-need-to-talk-to-ruby"><span class="octicon octicon-link"></span></a>What if I don't like PHP (or I need to talk to Ruby)?</h2>
 
 <p>Try out <a href="https://github.com/chriskite/jimson">Jimson</a>, written by Chris Kite for Ruby. It was made at the same time as Junior, and supports all the same features.</p>
 
-<h2>What do I need to run Junior?</h2>
+<h2>
+<a name="what-do-i-need-to-run-junior" class="anchor" href="#what-do-i-need-to-run-junior"><span class="octicon octicon-link"></span></a>What do I need to run Junior?</h2>
 
 <ul>
 <li>PHP &gt;= 5.3</li>
-</ul><h2>Does it have tests?</h2>
+</ul><h2>
+<a name="does-it-have-tests" class="anchor" href="#does-it-have-tests"><span class="octicon octicon-link"></span></a>Does it have tests?</h2>
 
 <p>Yes and as of February 2012 Junior has a robust, working test suite! The tests were written using <a href="https://github.com/jimbojsb/spray">Spray</a> to stub stream wrappers and PHPUnit version 3.6.10. UPDATE: Junior is hooked into <a href="http://travis-ci.org/EvilScott/junior">Travis CI</a> as of March 2012.</p>
       </section>
       <footer>
         <p>Project maintained by <a href="https://github.com/EvilScott">EvilScott</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
