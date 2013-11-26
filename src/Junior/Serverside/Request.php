@@ -133,7 +133,7 @@ class Request
     // returns true if request is a notification
     public function isNotify()
     {
-        if ($this->id) {
+        if (!$this->id) {
             return false;
         }
         return true;
