@@ -163,6 +163,14 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($request->isNotify());
     }
 
+    public function testIsNotifyWithZero()
+    {
+        $request = $this->getEmptyRequest();
+        $request->id = 0;
+
+        $this->assertFalse($request->isNotify());
+    }
+
     public function testResponseJSON()
     {
         $request = $this->getEmptyRequest();
