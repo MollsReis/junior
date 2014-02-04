@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<phpunit bootstrap="bootstrap.php" colors="true" verbose="true">
+    <testsuites>
+        <testsuite name="Server Tests">
+            <file>Junior/ServerTest.php</file>
+            <file>Junior/Serverside/RequestTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
