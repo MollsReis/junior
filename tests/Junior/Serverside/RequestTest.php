@@ -10,10 +10,16 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('Junior\Serverside\Request', $request);
     }
 
-    public function testMethod()
+    public function testGetMethod()
     {
         $request = new Request(fixtureClass::$fooJSON);
         $request->method = 'foo';
+    }
+
+    public function testGetParams()
+    {
+        $request = new Request(fixtureClass::$barJSON);
+        $request->method = [ 1, 2, 3 ];
     }
 
     public function testIsValid()
@@ -26,6 +32,18 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         $this->markTestSkipped();
     }
 
+    public function testIsNotNotify()
+    {
+        $request = new Request(fixtureClass::$fooJSON);
+        $this->assertFalse($request->isNotify());
+    }
+
+    public function testIsNotBatch()
+    {
+        $request = new Request(fixtureClass::$fooJSON);
+        $this->assertFalse($request->isBatch());
+    }
+
     public function testIsNotify()
     {
         $this->markTestSkipped();
@@ -35,5 +53,4 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     {
         $this->markTestSkipped();
     }
-
 }

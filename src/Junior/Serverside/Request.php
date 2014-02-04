@@ -13,4 +13,19 @@ class Request {
         $this->method = $this->parsed->method;
         $this->params = $this->parsed->params;
     }
+
+    public function isValid()
+    {
+        //TODO
+    }
+
+    public function isNotify()
+    {
+        return false;
+    }
+
+    public function isBatch()
+    {
+        return false;
+    }
 }
