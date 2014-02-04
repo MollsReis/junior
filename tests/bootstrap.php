@@ -21,5 +21,11 @@ class fixtureClass {
     {
         return self::$barReturns;
     }
+
+    public static $batchJSON = '[
+        { "jsonrpc" : "2.0", "method" : "foo", "id": 1 },
+        { "jsonrpc" : "2.0", "method" : "bar", "params" : [ 1, 2, 3 ], "id": 2 }
+    ]';
+    public static $batchReturns = [ 'foo', 'bar' ];
 }
 

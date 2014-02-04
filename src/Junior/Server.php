@@ -3,6 +3,8 @@
 namespace Junior;
 
 use Junior\Serverside\Request;
+use Junior\Serverside\NotifyRequest;
+use Junior\Serverside\BatchRequest;
 use Junior\Serverside\Response;
 use Junior\Serverside\Adapter\AdapterInterface;
 use Junior\Serverside\Adapter\StandardAdapter;
@@ -33,7 +35,17 @@ class Server {
 
     public function createRequest($json)
     {
-        return new Request($json);
+        $parsedJSON = json_decode($json);
+
+        //TODO check for errors
+
+        if (is_array($parsedJSON)) {
+            return new BatchRequest($parsedJSON);
+        } elseif (!isset($parsedJSON->id)) {
+            return new NotifyRequest($parsedJSON);
+        } else {
+            return new Request($parsedJSON);
+        }
     }
 
     public function invoke(Request $request)

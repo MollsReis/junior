@@ -32,10 +32,24 @@ class ServerTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('Junior\Serverside\Request', $request);
     }
 
+    public function testCreateNotifyRequest()
+    {
+        $this->markTestSkipped();
+    }
+
+    public function testCreateBatchRequest()
+    {
+        $instance = new fixtureClass();
+        $server = new Server($instance);
+
+        $request = $server->createRequest(fixtureClass::$batchJSON);
+        $this->assertInstanceOf('Junior\Serverside\BatchRequest', $request);
+    }
+
     public function testInvoke()
     {
         $instance = new fixtureClass();
-        $request = new Request(fixtureClass::$fooJSON);
+        $request = new Request(json_decode(fixtureClass::$fooJSON));
         $server = new Server($instance);
 
         $output = $server->invoke($request);
@@ -45,7 +59,7 @@ class ServerTest extends PHPUnit_Framework_TestCase {
     public function testInvokeWithParams()
     {
         $instance = new fixtureClass();
-        $request = new Request(fixtureClass::$barJSON);
+        $request = new Request(json_decode(fixtureClass::$barJSON));
         $server = new Server($instance);
 
         $output = $server->invoke($request);

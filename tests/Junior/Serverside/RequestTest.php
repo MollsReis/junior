@@ -6,19 +6,19 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
     public function testNewRequest()
     {
-        $request = new Request(fixtureClass::$fooJSON);
+        $request = new Request(json_decode(fixtureClass::$fooJSON));
         $this->assertInstanceOf('Junior\Serverside\Request', $request);
     }
 
     public function testGetMethod()
     {
-        $request = new Request(fixtureClass::$fooJSON);
+        $request = new Request(json_decode(fixtureClass::$fooJSON));
         $request->method = 'foo';
     }
 
     public function testGetParams()
     {
-        $request = new Request(fixtureClass::$barJSON);
+        $request = new Request(json_decode(fixtureClass::$barJSON));
         $request->method = [ 1, 2, 3 ];
     }
 
@@ -34,13 +34,13 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
     public function testIsNotNotify()
     {
-        $request = new Request(fixtureClass::$fooJSON);
+        $request = new Request(json_decode(fixtureClass::$fooJSON));
         $this->assertFalse($request->isNotify());
     }
 
     public function testIsNotBatch()
     {
-        $request = new Request(fixtureClass::$fooJSON);
+        $request = new Request(json_decode(fixtureClass::$fooJSON));
         $this->assertFalse($request->isBatch());
     }
 

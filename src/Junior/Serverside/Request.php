@@ -4,14 +4,13 @@ namespace Junior\Serverside;
 
 class Request {
 
-    public $raw, $parsed, $method, $params;
+    public $parsed, $method, $params;
 
     public function __construct($json)
     {
-        $this->raw = $json;
-        $this->parsed = json_decode($json);
-        $this->method = $this->parsed->method;
-        $this->params = $this->parsed->params;
+        $this->json = $json;
+        $this->method = $this->json->method;
+        $this->params = $this->json->params;
     }
 
     public function isValid()
