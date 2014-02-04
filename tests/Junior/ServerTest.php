@@ -6,6 +6,15 @@ use Junior\Serverside\Adapter\StandardAdapter;
 
 class ServerTest extends PHPUnit_Framework_TestCase {
 
+    public $server;
+
+    public function setUp()
+    {
+        $instance = new fixtureClass();
+        $adapter = new StandardAdapter();
+        $this->server = new Server($instance, $adapter);
+    }
+
     public function testNewServer()
     {
         $instance = new fixtureClass();
@@ -25,10 +34,7 @@ class ServerTest extends PHPUnit_Framework_TestCase {
 
     public function testCreateRequest()
     {
-        $instance = new fixtureClass();
-        $server = new Server($instance);
-
-        $request = $server->createRequest(fixtureClass::$fooJSON);
+        $request = $this->server->createRequest(fixtureClass::$fooJSON);
         $this->assertInstanceOf('Junior\Serverside\Request', $request);
     }
 
@@ -39,30 +45,23 @@ class ServerTest extends PHPUnit_Framework_TestCase {
 
     public function testCreateBatchRequest()
     {
-        $instance = new fixtureClass();
-        $server = new Server($instance);
-
-        $request = $server->createRequest(fixtureClass::$batchJSON);
+        $request = $this->server->createRequest(fixtureClass::$batchJSON);
         $this->assertInstanceOf('Junior\Serverside\BatchRequest', $request);
     }
 
     public function testInvoke()
     {
-        $instance = new fixtureClass();
         $request = new Request(json_decode(fixtureClass::$fooJSON));
-        $server = new Server($instance);
 
-        $output = $server->invoke($request);
+        $output = $this->server->invoke($request);
         $this->assertEquals(fixtureClass::$fooReturns, $output);
     }
 
     public function testInvokeWithParams()
     {
-        $instance = new fixtureClass();
         $request = new Request(json_decode(fixtureClass::$barJSON));
-        $server = new Server($instance);
 
-        $output = $server->invoke($request);
+        $output = $this->server->invoke($request);
         $this->assertEquals(fixtureClass::$barReturns, $output);
     }
 
