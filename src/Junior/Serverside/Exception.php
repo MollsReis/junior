@@ -2,6 +2,6 @@
 
 namespace Junior\Serverside;
 
-class Exception {
+class Exception extends \Exception{
     //TODO
 }

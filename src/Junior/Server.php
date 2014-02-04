@@ -38,8 +38,37 @@ class Server {
 
     public function invoke(Request $request)
     {
-        //TODO
-        return $request;
+        $method = $request->method;
+        $params = $request->params;
+
+        // for named parameters, convert from object to assoc array
+        if (is_object($params)) {
+            $array = array();
+            foreach ($params as $key => $val) {
+                $array[$key] = $val;
+            }
+            $params = array($array);
+        }
+        
+        // for no params, pass in empty array
+        if ($params === null) {
+            $params = array();
+        }
+
+        $reflection = new \ReflectionMethod($this->exposedInstance, $method);
+
+        // only allow calls to public functions
+        if (!$reflection->isPublic()) {
+            throw new Serverside\Exception('Called method is not publicly accessible.');
+        }
+
+        // enforce correct number of arguments
+        $num_required_params = $reflection->getNumberOfRequiredParameters();
+        if ($num_required_params > count($params)) {
+            throw new Serverside\Exception('Too few parameters passed.');
+        }
+
+        return $reflection->invokeArgs($this->exposedInstance, $params);
     }
 
     public function createResponse()
