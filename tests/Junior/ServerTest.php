@@ -1,32 +1,53 @@
 <?php
 
+use Junior\Server;
+use Junior\Serverside\Request;
+use Junior\Serverside\Adapter\StandardAdapter;
+
 class ServerTest extends PHPUnit_Framework_TestCase {
 
     public function testNewServer()
     {
-        $instance = new StdClass();
-        $adapter = new Junior\Serverside\Adapter\StandardAdapter();
-        $server = new Junior\Server($instance, $adapter);
+        $instance = new fixtureClass();
+        $adapter = new StandardAdapter();
+
+        $server = new Server($instance, $adapter);
         $this->assertInstanceOf('Junior\Server', $server);
     }
 
     public function testNewServerNoAdapter()
     {
-        $instance = new StdClass();
-        $server = new Junior\Server($instance);
-        $adapter = new Junior\Serverside\Adapter\StandardAdapter();
-        $this->assertAttributeEquals($adapter, 'adapter', $server);
+        $instance = new fixtureClass();
+
+        $server = new Server($instance);
+        $this->assertAttributeInstanceOf('Junior\Serverside\Adapter\StandardAdapter', 'adapter', $server);
     }
 
     public function testCreateRequest()
     {
-        $rawJSON = '{ "foo": "bar" }';
-        $server = new Junior\Server(new StdClass());
-        $request = $server->createRequest($rawJSON);
+        $instance = new fixtureClass();
+        $server = new Server($instance);
+
+        $request = $server->createRequest(null);
         $this->assertInstanceOf('Junior\Serverside\Request', $request);
     }
 
     public function testInvoke()
+    {
+        $instance = new fixtureClass();
+        $request = new Request(fixtureClass::$fooJSON);
+        $server = new Server($instance);
+
+        $output = $server->invoke($request);
+        $this->assertEquals(fixtureClass::$fooReturns, $output);
+    }
+
+    public function testInvokeBatch()
+    {
+        $this->markTestSkipped();
+    }
+
+    public function testInvokeNotify()
     {
         $this->markTestSkipped();
     }

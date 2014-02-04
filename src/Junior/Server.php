@@ -2,10 +2,10 @@
 
 namespace Junior;
 
-use Junior\Serverside\Adapter\AdapterInterface;
-use Junior\Serverside\Adapter\StandardAdapter;
 use Junior\Serverside\Request;
 use Junior\Serverside\Response;
+use Junior\Serverside\Adapter\AdapterInterface;
+use Junior\Serverside\Adapter\StandardAdapter;
 
 const ERROR_INVALID_REQUEST = -32600;
 const ERROR_METHOD_NOT_FOUND = -32601;
@@ -33,14 +33,13 @@ class Server {
 
     public function createRequest($json)
     {
-        //TODO
-        return new Request();
+        return new Request($json);
     }
 
     public function invoke(Request $request)
     {
         //TODO
-        return null;
+        return $request;
     }
 
     public function createResponse()
