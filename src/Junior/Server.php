@@ -49,7 +49,7 @@ class Server {
             }
             $params = array($array);
         }
-        
+
         // for no params, pass in empty array
         if ($params === null) {
             $params = array();

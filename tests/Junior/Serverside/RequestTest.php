@@ -21,6 +21,11 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         $this->markTestSkipped();
     }
 
+    public function testIsNotValid()
+    {
+        $this->markTestSkipped();
+    }
+
     public function testIsNotify()
     {
         $this->markTestSkipped();

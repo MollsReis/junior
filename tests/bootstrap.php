@@ -13,5 +13,13 @@ class fixtureClass {
     {
         return self::$fooReturns;
     }
+
+    public static $barJSON = '{ "jsonrpc" : "2.0", "method" : "bar", "params" : [ 1, 2, 3 ], "id": 1 }';
+    public static $barReturns = 'bar';
+
+    public function bar($a, $b, $c)
+    {
+        return self::$barReturns;
+    }
 }
 
