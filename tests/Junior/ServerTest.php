@@ -2,6 +2,8 @@
 
 use Junior\Server;
 use Junior\Serverside\Request;
+use Junior\Serverside\BatchRequest;
+use Junior\Serverside\NotifyRequest;
 use Junior\Serverside\Adapter\StandardAdapter;
 
 class ServerTest extends PHPUnit_Framework_TestCase {
@@ -40,7 +42,8 @@ class ServerTest extends PHPUnit_Framework_TestCase {
 
     public function testCreateNotifyRequest()
     {
-        $this->markTestSkipped();
+        $request = $this->server->createRequest(fixtureClass::$notifyJSON);
+        $this->assertInstanceOf('Junior\Serverside\Request', $request);
     }
 
     public function testCreateBatchRequest()
@@ -67,16 +70,24 @@ class ServerTest extends PHPUnit_Framework_TestCase {
 
     public function testInvokeBatch()
     {
-        $this->markTestSkipped();
+        $request = new BatchRequest(json_decode(fixtureClass::$batchJSON));
+
+        $output = $this->server->invoke($request);
+        $this->assertEquals(fixtureClass::$batchReturns, $output);
     }
 
     public function testInvokeNotify()
     {
-        $this->markTestSkipped();
+        $request = new NotifyRequest(json_decode(fixtureClass::$notifyJSON));
+
+        $output = $this->server->invoke($request);
+        $this->assertNull($output);
     }
 
     public function testCreateResponse()
     {
-        $this->markTestSkipped();
+        $response = $this->server->createResponse('foo');
+        $this->assertInstanceOf('Junior\Serverside\Response', $response);
+
     }
 }

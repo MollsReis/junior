@@ -27,5 +27,12 @@ class fixtureClass {
         { "jsonrpc" : "2.0", "method" : "bar", "params" : [ 1, 2, 3 ], "id": 2 }
     ]';
     public static $batchReturns = [ 'foo', 'bar' ];
+
+    public static $notifyJSON = '{ "jsonrpc" : "2.0", "method" : "notifyMethod" }';
+
+    public function notifyMethod()
+    {
+        // return is ignored
+    }
 }
 

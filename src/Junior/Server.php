@@ -50,6 +50,15 @@ class Server {
 
     public function invoke(Request $request)
     {
+        // handle batched requests with recursion
+        if ($request->isBatch()) {
+            $returns = [];
+            foreach ($request->batchedRequests as $batchedRequest) {
+                $returns[] = $this->invoke($batchedRequest);
+            }
+            return $returns;
+        }
+
         $method = $request->method;
         $params = $request->params;
 
@@ -80,12 +89,19 @@ class Server {
             throw new Serverside\Exception('Too few parameters passed.');
         }
 
-        return $reflection->invokeArgs($this->exposedInstance, $params);
+        $output = $reflection->invokeArgs($this->exposedInstance, $params);
+
+        if ($request->isNotify()) {
+            return null;
+        }
+
+        return $output;
     }
 
-    public function createResponse()
+    public function createResponse($output)
     {
         //TODO
-        return new Response();
+
+        return new Response($output);
     }
 }

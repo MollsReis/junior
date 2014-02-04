@@ -4,6 +4,11 @@ namespace Junior\Serverside;
 
 class Response {
 
-    //TODO
+    public $output;
+
+    public function __construct($output)
+    {
+        $this->output = $output;
+    }
 
 }
