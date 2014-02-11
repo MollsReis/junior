@@ -86,8 +86,7 @@ class ServerTest extends PHPUnit_Framework_TestCase {
 
     public function testCreateResponse()
     {
-        $response = $this->server->createResponse('foo');
+        $response = $this->server->createResponse(fixtureClass::$fooReturns);
         $this->assertInstanceOf('Junior\Serverside\Response', $response);
-
     }
 }

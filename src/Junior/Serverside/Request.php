@@ -4,7 +4,7 @@ namespace Junior\Serverside;
 
 class Request {
 
-    public $parsed, $method, $params;
+    public $json, $method, $params;
 
     public function __construct($json)
     {
@@ -15,7 +15,20 @@ class Request {
 
     public function isValid()
     {
-        //TODO
+        if (!isset($this->json->jsonrpc) || $this->json->jsonrpc !== '2.0') {
+            //TODO exception?
+            return false;
+        } elseif (!isset($this->json->method)) {
+            //TODO exception?
+            return false;
+        } elseif (strpos(strtolower($this->json->method), 'rpc.') === 0) {
+            //TODO exception?
+            return false;
+        } elseif (isset($this->json->params) && !is_array($this->json->params) && !is_object($this->json->params)) {
+            //TODO exception?
+            return false;
+        }
+        return true;
     }
 
     public function isNotify()

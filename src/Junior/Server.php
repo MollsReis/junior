@@ -64,17 +64,20 @@ class Server {
 
         // for named parameters, convert from object to assoc array
         if (is_object($params)) {
-            $array = array();
+            $array = [];
             foreach ($params as $key => $val) {
                 $array[$key] = $val;
             }
-            $params = array($array);
+            $params = [ $array ];
         }
 
         // for no params, pass in empty array
         if ($params === null) {
-            $params = array();
+            $params = [];
         }
+
+        // method needs to exist on exposed instance
+        //TODO check for method existence
 
         $reflection = new \ReflectionMethod($this->exposedInstance, $method);
 
@@ -84,8 +87,8 @@ class Server {
         }
 
         // enforce correct number of arguments
-        $num_required_params = $reflection->getNumberOfRequiredParameters();
-        if ($num_required_params > count($params)) {
+        $numRequiredParams = $reflection->getNumberOfRequiredParameters();
+        if ($numRequiredParams > count($params)) {
             throw new Serverside\Exception('Too few parameters passed.');
         }
 
@@ -100,8 +103,7 @@ class Server {
 
     public function createResponse($output)
     {
-        //TODO
-
+        //TODO do other things?
         return new Response($output);
     }
 }
