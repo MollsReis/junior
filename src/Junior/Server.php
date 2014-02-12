@@ -2,14 +2,14 @@
 
 namespace Junior;
 
-use Junior\Serverside\Exception as ServerException;
-use Junior\Serverside\Request;
-use Junior\Serverside\NotifyRequest;
-use Junior\Serverside\BatchRequest;
-use Junior\Serverside\Response;
-use Junior\Serverside\ErrorResponse;
-use Junior\Serverside\Adapter\AdapterInterface;
-use Junior\Serverside\Adapter\StandardAdapter;
+use Junior\Serverside\Exception as ServerException,
+    Junior\Serverside\Request,
+    Junior\Serverside\NotifyRequest,
+    Junior\Serverside\BatchRequest,
+    Junior\Serverside\Response,
+    Junior\Serverside\ErrorResponse,
+    Junior\Serverside\Adapter\AdapterInterface,
+    Junior\Serverside\Adapter\StandardAdapter;
 
 class Server {
 

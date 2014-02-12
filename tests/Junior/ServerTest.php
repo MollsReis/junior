@@ -1,10 +1,10 @@
 <?php
 
-use Junior\Server;
-use Junior\Serverside\Request;
-use Junior\Serverside\BatchRequest;
-use Junior\Serverside\NotifyRequest;
-use Junior\Serverside\Adapter\StandardAdapter;
+use Junior\Server,
+    Junior\Serverside\Request,
+    Junior\Serverside\BatchRequest,
+    Junior\Serverside\NotifyRequest,
+    Junior\Serverside\Adapter\StandardAdapter;
 
 class ServerTest extends PHPUnit_Framework_TestCase {
 

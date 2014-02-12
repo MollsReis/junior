@@ -1,9 +1,9 @@
 <?php
 
-use Junior\Serverside\Request;
-use Junior\Serverside\NotifyRequest;
-use Junior\Serverside\BatchRequest;
-use Junior\Serverside\Exception as ServerException;
+use Junior\Serverside\Request,
+    Junior\Serverside\NotifyRequest,
+    Junior\Serverside\BatchRequest,
+    Junior\Serverside\Exception as ServerException;
 
 class RequestTest extends PHPUnit_Framework_TestCase {
 
