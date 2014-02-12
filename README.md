@@ -11,20 +11,26 @@ It is designed to be simple!"
 ## Why should I use Junior?
 Junior is JSON-RPC 2.0 viable and follows the JSON-RPC spec as of March 2012. It supports batching, named parameters, and notifications.
 
-## Is Junior available in a PHAR format?
-Junior can be downloaded as a PHAR file from the [downloads section](https://github.com/EvilScott/junior/downloads), or you can make your own PHAR file by running createphar.php from the bin directory.
+## What is the best way to download and include Junior?
+Use [Composer](https://getcomposer.org/). Junior is available on [Packagist](https://packagist.org/packages/evilscott/junior).
 
-## How do I use the client?
-Include lib/autoload.php load all necessary files. Alternatively, just include junior.phar if taking advantage of the PHAR format. Create a new instance of Junior\Client() and pass it the URI of the server you wish to communicate with. All communication through this instance. See the example folder for more details.
-
-## How do I use the server?
-Include lib/autoload.php load all necessary files. Alternatively, just include junior.phar if taking advantage of the PHAR format.  Create a new instance of Junior\Server() and pass it an instance of the class you wish to expose for communication. Then call the process() function on your server instance and you are ready to go! See the example folder for more details.
+## How do I use the client/server?
+Take a look at the examples directory. It's pretty straightforward.
 
 ## What if I don't like PHP (or I need to talk to Ruby)?
 Try out [Jimson](https://github.com/chriskite/jimson), written by Chris Kite for Ruby. It was made at the same time as Junior, and supports all the same features.
 
 ## What do I need to run Junior?
-* PHP >= 5.3
+* PHP >= 5.4
+
+## What is new in Junior 2.0?
+The changes are mostly internal. The code was refactored to be more OO and with a TDD approach which yielded cleaner code. The big difference is the ability to use your own adapter if you don't want to use the Junior default.
+
+## How do I use my own adapter?
+Just create a class that implements the Clientside or Serverside AdapterInterface and pass an instance of it to your new Client or Server. I am open to including more adapters in the core library.
+
+## Previous versions of Junior supported PHP 5.3. Why was support dropped in Junior 2.0+?
+[PHP 5.3 is reaching the end of its life](http://php.net/archive/2013.php#id2013-07-11-1). Users should really be upgrading to PHP 5.4+, but are welcome to use old versions of Junior if not.
 
 ## Does it have tests?
-Yes and as of February 2012 Junior has a robust, working test suite! The tests were written using [Spray](https://github.com/jimbojsb/spray) to stub stream wrappers and PHPUnit version 3.6.10. UPDATE: Junior is hooked into [Travis CI](http://travis-ci.org/EvilScott/junior) as of March 2012.
+Yes, testing is very important! Junior 2.0 was refactored with a TDD approach and has a full working test suite. Any pull requests will need to include tests in order to be merged.
