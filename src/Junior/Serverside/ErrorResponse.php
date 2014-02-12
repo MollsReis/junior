@@ -2,7 +2,7 @@
 
 namespace Junior\Serverside;
 
-class ErrorResponse {
+class ErrorResponse extends Response {
 
     public $message, $code;
 

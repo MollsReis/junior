@@ -11,4 +11,9 @@ class Response {
         $this->output = $output;
     }
 
+    public function toJSON()
+    {
+        //TODO
+    }
+
 }
