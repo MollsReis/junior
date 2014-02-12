@@ -35,6 +35,7 @@ class fixtureClass {
         // return is ignored
     }
 
+    public static $invalidJSON = '[{}}}';
     public static $missingJSONRPC = '{ "method" : "foo", "id": 1 }';
     public static $invalidJSONRPC = '{ "jsonrpc" : "foo", "method" : "foo", "id": 1 }';
     public static $missingMethod = '{ "jsonrpc" : "2.0", "id": 1 }';

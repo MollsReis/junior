@@ -2,17 +2,14 @@
 
 namespace Junior;
 
+use Junior\Serverside\Exception;
 use Junior\Serverside\Request;
 use Junior\Serverside\NotifyRequest;
 use Junior\Serverside\BatchRequest;
 use Junior\Serverside\Response;
+use Junior\Serverside\ErrorResponse;
 use Junior\Serverside\Adapter\AdapterInterface;
 use Junior\Serverside\Adapter\StandardAdapter;
-
-const ERROR_INVALID_REQUEST = -32600;
-const ERROR_METHOD_NOT_FOUND = -32601;
-const ERROR_INVALID_PARAMS = -32602;
-const ERROR_EXCEPTION = -32099;
 
 class Server {
 
@@ -28,16 +25,19 @@ class Server {
     {
         $json = $this->adapter->receive();
         $request = $this->createRequest($json);
-        $output = $this->invoke($request);
-        $response = $this->createResponse($output);
+        try {
+            $request->checkValid();
+            $output = $this->invoke($request);
+            $response = $this->createResponse($output);
+        } catch (Exception $exception) {
+            $response = $this->createErrorResponse($exception->getCode(), $exception->getMessage());
+        }
         $this->adapter->respond($response);
     }
 
     public function createRequest($json)
     {
         $parsedJSON = json_decode($json);
-
-        //TODO check for errors
 
         if (is_array($parsedJSON)) {
             return new BatchRequest($parsedJSON);
@@ -59,8 +59,8 @@ class Server {
             return $returns;
         }
 
-        $method = $request->method;
-        $params = $request->params;
+        $method = $request->getMethod();
+        $params = $request->getParams();
 
         // for named parameters, convert from object to assoc array
         if (is_object($params)) {
@@ -103,7 +103,13 @@ class Server {
 
     public function createResponse($output)
     {
-        //TODO do other things?
+        //TODO other things?
         return new Response($output);
+    }
+
+    public function createErrorResponse($message, $code)
+    {
+        //TODO other things?
+        return new ErrorResponse($message, $code);
     }
 }

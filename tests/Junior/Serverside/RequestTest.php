@@ -3,6 +3,7 @@
 use Junior\Serverside\Request;
 use Junior\Serverside\NotifyRequest;
 use Junior\Serverside\BatchRequest;
+use Junior\Serverside\Exception as ServerException;
 
 class RequestTest extends PHPUnit_Framework_TestCase {
 
@@ -15,49 +16,57 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     public function testGetMethod()
     {
         $request = new Request(json_decode(fixtureClass::$fooJSON));
-        $this->assertEquals('foo', $request->method);
+        $this->assertEquals('foo', $request->getMethod());
     }
 
     public function testGetParams()
     {
         $request = new Request(json_decode(fixtureClass::$barJSON));
-        $this->assertEquals([ 1, 2, 3 ], $request->params);
+        $this->assertEquals([ 1, 2, 3 ], $request->getParams());
     }
 
-    public function testIsValid()
+    public function testCheckValid()
     {
         $request = new Request(json_decode(fixtureClass::$fooJSON));
-        $this->assertTrue($request->isValid());
+        try {
+            $request->checkValid();
+        } catch (ServerException $exception) {
+            $this->fail();
+        }
     }
 
-    public function testIsNotValidMissingJSONRPC()
+    /**
+     * @expectedException     Junior\Serverside\Exception
+     * @expectedExceptionCode Junior\Serverside\Exception::CODE_INVALID_JSON
+     */
+    public function testCheckValidInvalidJSON()
     {
-        $request = new Request(json_decode(fixtureClass::$missingJSONRPC));
-        $this->assertFalse($request->isValid());
+        $request = new Request(json_decode(fixtureClass::$invalidJSON));
+        $request->checkValid();
+        $this->fail();
     }
 
-    public function testIsNotValidInvalidJSONRPC()
+    /**
+     * @dataProvider          invalidRequestProvider
+     * @expectedException     Junior\Serverside\Exception
+     * @expectedExceptionCode Junior\Serverside\Exception::CODE_INVALID_REQUEST
+     */
+    public function testCheckValidInvalidRequest($invalidRequestJSON)
     {
-        $request = new Request(json_decode(fixtureClass::$invalidJSONRPC));
-        $this->assertFalse($request->isValid());
+        $request = new Request(json_decode($invalidRequestJSON));
+        $request->checkValid();
+        $this->fail();
     }
 
-    public function testIsNotValidMissingMethod()
+    public function invalidRequestProvider()
     {
-        $request = new Request(json_decode(fixtureClass::$missingMethod));
-        $this->assertFalse($request->isValid());
-    }
-
-    public function testIsNotValidIllegalMethod()
-    {
-        $request = new Request(json_decode(fixtureClass::$illegalMethod));
-        $this->assertFalse($request->isValid());
-    }
-
-    public function testIsNotValidInvalidParams()
-    {
-        $request = new Request(json_decode(fixtureClass::$invalidParams));
-        $this->assertFalse($request->isValid());
+        return [
+            [ fixtureClass::$missingJSONRPC ],
+            [ fixtureClass::$invalidJSONRPC ],
+            [ fixtureClass::$missingMethod ],
+            [ fixtureClass::$illegalMethod ],
+            [ fixtureClass::$invalidParams ]
+        ];
     }
 
     public function testIsNotNotify()
