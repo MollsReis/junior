@@ -34,30 +34,51 @@ class ServerTest extends PHPUnit_Framework_TestCase {
         $this->assertAttributeInstanceOf('Junior\Serverside\Adapter\StandardAdapter', 'adapter', $server);
     }
 
-    public function testCreateRequest()
+
+    /**
+     * @dataProvider createRequestProvider
+     */
+    public function testCreateRequest($json, $expectedClass)
     {
         $request = $this->server->createRequest(fixtureClass::$fooJSON);
         $this->assertInstanceOf('Junior\Serverside\Request', $request);
     }
 
-    public function testCreateNotifyRequest()
+    public function createRequestProvider()
     {
-        $request = $this->server->createRequest(fixtureClass::$notifyJSON);
-        $this->assertInstanceOf('Junior\Serverside\Request', $request);
+        return [
+            [fixtureClass::$fooJSON, 'Junior\Serverside\Request'],
+            [fixtureClass::$batchJSON, 'Junior\Serverside\BatchRequest'],
+            [fixtureClass::$notifyJSON, 'Junior\Serverside\NotifyRequest']
+        ];
     }
 
-    public function testCreateBatchRequest()
+    /**
+     * @dataProvider invokeProvider
+     */
+    public function testInvoke($json, $expectedOutput)
     {
-        $request = $this->server->createRequest(fixtureClass::$batchJSON);
-        $this->assertInstanceOf('Junior\Serverside\BatchRequest', $request);
-    }
+        if ($json == fixtureClass::$batchJSON) {
+            $request = new BatchRequest(json_decode($json));
 
-    public function testInvoke()
-    {
-        $request = new Request(json_decode(fixtureClass::$fooJSON));
+        } elseif ($json == fixtureClass::$notifyJSON) {
+            $request = new NotifyRequest(json_decode($json));
+
+        } else {
+            $request = new Request(json_decode($json));
+        }
 
         $output = $this->server->invoke($request);
-        $this->assertEquals(fixtureClass::$fooReturns, $output);
+        $this->assertEquals($expectedOutput, $output);
+    }
+
+    public function invokeProvider() {
+        return [
+            [ fixtureClass::$fooJSON, fixtureClass::$fooReturns ],
+            [ fixtureClass::$barJSON, fixtureClass::$barReturns ],
+            [ fixtureClass::$batchJSON, fixtureClass::$batchReturns ],
+            [ fixtureClass::$notifyJSON, null ]
+        ];
     }
 
     /**
@@ -91,30 +112,6 @@ class ServerTest extends PHPUnit_Framework_TestCase {
         $request = new Request(json_decode(fixtureClass::$wrongNumberOfParams));
         $this->server->invoke($request);
         $this->fail();
-    }
-
-    public function testInvokeWithParams()
-    {
-        $request = new Request(json_decode(fixtureClass::$barJSON));
-
-        $output = $this->server->invoke($request);
-        $this->assertEquals(fixtureClass::$barReturns, $output);
-    }
-
-    public function testInvokeBatch()
-    {
-        $request = new BatchRequest(json_decode(fixtureClass::$batchJSON));
-
-        $output = $this->server->invoke($request);
-        $this->assertEquals(fixtureClass::$batchReturns, $output);
-    }
-
-    public function testInvokeNotify()
-    {
-        $request = new NotifyRequest(json_decode(fixtureClass::$notifyJSON));
-
-        $output = $this->server->invoke($request);
-        $this->assertNull($output);
     }
 
     public function testCreateResponse()
