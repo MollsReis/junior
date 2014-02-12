@@ -2,7 +2,7 @@
 
 namespace Junior;
 
-use Junior\Serverside\Exception;
+use Junior\Serverside\Exception as ServerException;
 use Junior\Serverside\Request;
 use Junior\Serverside\NotifyRequest;
 use Junior\Serverside\BatchRequest;
@@ -29,7 +29,7 @@ class Server {
             $request->checkValid();
             $output = $this->invoke($request);
             $response = $this->createResponse($output);
-        } catch (Exception $exception) {
+        } catch (ServerException $exception) {
             $response = $this->createErrorResponse($exception->getCode(), $exception->getMessage());
         }
         $this->adapter->respond($response);
@@ -77,19 +77,30 @@ class Server {
         }
 
         // method needs to exist on exposed instance
-        //TODO check for method existence
+        if (!method_exists($this->exposedInstance, $method)) {
+            throw new ServerException(
+                ServerException::MESSAGE_METHOD_DOES_NOT_EXIST,
+                ServerException::CODE_METHOD_DOES_NOT_EXIST
+            );
+        }
 
         $reflection = new \ReflectionMethod($this->exposedInstance, $method);
 
         // only allow calls to public functions
         if (!$reflection->isPublic()) {
-            throw new Serverside\Exception('Called method is not publicly accessible.');
+            throw new ServerException(
+                ServerException::MESSAGE_METHOD_NOT_AVAILABLE,
+                ServerException::CODE_METHOD_NOT_AVAILABLE
+            );
         }
 
         // enforce correct number of arguments
         $numRequiredParams = $reflection->getNumberOfRequiredParameters();
         if ($numRequiredParams > count($params)) {
-            throw new Serverside\Exception('Too few parameters passed.');
+            throw new ServerException(
+                ServerException::MESSAGE_INVALID_PARAMS,
+                ServerException::CODE_INVALID_PARAMS
+            );
         }
 
         $output = $reflection->invokeArgs($this->exposedInstance, $params);

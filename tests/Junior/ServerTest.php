@@ -60,6 +60,39 @@ class ServerTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(fixtureClass::$fooReturns, $output);
     }
 
+    /**
+     * @expectedException     Junior\Serverside\Exception
+     * @expectedExceptionCode Junior\Serverside\Exception::CODE_METHOD_DOES_NOT_EXIST
+     */
+    public function testInvokeMethodDoesNotExist()
+    {
+        $request = new Request(json_decode(fixtureClass::$methodDoesNotExistJSON));
+        $this->server->invoke($request);
+        $this->fail();
+    }
+
+    /**
+     * @expectedException     Junior\Serverside\Exception
+     * @expectedExceptionCode Junior\Serverside\Exception::CODE_METHOD_NOT_AVAILABLE
+     */
+    public function testInvokeMethodIsPrivate()
+    {
+        $request = new Request(json_decode(fixtureClass::$privateMethodJSON));
+        $this->server->invoke($request);
+        $this->fail();
+    }
+
+    /**
+     * @expectedException     Junior\Serverside\Exception
+     * @expectedExceptionCode Junior\Serverside\Exception::CODE_INVALID_PARAMS
+     */
+    public function testInvokeWrongNumberOfParams()
+    {
+        $request = new Request(json_decode(fixtureClass::$wrongNumberOfParams));
+        $this->server->invoke($request);
+        $this->fail();
+    }
+
     public function testInvokeWithParams()
     {
         $request = new Request(json_decode(fixtureClass::$barJSON));

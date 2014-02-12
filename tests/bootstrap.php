@@ -6,16 +6,16 @@ require_once __DIR__ . '/../src/autoload.php';
 
 class fixtureClass {
 
-    public static $fooJSON = '{ "jsonrpc" : "2.0", "method" : "foo", "id": 1 }';
-    public static $fooReturns = 'foo';
+    public static $fooJSON = '{ "jsonrpc" : "2.0", "method" : "foo", "id": 1 }',
+                  $fooReturns = 'foo';
 
     public function foo()
     {
         return self::$fooReturns;
     }
 
-    public static $barJSON = '{ "jsonrpc" : "2.0", "method" : "bar", "params" : [ 1, 2, 3 ], "id": 1 }';
-    public static $barReturns = 'bar';
+    public static $barJSON = '{ "jsonrpc" : "2.0", "method" : "bar", "params" : [ 1, 2, 3 ], "id": 1 }',
+                  $barReturns = 'bar';
 
     public function bar($a, $b, $c)
     {
@@ -35,11 +35,19 @@ class fixtureClass {
         // return is ignored
     }
 
-    public static $invalidJSON = '[{}}}';
-    public static $missingJSONRPC = '{ "method" : "foo", "id": 1 }';
-    public static $invalidJSONRPC = '{ "jsonrpc" : "foo", "method" : "foo", "id": 1 }';
-    public static $missingMethod = '{ "jsonrpc" : "2.0", "id": 1 }';
-    public static $illegalMethod = '{ "jsonrpc" : "2.0", "method" : "rpc.foo", "id": 1 }';
-    public static $invalidParams = '{ "jsonrpc" : "2.0", "method" : "foo", "params" : "bar", "id": 1 }';
+    public static $invalidJSON = '[{}}}',
+                  $missingJSONRPC = '{ "method" : "foo", "id": 1 }',
+                  $invalidJSONRPC = '{ "jsonrpc" : "foo", "method" : "foo", "id": 1 }',
+                  $missingMethod = '{ "jsonrpc" : "2.0", "id": 1 }',
+                  $illegalMethod = '{ "jsonrpc" : "2.0", "method" : "rpc.foo", "id": 1 }',
+                  $invalidParams = '{ "jsonrpc" : "2.0", "method" : "foo", "params" : "bar", "id": 1 }',
+                  $methodDoesNotExistJSON = '{ "jsonrpc" : "2.0", "method" : "notHere", "id": 1 }',
+                  $wrongNumberOfParams = '{ "jsonrpc" : "2.0", "method" : "bar", "params" : [ 1 ], "id": 1 }';
+
+    public static $privateMethodJSON = '{ "jsonrpc" : "2.0", "method" : "_imShy", "id": 1 }';
+
+    private function _imShy() {
+        // will never be called
+    }
 }
 
