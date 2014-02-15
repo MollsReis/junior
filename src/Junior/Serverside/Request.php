@@ -13,6 +13,11 @@ class Request {
         $this->json = $json;
     }
 
+    public function getId()
+    {
+        return isset($this->json->id) ? $this->json->id : null;
+    }
+
     public function getMethod()
     {
         return isset($this->json->method) ? $this->json->method : null;
@@ -20,7 +25,7 @@ class Request {
 
     public function getParams()
     {
-        return isset($this->json->method) ? $this->json->params : null;
+        return isset($this->json->params) ? $this->json->params : null;
     }
 
     public function checkValid()
@@ -30,6 +35,10 @@ class Request {
             $code = ServerException::CODE_INVALID_JSON;
 
         } elseif (!isset($this->json->jsonrpc) || $this->json->jsonrpc !== '2.0') {
+            $message = ServerException::MESSAGE_INVALID_REQUEST;
+            $code = ServerException::CODE_INVALID_REQUEST;
+
+        } elseif (isset($this->json->id) && !is_string($this->json->id) && !is_numeric($this->json->id) && !is_null($this->json->id)) {
             $message = ServerException::MESSAGE_INVALID_REQUEST;
             $code = ServerException::CODE_INVALID_REQUEST;
 

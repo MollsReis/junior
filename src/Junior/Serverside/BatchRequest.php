@@ -18,4 +18,11 @@ class BatchRequest extends Request {
     {
         return true;
     }
+
+    public function getIds()
+    {
+        return array_map(function(Request $request) {
+            return $request->getId();
+        }, $this->batchedRequests);
+    }
 }

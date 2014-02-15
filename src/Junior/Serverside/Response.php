@@ -4,16 +4,23 @@ namespace Junior\Serverside;
 
 class Response {
 
-    public $output;
+    public $id, $output;
 
-    public function __construct($output)
+    public function __construct($id, $output)
     {
+        $this->id = $id;
         $this->output = $output;
     }
 
     public function toJSON()
     {
-        //TODO
+        return json_encode(
+            [
+                'jsonrpc' => '2.0',
+                'result'   => $this->output,
+                'id'       => $this->id
+            ]
+        );
     }
 
 }

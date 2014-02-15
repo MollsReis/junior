@@ -7,7 +7,8 @@ require_once __DIR__ . '/../src/autoload.php';
 class fixtureClass {
 
     public static $fooJSON = '{ "jsonrpc" : "2.0", "method" : "foo", "id": 1 }',
-                  $fooReturns = 'foo';
+                  $fooReturns = 'foo',
+                  $fooResponse = '{ "jsonrpc" : "2.0", "result" : "foo", "id": 1 }';
 
     public function foo()
     {
@@ -28,6 +29,18 @@ class fixtureClass {
     ]';
     public static $batchReturns = [ 'foo', 'bar' ];
 
+    public static $batchJSONWithNotify = '[
+        { "jsonrpc" : "2.0", "method" : "bar", "id": 1 },
+        { "jsonrpc" : "2.0", "method" : "notifyMethod" },
+        { "jsonrpc" : "2.0", "method" : "foo", "params" : [ 1, 2, 3 ], "id": 2 },
+        { "jsonrpc" : "2.0", "method" : "notifyMethod" }
+    ]',
+                  $batchWithNotifyReturns = [ 'bar', 'foo' ],
+                  $batchWithNotifyResponse = '[
+        { "jsonrpc" : "2.0", "result" : "bar", "id": 1 },
+        { "jsonrpc" : "2.0", "result" : "foo", "id": 2 }
+    ]';
+
     public static $notifyJSON = '{ "jsonrpc" : "2.0", "method" : "notifyMethod" }';
 
     public function notifyMethod()
@@ -38,6 +51,7 @@ class fixtureClass {
     public static $invalidJSON = '[{}}}',
                   $missingJSONRPC = '{ "method" : "foo", "id": 1 }',
                   $invalidJSONRPC = '{ "jsonrpc" : "foo", "method" : "foo", "id": 1 }',
+                  $invalidId = '{ "jsonrpc" : "2.0", "method" : "foo", "id": { "foo" : "bar" } }',
                   $missingMethod = '{ "jsonrpc" : "2.0", "id": 1 }',
                   $illegalMethod = '{ "jsonrpc" : "2.0", "method" : "rpc.foo", "id": 1 }',
                   $invalidParams = '{ "jsonrpc" : "2.0", "method" : "foo", "params" : "bar", "id": 1 }',

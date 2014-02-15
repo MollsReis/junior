@@ -13,6 +13,12 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('Junior\Serverside\Request', $request);
     }
 
+    public function testGetId()
+    {
+        $request = new Request(json_decode(fixtureClass::$fooJSON));
+        $this->assertEquals(1, $request->getId());
+    }
+
     public function testGetMethod()
     {
         $request = new Request(json_decode(fixtureClass::$fooJSON));
@@ -63,6 +69,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         return [
             [ fixtureClass::$missingJSONRPC ],
             [ fixtureClass::$invalidJSONRPC ],
+            [ fixtureClass::$invalidId ],
             [ fixtureClass::$missingMethod ],
             [ fixtureClass::$illegalMethod ],
             [ fixtureClass::$invalidParams ]
@@ -91,5 +98,17 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     {
         $request = new BatchRequest(json_decode(fixtureClass::$batchJSON));
         $this->assertTrue($request->isBatch());
+    }
+
+    public function testGetIds()
+    {
+        $request = new BatchRequest(json_decode(fixtureClass::$batchJSON));
+        $this->assertEquals([ 1, 2 ], $request->getIds());
+    }
+
+    public function testGetIdsWithNotify()
+    {
+        $request = new BatchRequest(json_decode(fixtureClass::$batchJSONWithNotify));
+        $this->assertEquals([ 1, null, 2, null ], $request->getIds());
     }
 }

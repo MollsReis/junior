@@ -4,10 +4,11 @@ namespace Junior\Serverside;
 
 class ErrorResponse extends Response {
 
-    public $message, $code;
+    public $id, $message, $code;
 
-    public function __construct($message, $code)
+    public function __construct($id, $message, $code)
     {
+        $this->id = $id;
         $this->message = $message;
         $this->code = $code;
     }

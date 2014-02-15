@@ -7,6 +7,7 @@ use Junior\Serverside\Exception as ServerException,
     Junior\Serverside\NotifyRequest,
     Junior\Serverside\BatchRequest,
     Junior\Serverside\Response,
+    Junior\Serverside\BatchResponse,
     Junior\Serverside\ErrorResponse,
     Junior\Serverside\Adapter\AdapterInterface,
     Junior\Serverside\Adapter\StandardAdapter;
@@ -25,14 +26,25 @@ class Server {
     {
         $json = $this->adapter->receive();
         $request = $this->createRequest($json);
+
         try {
             $request->checkValid();
             $output = $this->invoke($request);
-            $response = $this->createResponse($output);
+
+            if ($request->isBatch()) {
+                $response = $this->createBatchResponse($request->getIds(), $output);
+
+            } elseif (!$request->isNotify()) {
+                $response = $this->createResponse($request->getId(), $output);
+            }
+
         } catch (ServerException $exception) {
-            $response = $this->createErrorResponse($exception->getCode(), $exception->getMessage());
+            $response = $this->createErrorResponse($request->getId(), $exception->getCode(), $exception->getMessage());
         }
-        $this->adapter->respond($response);
+
+        if (isset($response)) {
+            $this->adapter->respond($response);
+        }
     }
 
     public function createRequest($json)
@@ -41,8 +53,10 @@ class Server {
 
         if (is_array($parsedJSON)) {
             return new BatchRequest($parsedJSON);
+
         } elseif (!isset($parsedJSON->id)) {
             return new NotifyRequest($parsedJSON);
+
         } else {
             return new Request($parsedJSON);
         }
@@ -52,11 +66,11 @@ class Server {
     {
         // handle batched requests with recursion
         if ($request->isBatch()) {
-            $returns = [];
+            $results = [];
             foreach ($request->batchedRequests as $batchedRequest) {
-                $returns[] = $this->invoke($batchedRequest);
+                $results[] = $this->invoke($batchedRequest);
             }
-            return $returns;
+            return $results;
         }
 
         $method = $request->getMethod();
@@ -112,15 +126,18 @@ class Server {
         return $output;
     }
 
-    public function createResponse($output)
+    public function createResponse($id, $output)
     {
-        //TODO other things?
-        return new Response($output);
+        return new Response($id, $output);
     }
 
-    public function createErrorResponse($message, $code)
+    public function createBatchResponse($ids, $outputs)
     {
-        //TODO other things?
-        return new ErrorResponse($message, $code);
+        return new BatchResponse($ids, $outputs);
+    }
+
+    public function createErrorResponse($id, $message, $code)
+    {
+        return new ErrorResponse($id, $message, $code);
     }
 }

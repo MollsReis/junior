@@ -4,6 +4,7 @@
         <testsuite name="Server Tests">
             <file>Junior/ServerTest.php</file>
             <file>Junior/Serverside/RequestTest.php</file>
+            <file>Junior/Serverside/ResponseTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
