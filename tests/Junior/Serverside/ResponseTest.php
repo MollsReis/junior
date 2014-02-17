@@ -11,7 +11,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
     {
         $response = new Response(1, 'foo');
         $actualResponse = json_decode($response->toJSON());
-        $expectedResponse = json_decode(fixtureClass::$fooResponse);
+        $expectedResponse = json_decode(FixtureClass::$fooResponse);
 
         $this->assertEquals($expectedResponse->{'jsonrpc'}, $actualResponse->{'jsonrpc'});
         $this->assertEquals($expectedResponse->result, $actualResponse->result);
@@ -22,7 +22,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
     {
         $response = new BatchResponse([ 1, null, 2, null ], [ 'bar', null, 'foo', null ]);
         $actualResponse = json_decode($response->toJSON());
-        $expectedResponse = json_decode(fixtureClass::$batchWithNotifyResponse);
+        $expectedResponse = json_decode(FixtureClass::$batchWithNotifyResponse);
 
         $this->assertEquals($expectedResponse[0]->{'jsonrpc'}, $actualResponse[0]->{'jsonrpc'});
         $this->assertEquals($expectedResponse[0]->result, $actualResponse[0]->result);
@@ -41,7 +41,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
             ServerException::CODE_ERROR_PARSING_JSON
         );
         $actualResponse = json_decode($response->toJSON());
-        $expectedResponse = json_decode(fixtureClass::$errorParsingJSONResponse);
+        $expectedResponse = json_decode(FixtureClass::$errorParsingJSONResponse);
 
         $this->assertEquals($expectedResponse->{'jsonrpc'}, $actualResponse->{'jsonrpc'});
         $this->assertEquals($expectedResponse->error->message, $actualResponse->error->message);

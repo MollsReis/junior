@@ -3,10 +3,10 @@
 namespace Junior\Serverside;
 
 class Exception extends \Exception {
-    const MESSAGE_INVALID_JSON = 'Parse error: Invalid JSON was received by the server';
+    const MESSAGE_INVALID_JSON = 'Parse error: Invalid JSON was received by the server.';
     const CODE_INVALID_JSON = -32700;
 
-    const MESSAGE_ERROR_PARSING_JSON = 'Parse error: An error occurred on the server while parsing the JSON text';
+    const MESSAGE_ERROR_PARSING_JSON = 'Parse error: An error occurred on the server while parsing the JSON text.';
     const CODE_ERROR_PARSING_JSON = -32700;
 
     const MESSAGE_INVALID_REQUEST = 'Invalid Request: The JSON sent is not a valid Request object.';
@@ -24,6 +24,6 @@ class Exception extends \Exception {
     const MESSAGE_INTERNAL_ERROR = 'Internal error: Internal JSON-RPC error.';
     const CODE_INTERNAL_ERROR = -32603;
 
-    const MESSAGE_UNABLE_TO_READ_REQUEST = 'Server Error: Unable to read request';
+    const MESSAGE_UNABLE_TO_READ_REQUEST = 'Server Error: Unable to read request.';
     const CODE_UNABLE_TO_READ_REQUEST = -32000;
 }

@@ -39,7 +39,7 @@ class Server {
             }
 
         } catch (ServerException $exception) {
-            $response = $this->createErrorResponse($request->getId(), $exception->getCode(), $exception->getMessage());
+            $response = $this->createErrorResponse($request->getId(), $exception->getMessage(), $exception->getCode());
         }
 
         if (isset($response)) {

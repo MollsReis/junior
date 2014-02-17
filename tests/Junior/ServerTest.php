@@ -12,14 +12,14 @@ class ServerTest extends PHPUnit_Framework_TestCase {
 
     public function setUp()
     {
-        $instance = new fixtureClass();
+        $instance = new FixtureClass();
         $adapter = new StandardAdapter();
         $this->server = new Server($instance, $adapter);
     }
 
     public function testNewServer()
     {
-        $instance = new fixtureClass();
+        $instance = new FixtureClass();
         $adapter = new StandardAdapter();
 
         $server = new Server($instance, $adapter);
@@ -28,7 +28,7 @@ class ServerTest extends PHPUnit_Framework_TestCase {
 
     public function testNewServerNoAdapter()
     {
-        $instance = new fixtureClass();
+        $instance = new FixtureClass();
 
         $server = new Server($instance);
         $this->assertAttributeInstanceOf('Junior\Serverside\Adapter\StandardAdapter', 'adapter', $server);
@@ -40,16 +40,16 @@ class ServerTest extends PHPUnit_Framework_TestCase {
      */
     public function testCreateRequest($json, $expectedClass)
     {
-        $request = $this->server->createRequest(fixtureClass::$fooJSON);
+        $request = $this->server->createRequest(FixtureClass::$fooJSON);
         $this->assertInstanceOf('Junior\Serverside\Request', $request);
     }
 
     public function createRequestProvider()
     {
         return [
-            [fixtureClass::$fooJSON, 'Junior\Serverside\Request'],
-            [fixtureClass::$batchJSON, 'Junior\Serverside\BatchRequest'],
-            [fixtureClass::$notifyJSON, 'Junior\Serverside\NotifyRequest']
+            [FixtureClass::$fooJSON, 'Junior\Serverside\Request'],
+            [FixtureClass::$batchJSON, 'Junior\Serverside\BatchRequest'],
+            [FixtureClass::$notifyJSON, 'Junior\Serverside\NotifyRequest']
         ];
     }
 
@@ -58,10 +58,10 @@ class ServerTest extends PHPUnit_Framework_TestCase {
      */
     public function testInvoke($json, $expectedOutput)
     {
-        if ($json == fixtureClass::$batchJSON) {
+        if ($json == FixtureClass::$batchJSON) {
             $request = new BatchRequest(json_decode($json));
 
-        } elseif ($json == fixtureClass::$notifyJSON) {
+        } elseif ($json == FixtureClass::$notifyJSON) {
             $request = new NotifyRequest(json_decode($json));
 
         } else {
@@ -74,10 +74,10 @@ class ServerTest extends PHPUnit_Framework_TestCase {
 
     public function invokeProvider() {
         return [
-            [ fixtureClass::$fooJSON, fixtureClass::$fooReturns ],
-            [ fixtureClass::$barJSON, fixtureClass::$barReturns ],
-            [ fixtureClass::$batchJSON, fixtureClass::$batchReturns ],
-            [ fixtureClass::$notifyJSON, null ]
+            [ FixtureClass::$fooJSON, FixtureClass::$fooReturns ],
+            [ FixtureClass::$barJSON, FixtureClass::$barReturns ],
+            [ FixtureClass::$batchJSON, FixtureClass::$batchReturns ],
+            [ FixtureClass::$notifyJSON, null ]
         ];
     }
 
@@ -87,7 +87,7 @@ class ServerTest extends PHPUnit_Framework_TestCase {
      */
     public function testInvokeMethodDoesNotExist()
     {
-        $request = new Request(json_decode(fixtureClass::$methodDoesNotExistJSON));
+        $request = new Request(json_decode(FixtureClass::$methodDoesNotExistJSON));
         $this->server->invoke($request);
         $this->fail();
     }
@@ -98,7 +98,7 @@ class ServerTest extends PHPUnit_Framework_TestCase {
      */
     public function testInvokeMethodIsPrivate()
     {
-        $request = new Request(json_decode(fixtureClass::$privateMethodJSON));
+        $request = new Request(json_decode(FixtureClass::$privateMethodJSON));
         $this->server->invoke($request);
         $this->fail();
     }
@@ -109,20 +109,20 @@ class ServerTest extends PHPUnit_Framework_TestCase {
      */
     public function testInvokeWrongNumberOfParams()
     {
-        $request = new Request(json_decode(fixtureClass::$wrongNumberOfParams));
+        $request = new Request(json_decode(FixtureClass::$wrongNumberOfParams));
         $this->server->invoke($request);
         $this->fail();
     }
 
     public function testCreateResponse()
     {
-        $response = $this->server->createResponse(0, fixtureClass::$fooReturns);
+        $response = $this->server->createResponse(0, FixtureClass::$fooReturns);
         $this->assertInstanceOf('Junior\Serverside\Response', $response);
     }
 
     public function testCreateErrorResponse()
     {
-        $response = $this->server->createErrorResponse(0, fixtureClass::$fooReturns, 0);
+        $response = $this->server->createErrorResponse(0, FixtureClass::$fooReturns, 0);
         $this->assertInstanceOf('Junior\Serverside\Response', $response);
     }
 }

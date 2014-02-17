@@ -6,5 +6,8 @@
             <file>Junior/Serverside/RequestTest.php</file>
             <file>Junior/Serverside/ResponseTest.php</file>
         </testsuite>
+        <testsuite name="Integration Tests">
+            <file>Junior/IntegrationTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>
