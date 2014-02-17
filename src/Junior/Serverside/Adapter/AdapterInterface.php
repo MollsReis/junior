@@ -2,9 +2,11 @@
 
 namespace Junior\Serverside\Adapter;
 
-use Junior\Serverside\Response;
-
 interface AdapterInterface {
+
+    // receive raw JSON as a string
     public function receive();
-    public function respond(Response $response);
+
+    // respond with raw JSON as a string
+    public function respond($json);
 }

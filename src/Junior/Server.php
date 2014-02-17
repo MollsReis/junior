@@ -24,11 +24,11 @@ class Server {
 
     public function process()
     {
-        $json = $this->adapter->receive();
-        $request = $this->createRequest($json);
-
         try {
+            $request = $this->createRequest($this->adapter->receive());
+
             $request->checkValid();
+
             $output = $this->invoke($request);
 
             if ($request->isBatch()) {
@@ -43,7 +43,7 @@ class Server {
         }
 
         if (isset($response)) {
-            $this->adapter->respond($response);
+            $this->adapter->respond($response->toJSON());
         }
     }
 

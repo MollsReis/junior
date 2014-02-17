@@ -2,7 +2,8 @@
 
 use Junior\Serverside\Response,
     Junior\Serverside\BatchResponse,
-    Junior\Serverside\ErrorResponse;
+    Junior\Serverside\ErrorResponse,
+    Junior\Serverside\Exception as ServerException;
 
 class ResponseTest extends PHPUnit_Framework_TestCase {
 
@@ -11,6 +12,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
         $response = new Response(1, 'foo');
         $actualResponse = json_decode($response->toJSON());
         $expectedResponse = json_decode(fixtureClass::$fooResponse);
+
         $this->assertEquals($expectedResponse->{'jsonrpc'}, $actualResponse->{'jsonrpc'});
         $this->assertEquals($expectedResponse->result, $actualResponse->result);
         $this->assertEquals($expectedResponse->id, $actualResponse->id);
@@ -33,7 +35,18 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
 
     public function testToJSONError()
     {
-        $this->markTestSkipped();
+        $response = new ErrorResponse(
+            1,
+            ServerException::MESSAGE_ERROR_PARSING_JSON,
+            ServerException::CODE_ERROR_PARSING_JSON
+        );
+        $actualResponse = json_decode($response->toJSON());
+        $expectedResponse = json_decode(fixtureClass::$errorParsingJSONResponse);
+
+        $this->assertEquals($expectedResponse->{'jsonrpc'}, $actualResponse->{'jsonrpc'});
+        $this->assertEquals($expectedResponse->error->message, $actualResponse->error->message);
+        $this->assertEquals($expectedResponse->error->code, $actualResponse->error->code);
+        $this->assertEquals($expectedResponse->id, $actualResponse->id);
     }
 
 }

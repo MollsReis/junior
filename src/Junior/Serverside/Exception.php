@@ -23,4 +23,7 @@ class Exception extends \Exception {
 
     const MESSAGE_INTERNAL_ERROR = 'Internal error: Internal JSON-RPC error.';
     const CODE_INTERNAL_ERROR = -32603;
+
+    const MESSAGE_UNABLE_TO_READ_REQUEST = 'Server Error: Unable to read request';
+    const CODE_UNABLE_TO_READ_REQUEST = -32000;
 }

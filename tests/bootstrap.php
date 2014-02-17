@@ -63,5 +63,7 @@ class fixtureClass {
     private function _imShy() {
         // will never be called
     }
+
+    public static $errorParsingJSONResponse = '{ "jsonrpc" : "2.0", "error" : { "message" : "Parse error: An error occurred on the server while parsing the JSON text", "code" : -32700 }, "id" : 1 }';
 }
 

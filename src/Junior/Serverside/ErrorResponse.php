@@ -15,6 +15,15 @@ class ErrorResponse extends Response {
 
     public function toJSON()
     {
-        //TODO
+        return json_encode(
+            [
+                "jsonrpc" => "2.0",
+                "id"      => $this->id,
+                "error"   => [
+                    "message" => $this->message,
+                    "code"    => $this->code
+                ]
+            ]
+        );
     }
 }
