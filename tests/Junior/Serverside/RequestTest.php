@@ -41,6 +41,16 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         }
     }
 
+    public function testsCheckValidStringId()
+    {
+        $request = new Request(json_decode(FixtureClass::$stringIdJSON));
+        try {
+            $request->checkValid();
+        } catch (ServerException $exception) {
+            $this->fail();
+        }
+    }
+
     /**
      * @expectedException     Junior\Serverside\Exception
      * @expectedExceptionCode Junior\Serverside\Exception::CODE_INVALID_JSON

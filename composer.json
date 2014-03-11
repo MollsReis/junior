@@ -25,7 +25,6 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*",
-        "jimbojsb/spray": "dev-master"
+        "phpunit/phpunit": "3.7.*"
     }
 }
