@@ -34,14 +34,13 @@ class ServerTest extends PHPUnit_Framework_TestCase {
         $this->assertAttributeInstanceOf('Junior\Serverside\Adapter\StandardAdapter', 'adapter', $server);
     }
 
-
     /**
      * @dataProvider createRequestProvider
      */
     public function testCreateRequest($json, $expectedClass)
     {
-        $request = $this->server->createRequest(FixtureClass::$fooJSON);
-        $this->assertInstanceOf('Junior\Serverside\Request', $request);
+        $request = $this->server->createRequest($json);
+        $this->assertInstanceOf($expectedClass, $request);
     }
 
     public function createRequestProvider()

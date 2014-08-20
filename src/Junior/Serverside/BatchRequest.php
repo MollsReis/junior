@@ -2,9 +2,12 @@
 
 namespace Junior\Serverside;
 
+use Junior\Serverside\Exception as ServerException;
+
 class BatchRequest extends Request {
 
-    public $batchedRequests = [];
+    public $batchedRequests = [],
+           $validityMap = [];
 
     public function __construct($json)
     {
@@ -24,5 +27,17 @@ class BatchRequest extends Request {
         return array_map(function(Request $request) {
             return $request->getId();
         }, $this->batchedRequests);
+    }
+
+    public function checkValid()
+    {
+        foreach ($this->batchedRequests as $key => $request) {
+            try {
+                $request->checkValid();
+                $this->validityMap[$key] = true;
+            } catch (ServerException $e) {
+                $this->validityMap[$key] = $e;
+            }
+        }
     }
 }

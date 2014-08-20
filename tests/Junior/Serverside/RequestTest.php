@@ -41,6 +41,16 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         }
     }
 
+    public function testCheckValidBatch()
+    {
+        $request = new BatchRequest(json_decode(FixtureClass::$batchJSON));
+        try {
+            $request->checkValid();
+        } catch (ServerException $exception) {
+            $this->fail();
+        }
+    }
+
     public function testsCheckValidStringId()
     {
         $request = new Request(json_decode(FixtureClass::$stringIdJSON));
