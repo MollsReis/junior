@@ -3,3 +3,6 @@ php:
   - 5.3
   - 5.4
 script: composer install --dev && cd tests && ../vendor/bin/phpunit
+branches:
+  except:
+    - version2
