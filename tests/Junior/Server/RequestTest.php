@@ -1,27 +1,29 @@
 <?php
-use Spray\Spray;
 
 
-class ServerRequestTest extends PHPUnit_Framework_TestCase {
-
+class ServerRequestTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject|\Junior\Serverside\Request
+     */
     public function getEmptyRequest()
     {
         return $this->getMock('Junior\Serverside\Request',
-                               null,
-                               array(),
-                               '',
-                               false);
+            null,
+            array(),
+            '',
+            false);
     }
 
     public function testNewRequest()
     {
-        $json_rpc = '2.0';
-        $method = 'testmethod';
-        $params = array('foo', 'bar');
-        $id = 10;
-        $json = "{\"jsonrpc\":\"{$json_rpc}\", \"method\":\"{$method}\", \"params\":[\"{$params[0]}\", \"{$params[1]}\"], \"id\": {$id}}";
+        $jsonRpc = '2.0';
+        $method  = 'testmethod';
+        $params  = array('foo', 'bar');
+        $id      = 10;
+        $json    = "{\"jsonrpc\":\"{$jsonRpc}\", \"method\":\"{$method}\", \"params\":[\"{$params[0]}\", \"{$params[1]}\"], \"id\": {$id}}";
         $request = new Junior\Serverside\Request($json);
-        $this->assertEquals($json_rpc, $request->json_rpc);
+        $this->assertEquals($jsonRpc, $request->jsonRpc);
         $this->assertEquals($method, $request->method);
         $this->assertEquals($params, $request->params);
         $this->assertEquals($id, $request->id);
@@ -30,35 +32,35 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
     public function testNewRequestInvalidRequest()
     {
         $request = new Junior\Serverside\Request('');
-        $this->assertEquals(Junior\Serverside\Request::JSON_RPC_VERSION, $request->json_rpc);
-        $this->assertEquals(Junior\Serverside\Request::ERROR_INVALID_REQUEST, $request->error_code);
-        $this->assertEquals("Invalid Request.", $request->error_message);
+        $this->assertEquals(Junior\Serverside\Request::JSON_RPC_VERSION, $request->jsonRpc);
+        $this->assertEquals(Junior\Serverside\Request::ERROR_INVALID_REQUEST, $request->errorCode);
+        $this->assertEquals("Invalid Request.", $request->errorMessage);
 
         $request = new Junior\Serverside\Request('[]');
-        $this->assertEquals(Junior\Serverside\Request::JSON_RPC_VERSION, $request->json_rpc);
-        $this->assertEquals(Junior\Serverside\Request::ERROR_INVALID_REQUEST, $request->error_code);
-        $this->assertEquals("Invalid Request.", $request->error_message);
+        $this->assertEquals(Junior\Serverside\Request::JSON_RPC_VERSION, $request->jsonRpc);
+        $this->assertEquals(Junior\Serverside\Request::ERROR_INVALID_REQUEST, $request->errorCode);
+        $this->assertEquals("Invalid Request.", $request->errorMessage);
     }
 
     public function testNewRequestParseError()
     {
         $request = new Junior\Serverside\Request('[bad:json::]');
-        $this->assertEquals(Junior\Serverside\Request::JSON_RPC_VERSION, $request->json_rpc);
-        $this->assertEquals(Junior\Serverside\Request::ERROR_PARSE_ERROR, $request->error_code);
-        $this->assertEquals("Parse error.", $request->error_message);
+        $this->assertEquals(Junior\Serverside\Request::JSON_RPC_VERSION, $request->jsonRpc);
+        $this->assertEquals(Junior\Serverside\Request::ERROR_PARSE_ERROR, $request->errorCode);
+        $this->assertEquals("Parse error.", $request->errorMessage);
     }
 
     public function testNewRequestBatch()
     {
-        $json_rpc = '2.0';
-        $method = 'testmethod';
-        $params = array('foo', 'bar');
-        $id = 10;
-        $json = "{\"jsonrpc\":\"{$json_rpc}\", \"method\":\"{$method}\", \"params\":[\"{$params[0]}\", \"{$params[1]}\"], \"id\": {$id}}";
-        $batch_json = "[$json,$json,$json]";
-        $requests = new Junior\Serverside\Request($batch_json);
+        $jsonRpc   = '2.0';
+        $method    = 'testmethod';
+        $params    = array('foo', 'bar');
+        $id        = 10;
+        $json      = "{\"jsonrpc\":\"{$jsonRpc}\", \"method\":\"{$method}\", \"params\":[\"{$params[0]}\", \"{$params[1]}\"], \"id\": {$id}}";
+        $batchJson = "[$json,$json,$json]";
+        $requests  = new Junior\Serverside\Request($batchJson);
         foreach ($requests->requests as $request) {
-            $this->assertEquals($json_rpc, $request->json_rpc);
+            $this->assertEquals($jsonRpc, $request->jsonRpc);
             $this->assertEquals($method, $request->method);
             $this->assertEquals($params, $request->params);
             $this->assertEquals($id, $request->id);
@@ -67,85 +69,85 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
 
     public function testCheckValidGood()
     {
-        $request = $this->getEmptyRequest();
-        $request->json_rpc = '2.0';
-        $request->method = 'testMethod';
-        $request->id = 10;
+        $request          = $this->getEmptyRequest();
+        $request->jsonRpc = '2.0';
+        $request->method  = 'testMethod';
+        $request->id      = 10;
         $this->assertTrue($request->checkValid());
     }
 
     public function testCheckValidErrorAlreadySet()
     {
-        $request = $this->getEmptyRequest();
-        $request->json_rpc = '2.0';
-        $request->method = 'testMethod';
-        $request->error_code = 10;
-        $request->error_message = 'Error!';
-        $request->id = 10;
+        $request               = $this->getEmptyRequest();
+        $request->jsonRpc      = '2.0';
+        $request->method       = 'testMethod';
+        $request->errorCode    = 10;
+        $request->errorMessage = 'Error!';
+        $request->id           = 10;
         $this->assertFalse($request->checkValid());
     }
 
     public function testCheckValidInvalidRequest()
     {
-        $error_code = Junior\Serverside\Request::ERROR_INVALID_REQUEST;
-        $error_message = 'Invalid Request.';
+        $errorCode    = Junior\Serverside\Request::ERROR_INVALID_REQUEST;
+        $errorMessage = 'Invalid Request.';
 
-        $request = $this->getEmptyRequest();
-        $request->json_rpc = null;
-        $request->method = 'testMethod';
-        $request->id = 10;
+        $request          = $this->getEmptyRequest();
+        $request->jsonRpc = null;
+        $request->method  = 'testMethod';
+        $request->id      = 10;
         $this->assertFalse($request->checkValid());
-        $this->assertEquals($error_code, $request->error_code);
-        $this->assertEquals($error_message, $request->error_message);
+        $this->assertEquals($errorCode, $request->errorCode);
+        $this->assertEquals($errorMessage, $request->errorMessage);
 
-        $request = $this->getEmptyRequest();
-        $request->json_rpc = '2.0';
-        $request->method = null;
-        $request->id = 10;
+        $request          = $this->getEmptyRequest();
+        $request->jsonRpc = '2.0';
+        $request->method  = null;
+        $request->id      = 10;
         $this->assertFalse($request->checkValid());
-        $this->assertEquals($error_code, $request->error_code);
-        $this->assertEquals($error_message, $request->error_message);
+        $this->assertEquals($errorCode, $request->errorCode);
+        $this->assertEquals($errorMessage, $request->errorMessage);
 
-        $request = $this->getEmptyRequest();
-        $request->json_rpc = '2.0';
-        $request->method = '!!!function';
-        $request->id = 10;
+        $request          = $this->getEmptyRequest();
+        $request->jsonRpc = '2.0';
+        $request->method  = '!!!function';
+        $request->id      = 10;
         $this->assertFalse($request->checkValid());
-        $this->assertEquals($error_code, $request->error_code);
-        $this->assertEquals($error_message, $request->error_message);
+        $this->assertEquals($errorCode, $request->errorCode);
+        $this->assertEquals($errorMessage, $request->errorMessage);
     }
 
     public function testCheckValidReservedPrefix()
     {
-        $error_code = Junior\Serverside\Request::ERROR_RESERVED_PREFIX;
-        $error_message = 'Illegal method name; Method cannot start with \'rpc.\'';
+        $errorCode    = Junior\Serverside\Request::ERROR_RESERVED_PREFIX;
+        $errorMessage = 'Illegal method name; Method cannot start with \'rpc.\'';
 
-        $request = $this->getEmptyRequest();
-        $request->json_rpc = '2.0';
-        $request->method = 'rpc.notvalid';
-        $request->id = 10;
+        $request          = $this->getEmptyRequest();
+        $request->jsonRpc = '2.0';
+        $request->method  = 'rpc.notvalid';
+        $request->id      = 10;
         $this->assertFalse($request->checkValid());
-        $this->assertEquals($error_code, $request->error_code);
-        $this->assertEquals($error_message, $request->error_message);
+        $this->assertEquals($errorCode, $request->errorCode);
+        $this->assertEquals($errorMessage, $request->errorMessage);
     }
 
     public function testCheckValidMismatchedVersion()
     {
-        $error_code = Junior\Serverside\Request::ERROR_MISMATCHED_VERSION;
-        $error_message = 'Client/Server JSON-RPC version mismatch; Expected \'2.0\'';
+        $errorCode    = Junior\Serverside\Request::ERROR_MISMATCHED_VERSION;
+        $errorMessage = 'Client/Server JSON-RPC version mismatch; Expected \'2.0\'';
 
-        $request = $this->getEmptyRequest();
-        $request->json_rpc = '1.0';
-        $request->method = 'method';
-        $request->id = 10;
+        $request          = $this->getEmptyRequest();
+        $request->jsonRpc = '1.0';
+        $request->method  = 'method';
+        $request->id      = 10;
         $this->assertFalse($request->checkValid());
-        $this->assertEquals($error_code, $request->error_code);
-        $this->assertEquals($error_message, $request->error_message);
+        $this->assertEquals($errorCode, $request->errorCode);
+        $this->assertEquals($errorMessage, $request->errorMessage);
     }
 
     public function testIsBatch()
     {
-        $request = $this->getEmptyRequest();
+        $request        = $this->getEmptyRequest();
         $request->batch = true;
 
         $this->assertTrue($request->isBatch());
@@ -153,7 +155,7 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
 
     public function testIsNotify()
     {
-        $request = $this->getEmptyRequest();
+        $request     = $this->getEmptyRequest();
         $request->id = null;
 
         $this->assertTrue($request->isNotify());
@@ -165,7 +167,7 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
 
     public function testIsNotifyWithZero()
     {
-        $request = $this->getEmptyRequest();
+        $request     = $this->getEmptyRequest();
         $request->id = 0;
 
         $this->assertFalse($request->isNotify());
@@ -173,18 +175,18 @@ class ServerRequestTest extends PHPUnit_Framework_TestCase {
 
     public function testResponseJSON()
     {
-        $request = $this->getEmptyRequest();
-        $json_version = Junior\Serverside\Request::JSON_RPC_VERSION;
-        $request->error_code = 10;
-        $request->error_message = 'Error!';
-        $request->id = 1;
+        $request               = $this->getEmptyRequest();
+        $jsonVersion           = Junior\Serverside\Request::JSON_RPC_VERSION;
+        $request->errorCode    = 10;
+        $request->errorMessage = 'Error!';
+        $request->id           = 1;
 
-        $json = "{\"jsonrpc\":\"{$json_version}\",\"error\":{\"code\":{$request->error_code},\"message\":\"{$request->error_message}\"},\"id\":{$request->id}}";
+        $json = "{\"jsonrpc\":\"{$jsonVersion}\",\"error\":{\"code\":{$request->errorCode},\"message\":\"{$request->errorMessage}\"},\"id\":{$request->id}}";
         $this->assertEquals($json, $request->toResponseJSON());
 
         $request->result = 'foo';
 
-        $json = "{\"jsonrpc\":\"{$json_version}\",\"result\":\"{$request->result}\",\"id\":{$request->id}}";
+        $json = "{\"jsonrpc\":\"{$jsonVersion}\",\"result\":\"{$request->result}\",\"id\":{$request->id}}";
         $this->assertEquals($json, $request->toResponseJSON());
     }
 

@@ -1,35 +1,54 @@
 <?php
+
 namespace Junior;
 
 use Junior\Serverside\Request;
 
-const ERROR_INVALID_REQUEST = -32600;
+const ERROR_INVALID_REQUEST  = -32600;
 const ERROR_METHOD_NOT_FOUND = -32601;
-const ERROR_INVALID_PARAMS = -32602;
-const ERROR_EXCEPTION = -32099;
+const ERROR_INVALID_PARAMS   = -32602;
+const ERROR_EXCEPTION        = -32099;
 
-class Server {
 
+class Server
+{
     public $exposed_instance, $input;
 
-    // create new server
-    public function __construct($exposed_instance)
+    /**
+     * create new server
+     *
+     * @param $exposedInstance
+     * @throws Serverside\Exception
+     */
+    public function __construct($exposedInstance)
     {
-        if (!is_object($exposed_instance)) {
+        if (!is_object($exposedInstance)) {
             throw new Serverside\Exception("Server requires an object");
         }
 
-        $this->exposed_instance = $exposed_instance;
-        $this->input = 'php://input';
+        $this->exposed_instance = $exposedInstance;
+        $this->input            = 'php://input';
     }
 
-    // check for method existence
+    /**
+     * check for method existence
+     *
+     * @param $method_name
+     * @return bool
+     */
     public function methodExists($method_name)
     {
         return method_exists($this->exposed_instance, $method_name);
     }
 
-    // attempt to invoke the method with params
+    /**
+     * attempt to invoke the method with params
+     *
+     * @param $method
+     * @param $params
+     * @return mixed
+     * @throws Serverside\Exception
+     */
     public function invokeMethod($method, $params)
     {
         // for named parameters, convert from object to assoc array
@@ -45,7 +64,7 @@ class Server {
             $params = array();
         }
         $reflection = new \ReflectionMethod($this->exposed_instance, $method);
-        
+
         // only allow calls to public functions
         if (!$reflection->isPublic()) {
             throw new Serverside\Exception("Called method is not publically accessible.");
@@ -56,11 +75,15 @@ class Server {
         if ($num_required_params > count($params)) {
             throw new Serverside\Exception("Too few parameters passed.");
         }
-        
+
         return $reflection->invokeArgs($this->exposed_instance, $params);
     }
 
-    // process json-rpc request
+    /**
+     * process json-rpc request
+     *
+     * @throws Serverside\Exception
+     */
     public function process()
     {
         // try to read input
@@ -86,8 +109,9 @@ class Server {
         }
 
         // handle json parse error and empty batch
-        if ($request->error_code && $request->error_message) {
+        if ($request->errorCode && $request->errorMessage) {
             echo $request->toResponseJSON();
+
             return;
         }
 
@@ -95,13 +119,23 @@ class Server {
         echo $this->handleRequest($request);
     }
 
-    // create new request (used for test mocking purposes)
+    /**
+     * create new request (used for test mocking purposes)
+     *
+     * @param $json
+     * @return Request
+     */
     public function makeRequest($json)
     {
         return new Request($json);
     }
 
-    // handle request object / return response json
+    /**
+     * handle request object / return response json
+     *
+     * @param Request $request
+     * @return null|string
+     */
     public function handleRequest($request)
     {
         // recursion for batch
@@ -110,7 +144,9 @@ class Server {
             foreach ($request->requests as $req) {
                 $batch[] = $this->handleRequest($req);
             }
-            $responses = implode(',',array_filter($batch, function($a){return $a !== null;}));
+            $responses = implode(',', array_filter($batch, function ($a) {
+                return $a !== null;
+            }));
             if ($responses != null) {
                 return "[{$responses}]";
             } else {
@@ -122,8 +158,9 @@ class Server {
         if ($request->checkValid()) {
             // check for method existence
             if (!$this->methodExists($request->method)) {
-                $request->error_code = ERROR_METHOD_NOT_FOUND;
-                $request->error_message = "Method not found.";
+                $request->errorCode    = ERROR_METHOD_NOT_FOUND;
+                $request->errorMessage = "Method not found.";
+
                 return $request->toResponseJSON();
             }
 
@@ -135,10 +172,10 @@ class Server {
                 } else {
                     return null;
                 }
-            // handle exceptions
+                // handle exceptions
             } catch (\Exception $e) {
-                $request->error_code = ERROR_EXCEPTION;
-                $request->error_message = $e->getMessage();
+                $request->errorCode    = ERROR_EXCEPTION;
+                $request->errorMessage = $e->getMessage();
             }
         }
 

@@ -1,8 +1,10 @@
 <?php
+
 use Spray\Spray;
 
 
-class RequestTest extends PHPUnit_Framework_TestCase {
+class RequestTest extends PHPUnit_Framework_TestCase
+{
 
     public function setUp()
     {
@@ -32,7 +34,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     public function testNewRequestBad()
     {
         $this->setExpectedException('Junior\Clientside\Exception');
-        
+
         $request = new Junior\Clientside\Request('rpc.' . $this->method, $this->params);
     }
 
@@ -40,70 +42,68 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     {
         $request = new Junior\Clientside\Request($this->method, $this->params);
         $this->assertEquals(array(
-                              'jsonrpc' => \Junior\Clientside\Request::JSON_RPC_VERSION,
-                              'method' => $this->method,
-                              'params' => array($this->params),
-                              'id' => $request->id
-                            ),
-                            $request->getArray());
+            'jsonrpc' => \Junior\Clientside\Request::JSON_RPC_VERSION,
+            'method'  => $this->method,
+            'params'  => array($this->params),
+            'id'      => $request->id
+        ),
+            $request->getArray());
     }
 
     public function testGetArrayNoParams()
     {
         $request = new Junior\Clientside\Request($this->method);
         $this->assertEquals(array(
-                              'jsonrpc' => \Junior\Clientside\Request::JSON_RPC_VERSION,
-                              'method' => $this->method,
-                              'id' => $request->id
-                            ),
-                            $request->getArray());
+            'jsonrpc' => \Junior\Clientside\Request::JSON_RPC_VERSION,
+            'method'  => $this->method,
+            'id'      => $request->id
+        ),
+            $request->getArray());
     }
 
     public function testGetArrayNotify()
     {
         $request = new Junior\Clientside\Request($this->method, $this->params, true);
         $this->assertEquals(array(
-                              'jsonrpc' => Junior\Clientside\Request::JSON_RPC_VERSION,
-                              'method' => $this->method,
-                              'params' => array($this->params)
-                            ),
-                            $request->getArray());
+            'jsonrpc' => Junior\Clientside\Request::JSON_RPC_VERSION,
+            'method'  => $this->method,
+            'params'  => array($this->params)
+        ),
+            $request->getArray());
     }
 
     public function testGetJSON()
     {
         $request = new Junior\Clientside\Request($this->method, $this->params);
         $this->assertEquals(json_encode(array(
-                              'jsonrpc' => Junior\Clientside\Request::JSON_RPC_VERSION,
-                              'method' => $this->method,
-                              'params' => array($this->params),
-                              'id' => $request->id
-                            )),
-                            $request->getJSON());
+            'jsonrpc' => Junior\Clientside\Request::JSON_RPC_VERSION,
+            'method'  => $this->method,
+            'params'  => array($this->params),
+            'id'      => $request->id
+        )),
+            $request->getJSON());
     }
 
     public function testGetJSONNoParams()
     {
         $request = new Junior\Clientside\Request($this->method);
         $this->assertEquals(json_encode(array(
-                              'jsonrpc' => Junior\Clientside\Request::JSON_RPC_VERSION,
-                              'method' => $this->method,
-                              'id' => $request->id
-                            )),
-                            $request->getJSON());
+            'jsonrpc' => Junior\Clientside\Request::JSON_RPC_VERSION,
+            'method'  => $this->method,
+            'id'      => $request->id
+        )),
+            $request->getJSON());
     }
 
     public function testGetJSONNotify()
     {
         $request = new Junior\Clientside\Request($this->method, $this->params, true);
         $this->assertEquals(json_encode(array(
-                              'jsonrpc' => Junior\Clientside\Request::JSON_RPC_VERSION,
-                              'method' => $this->method,
-                              'params' => array($this->params)
-                            )),
-                            $request->getJSON());
+            'jsonrpc' => Junior\Clientside\Request::JSON_RPC_VERSION,
+            'method'  => $this->method,
+            'params'  => array($this->params)
+        )),
+            $request->getJSON());
     }
 
 }
-
-?>

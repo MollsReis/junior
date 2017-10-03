@@ -1,12 +1,15 @@
 <?php
+
 use Spray\Spray;
 
 
-class ClientTest extends PHPUnit_Framework_TestCase {
+class ClientTest extends PHPUnit_Framework_TestCase
+{
+    protected $fakeUri;
 
     public function setUp()
     {
-        $this->fake_uri = 'foo://bar';
+        $this->fakeUri = 'foo://bar';
     }
 
     public function tearDown()
@@ -16,18 +19,19 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     private function stubResponse($body)
     {
-        Spray::stub($this->fake_uri, array('raw' => $body));
+        Spray::stub($this->fakeUri, array('raw' => $body));
     }
 
     public function getEmptyRequest()
     {
-        $request = $this->getMock('Object', array('getJSON','getArray'));
+        $request = $this->getMock('Request', array('getJSON', 'getArray'));
         $request->expects($this->any())
-                ->method('getJSON')
-                ->will($this->returnValue(null));
+            ->method('getJSON')
+            ->will($this->returnValue(null));
         $request->expects($this->any())
-                ->method('getArray')
-                ->will($this->returnValue(null));
+            ->method('getArray')
+            ->will($this->returnValue(null));
+
         return $request;
     }
 
@@ -36,18 +40,23 @@ class ClientTest extends PHPUnit_Framework_TestCase {
         return $this->getMock('Object');
     }
 
-    public function getMockClient($methods = array(), $returns_once = null)
+    /**
+     * @param array $methods
+     * @param null $returnsOnce
+     * @return PHPUnit_Framework_MockObject_MockObject|\Junior\Client
+     */
+    public function getMockClient($methods = array(), $returnsOnce = null)
     {
         $client = $this->getMock('Junior\Client',
-                                 $methods,
-                                 array(),
-                                 '',
-                                 false);
+            $methods,
+            array(),
+            '',
+            false);
 
-        if ($returns_once !== null) {
+        if ($returnsOnce !== null) {
             $client->expects($this->once())
-                   ->method('send')
-                   ->will($this->returnValue($returns_once));
+                ->method('send')
+                ->will($this->returnValue($returnsOnce));
         }
 
         return $client;
@@ -55,7 +64,7 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testSetBasicAuth()
     {
-        $client = new Junior\Client($this->fake_uri);
+        $client = new Junior\Client($this->fakeUri);
         $client->setBasicAuth('foo', 'bar');
         $expected = "Authorization: Basic Zm9vOmJhcg==\r\n";
         $this->assertEquals($expected, $client->authHeader);
@@ -63,7 +72,7 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testclearAuth()
     {
-        $client = new Junior\Client($this->fake_uri);
+        $client = new Junior\Client($this->fakeUri);
         $client->clearAuth();
         $client->setBasicAuth('foo', 'bar');
         $client->clearAuth();
@@ -72,11 +81,11 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testSendRequestGoodId()
     {
-        $request = $this->getEmptyRequest();
+        $request     = $this->getEmptyRequest();
         $request->id = 10;
 
-        $response = $this->getEmptyResponse();
-        $response->id = 10;
+        $response         = $this->getEmptyResponse();
+        $response->id     = 10;
         $response->result = 'foo';
 
         $client = $this->getMockClient(array('send'), $response);
@@ -86,10 +95,10 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testSendRequestBadId()
     {
-        $request = $this->getEmptyRequest();
+        $request     = $this->getEmptyRequest();
         $request->id = 10;
 
-        $response = $this->getEmptyResponse();
+        $response     = $this->getEmptyResponse();
         $response->id = 11;
 
         $client = $this->getMockClient(array('send'), $response);
@@ -101,12 +110,12 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testReceiveErrorCodeZero()
     {
-        $request = $this->getEmptyRequest();
+        $request     = $this->getEmptyRequest();
         $request->id = 11;
 
-        $response = $this->getEmptyResponse();
-        $response->id = 11;
-        $response->error_code = 0;
+        $response            = $this->getEmptyResponse();
+        $response->id        = 11;
+        $response->errorCode = 0;
 
         $client = $this->getMockClient(array('send'), $response);
 
@@ -117,7 +126,7 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testSendNotifyGood()
     {
-        $request = $this->getEmptyRequest();
+        $request     = $this->getEmptyRequest();
         $request->id = null;
 
         $client = $this->getMockClient(array('send'), true);
@@ -127,7 +136,7 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testSendNotifyBad()
     {
-        $request = $this->getEmptyRequest();
+        $request     = $this->getEmptyRequest();
         $request->id = 10;
 
         $client = $this->getMockClient(array('send'));
@@ -141,16 +150,16 @@ class ClientTest extends PHPUnit_Framework_TestCase {
     public function testSendBatchGood()
     {
         $requests = array();
-        for($i=10;$i<=15;$i++) {
-            $request = $this->getEmptyRequest();
+        for ($i = 10; $i <= 15; $i++) {
+            $request     = $this->getEmptyRequest();
             $request->id = $i;
-            $requests[] = $request;
+            $requests[]  = $request;
         }
 
         $responses = array();
-        for($i=10;$i<=15;$i++) {
-            $response = $this->getEmptyResponse();
-            $response->id = $i;
+        for ($i = 10; $i <= 15; $i++) {
+            $response      = $this->getEmptyResponse();
+            $response->id  = $i;
             $responses[$i] = $response;
         }
 
@@ -162,16 +171,16 @@ class ClientTest extends PHPUnit_Framework_TestCase {
     public function testSendBatchBadTooFew()
     {
         $requests = array();
-        for($i=10;$i<=15;$i++) {
-            $request = $this->getEmptyRequest();
+        for ($i = 10; $i <= 15; $i++) {
+            $request     = $this->getEmptyRequest();
             $request->id = $i;
-            $requests[] = $request;
+            $requests[]  = $request;
         }
 
         $responses = array();
-        for($i=10;$i<=13;$i++) {
-            $response = $this->getEmptyResponse();
-            $response->id = $i;
+        for ($i = 10; $i <= 13; $i++) {
+            $response      = $this->getEmptyResponse();
+            $response->id  = $i;
             $responses[$i] = $response;
         }
 
@@ -185,16 +194,16 @@ class ClientTest extends PHPUnit_Framework_TestCase {
     public function testSendBatchBadTooMany()
     {
         $requests = array();
-        for($i=10;$i<=15;$i++) {
-            $request = $this->getEmptyRequest();
+        for ($i = 10; $i <= 15; $i++) {
+            $request     = $this->getEmptyRequest();
             $request->id = $i;
-            $requests[] = $request;
+            $requests[]  = $request;
         }
 
         $responses = array();
-        for($i=10;$i<=17;$i++) {
-            $response = $this->getEmptyResponse();
-            $response->id = $i;
+        for ($i = 10; $i <= 17; $i++) {
+            $response      = $this->getEmptyResponse();
+            $response->id  = $i;
             $responses[$i] = $response;
         }
 
@@ -209,10 +218,10 @@ class ClientTest extends PHPUnit_Framework_TestCase {
     public function testSendBatchNotify()
     {
         $requests = array();
-        for($i=10;$i<=15;$i++) {
-            $request = $this->getEmptyRequest();
+        for ($i = 10; $i <= 15; $i++) {
+            $request     = $this->getEmptyRequest();
             $request->id = null;
-            $requests[] = $request;
+            $requests[]  = $request;
         }
 
         $client = $this->getMockClient(array('send'), true);
@@ -224,11 +233,11 @@ class ClientTest extends PHPUnit_Framework_TestCase {
     {
         $this->stubResponse('{"good":"json"}');
         $client = $this->getMock('Junior\Client',
-                                 array('handleResponse'),
-                                 array($this->fake_uri));
+            array('handleResponse'),
+            array($this->fakeUri));
         $client->expects($this->once())
-               ->method('handleResponse')
-               ->will($this->returnArgument(0));
+            ->method('handleResponse')
+            ->will($this->returnArgument(0));
 
         $client->send('foo');
     }
@@ -237,8 +246,8 @@ class ClientTest extends PHPUnit_Framework_TestCase {
     {
         $this->stubResponse('foo');
         $client = $this->getMock('Junior\Client',
-                                 array('handleResponse'),
-                                 array($this->fake_uri));
+            array('handleResponse'),
+            array($this->fakeUri));
         $client->expects($this->never())->method('handleResponse');
 
         $this->assertTrue($client->send('foo', true));
@@ -247,8 +256,8 @@ class ClientTest extends PHPUnit_Framework_TestCase {
     public function testSendBadConnect()
     {
         $client = $this->getMock('Junior\Client',
-                                 array('handleResponse'),
-                                 array('not.there'));
+            array('handleResponse'),
+            array('not.there'));
         $client->expects($this->never())->method('handleResponse');
 
         $this->setExpectedException('Junior\Clientside\Exception');
@@ -260,8 +269,8 @@ class ClientTest extends PHPUnit_Framework_TestCase {
     {
         $this->stubResponse('{bad:json,}');
         $client = $this->getMock('Junior\Client',
-                                 array('handleResponse'),
-                                 array($this->fake_uri));
+            array('handleResponse'),
+            array($this->fakeUri));
         $client->expects($this->never())->method('handleResponse');
 
         $this->setExpectedException('Junior\Clientside\Exception');
@@ -271,60 +280,58 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
     public function testHandleResponseGood()
     {
-        $test_response = $this->getEmptyResponse();
-        $test_response->result = 'foo';
-        $test_response->id = 1;
+        $testResponse         = $this->getEmptyResponse();
+        $testResponse->result = 'foo';
+        $testResponse->id     = 1;
 
-        $client = $this->getMockClient(null);
-        $client_response = $client->handleResponse($test_response);
+        $client          = $this->getMockClient(null);
+        $client_response = $client->handleResponse($testResponse);
 
-        $this->assertEquals($test_response->result, $client_response->result);
-        $this->assertEquals($test_response->id, $client_response->id);
+        $this->assertEquals($testResponse->result, $client_response->result);
+        $this->assertEquals($testResponse->id, $client_response->id);
     }
 
     public function testHandleResponseError()
     {
-        $test_response = $this->getEmptyResponse();
-        $error = new stdClass();
-        $error->code = 1;
-        $error->message = 'foo';
-        $test_response->error = $error;
-        $test_response->id = 1;
+        $testResponse        = $this->getEmptyResponse();
+        $error               = new stdClass();
+        $error->code         = 1;
+        $error->message      = 'foo';
+        $testResponse->error = $error;
+        $testResponse->id    = 1;
 
-        $client = $this->getMockClient(null);
-        $client_response = $client->handleResponse($test_response);
+        $client         = $this->getMockClient(null);
+        $clientResponse = $client->handleResponse($testResponse);
 
-        $this->assertEquals($test_response->error->code, $client_response->error_code);
-        $this->assertEquals($test_response->error->message, $client_response->error_message);
-        $this->assertEquals($test_response->id, $client_response->id);
+        $this->assertEquals($testResponse->error->code, $clientResponse->errorCode);
+        $this->assertEquals($testResponse->error->message, $clientResponse->errorMessage);
+        $this->assertEquals($testResponse->id, $clientResponse->id);
     }
 
     public function testHandleResponseBatch()
     {
-        $good_response = $this->getEmptyResponse();
-        $good_response->result = 'foo';
-        $good_response->id = 1;
+        $goodResponse         = $this->getEmptyResponse();
+        $goodResponse->result = 'foo';
+        $goodResponse->id     = 1;
 
-        $error_response = $this->getEmptyResponse();
-        $error = new stdClass();
-        $error->code = 1;
-        $error->message = 'foo';
-        $error_response->error = $error;
-        $error_response->id = 2;
+        $errorResponse        = $this->getEmptyResponse();
+        $error                = new stdClass();
+        $error->code          = 1;
+        $error->message       = 'foo';
+        $errorResponse->error = $error;
+        $errorResponse->id    = 2;
 
-        $responses = array($good_response, $error_response);
+        $responses = array($goodResponse, $errorResponse);
 
-        $client = $this->getMockClient(null);
-        $client_response = $client->handleResponse($responses);
+        $client         = $this->getMockClient(null);
+        $clientResponse = $client->handleResponse($responses);
 
-        $this->assertEquals($good_response->result, $client_response[1]->result);
-        $this->assertEquals($good_response->id, $client_response[1]->id);
+        $this->assertEquals($goodResponse->result, $clientResponse[1]->result);
+        $this->assertEquals($goodResponse->id, $clientResponse[1]->id);
 
-        $this->assertEquals($error_response->error->code, $client_response[2]->error_code);
-        $this->assertEquals($error_response->error->message, $client_response[2]->error_message);
-        $this->assertEquals($error_response->id, $client_response[2]->id);
+        $this->assertEquals($errorResponse->error->code, $clientResponse[2]->errorCode);
+        $this->assertEquals($errorResponse->error->message, $clientResponse[2]->errorMessage);
+        $this->assertEquals($errorResponse->id, $clientResponse[2]->id);
     }
 
 }
-
-?>
