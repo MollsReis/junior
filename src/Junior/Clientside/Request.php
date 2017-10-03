@@ -1,16 +1,24 @@
 <?php
+
 namespace Junior\Clientside;
 
 
-class Request {
-
+class Request
+{
     const JSON_RPC_VERSION = "2.0";
 
     public $method;
     public $params;
     public $id;
 
-    // create a new json rpc request object
+    /**
+     * create a new json rpc request object
+     *
+     * @param $method
+     * @param null $params
+     * @param bool $notify
+     * @throws Exception
+     */
     public function __construct($method, $params = null, $notify = false)
     {
         // ensure params are array
@@ -26,7 +34,7 @@ class Request {
         // ensure params are utf8
         if ($params !== null) {
             foreach ($params as &$param) {
-                if(is_string($param)){
+                if (is_string($param)) {
                     $param = utf8_encode($param);
                 }
             }
@@ -41,7 +49,11 @@ class Request {
         }
     }
 
-    // return an associated array for this object 
+    /**
+     * return an associated array for this object
+     *
+     * @return array
+     */
     public function getArray()
     {
         $arr = array('jsonrpc' => self::JSON_RPC_VERSION, 'method' => $this->method);
@@ -51,10 +63,15 @@ class Request {
         if ($this->id !== null) {
             $arr['id'] = $this->id;
         }
+
         return $arr;
     }
 
-    // return the json for this object
+    /**
+     * return the json for this object
+     *
+     * @return string
+     */
     public function getJSON()
     {
         return json_encode($this->getArray());
