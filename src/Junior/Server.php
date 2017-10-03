@@ -12,7 +12,7 @@ const ERROR_EXCEPTION        = -32099;
 
 class Server
 {
-    public $exposed_instance, $input;
+    public $exposedInstance, $input;
 
     /**
      * create new server
@@ -26,19 +26,19 @@ class Server
             throw new Serverside\Exception("Server requires an object");
         }
 
-        $this->exposed_instance = $exposedInstance;
-        $this->input            = 'php://input';
+        $this->exposedInstance = $exposedInstance;
+        $this->input           = 'php://input';
     }
 
     /**
      * check for method existence
      *
-     * @param $method_name
+     * @param $methodName
      * @return bool
      */
-    public function methodExists($method_name)
+    public function methodExists($methodName)
     {
-        return method_exists($this->exposed_instance, $method_name);
+        return method_exists($this->exposedInstance, $methodName);
     }
 
     /**
@@ -63,7 +63,7 @@ class Server
         if ($params === null) {
             $params = array();
         }
-        $reflection = new \ReflectionMethod($this->exposed_instance, $method);
+        $reflection = new \ReflectionMethod($this->exposedInstance, $method);
 
         // only allow calls to public functions
         if (!$reflection->isPublic()) {
@@ -76,7 +76,7 @@ class Server
             throw new Serverside\Exception("Too few parameters passed.");
         }
 
-        return $reflection->invokeArgs($this->exposed_instance, $params);
+        return $reflection->invokeArgs($this->exposedInstance, $params);
     }
 
     /**

@@ -184,10 +184,10 @@ class Client
         }
 
         // try to decode json
-        $json_response = $this->decodeJSON($response);
+        $jsonResponse = $this->decodeJSON($response);
 
         // handle response, create response object and return it
-        return $this->handleResponse($json_response);
+        return $this->handleResponse($jsonResponse);
     }
 
     /**
@@ -199,12 +199,12 @@ class Client
      */
     function decodeJSON($json)
     {
-        $json_response = json_decode($json);
-        if ($json_response === null) {
+        $jsonResponse = json_decode($json);
+        if ($jsonResponse === null) {
             throw new Clientside\Exception("Unable to decode JSON response from: {$json}");
         }
 
-        return $json_response;
+        return $jsonResponse;
     }
 
     /**
@@ -217,12 +217,12 @@ class Client
     {
         // recursion for batch
         if (is_array($response)) {
-            $response_arr = array();
+            $responseArr = array();
             foreach ($response as $res) {
-                $response_arr[$res->id] = $this->handleResponse($res);
+                $responseArr[$res->id] = $this->handleResponse($res);
             }
 
-            return $response_arr;
+            return $responseArr;
         }
 
         // return error response
